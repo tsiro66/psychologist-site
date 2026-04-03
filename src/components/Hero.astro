@@ -30,7 +30,7 @@ const words = title.split(" ");
       words.map((word, i) => (
         <span
           class="inline-block animate-blur-in opacity-0"
-          style={`animation-delay: ${i * 0.12}s; animation-fill-mode: forwards;`}
+          style={`animation-delay: ${0.5 + i * 0.12}s; animation-fill-mode: forwards;`}
         >
           {word === "ψυχοθεραπείας" ? (
             <span class="text-violet-600 italic">{word}</span>
