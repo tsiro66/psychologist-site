@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
-// 1. Import your image locally for automatic optimization
-import bgImage from "../assets/bg.jpg"; 
+import bgImage from "../assets/bg.jpg";
 import Button from "../components/Button.astro";
 
 const title = "Βρες την ηρεμία σου μεσώ της ψυχοθεραπείας";
@@ -18,13 +17,17 @@ const words = title.split(" ");
     format="jpg"
     loading="eager"
     fetchpriority="high"
-    class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+    class="absolute inset-0 w-full h-full object-cover pointer-events-none animate-slow-zoom"
   />
-  
-  <div class="absolute inset-0 bg-white/20 -z-10"></div>
+
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-black/50 z-0 pointer-events-none"
+  >
+  </div>
 
   <h1
-    class="text-5xl md:text-6xl leading-[1.1] max-w-6xl text-neutral-950 font-serif flex flex-wrap justify-center gap-x-[0.25em] gap-y-2"
+    class="relative z-10 text-5xl md:text-6xl leading-[1.1] max-w-6xl text-neutral-950 font-serif flex flex-wrap justify-center gap-x-[0.25em]
+     gap-y-2"
   >
     {
       words.map((word, i) => (
@@ -33,7 +36,7 @@ const words = title.split(" ");
           style={`animation-delay: ${0.5 + i * 0.12}s; animation-fill-mode: forwards;`}
         >
           {word === "ψυχοθεραπείας" ? (
-            <span class="text-violet-600 italic">{word}</span>
+            <span class="text-violet-700 italic">{word}</span>
           ) : (
             word
           )}
@@ -43,7 +46,7 @@ const words = title.split(" ");
   </h1>
 
   <p
-    class="mt-6 text-base text-neutral-600 leading-relaxed animate-fade-in-up opacity-0"
+    class="relative z-10 mt-6 text-base text-neutral-800 leading-relaxed animate-fade-in-up opacity-0 font-medium"
     style="animation-delay: 1.2s; animation-fill-mode: forwards;"
   >
     Είτε αντιμετωπίζεις άγχος, κατάθλιψη, είτε απλά θέλεις να κατανοήσεις
@@ -53,24 +56,72 @@ const words = title.split(" ");
   </p>
 
   <div
-    class="mt-5 flex items-center gap-4 animate-fade-in-up opacity-0"
+    class="relative z-10 mt-5 flex items-center gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
     <Button href="/quote" variant="primary">Μάθε περισσότερα</Button>
     <Button href="/demo" variant="secondary">Κλείσε ραντεβού</Button>
   </div>
+
+  <div
+    class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 animate-fade-in-up opacity-0"
+    style="animation-delay: 2s; animation-fill-mode: forwards;"
+  >
+    <span
+      class="text-sm uppercase tracking-[0.5em] text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
+    >
+      Δες τις υπηρεσιες
+    </span>
+
+    <div class="w-[2px] h-14 bg-white/40 relative overflow-hidden rounded-full">
+      <div class="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line"></div>
+    </div>
+  </div>
 </section>
 
 <style>
-  /* Keep your existing animations here */
+  /* New slow zoom animation for the background */
+  @keyframes slowZoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.15);
+    }
+  }
+
+  .animate-slow-zoom {
+    /* 20 seconds for a very subtle, professional feel */
+    animation: slowZoom 20s ease-out forwards;
+  }
+
   @keyframes blurIn {
-    from { filter: blur(12px); opacity: 0; transform: translateY(10px); }
-    to { filter: blur(0); opacity: 1; transform: translateY(0); }
+    from {
+      filter: blur(12px) drop-shadow(0 0 0px rgba(0,0,0,0));
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      filter: blur(0px) drop-shadow(4px 4px 10px rgba(0,0,0,0.3));
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scrollLine {
+    0% { transform: translateY(-100%); }
+    50%, 100% { transform: translateY(100%); }
   }
 
   .animate-blur-in {
@@ -79,5 +130,9 @@ const words = title.split(" ");
 
   .animate-fade-in-up {
     animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-scroll-line {
+    animation: scrollLine 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
 </style>
