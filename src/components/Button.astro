@@ -1,0 +1,33 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'nav';
+  className?: string;
+  [key: string]: any; // To allow for extra attributes like target, id, etc.
+}
+
+const { 
+  href, 
+  variant = 'primary', 
+  className, 
+  ...rest 
+} = Astro.props;
+
+const baseStyles = "px-7 text-sm font-semibold transition-colors duration-200 cursor-pointer";
+
+const variants = {
+  primary: " border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white py-3",
+  secondary: "border border-violet-500 text-violet-500 hover:bg-violet-700 hover:border-violet-700 hover:text-white py-3",
+  nav: "nav-btn bg-lime-700 text-white hover:bg-lime-700 py-2"
+};
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element 
+  href={href} 
+  class:list={[baseStyles, variants[variant], className]} 
+  {...rest}
+>
+  <slot />
+</Element>

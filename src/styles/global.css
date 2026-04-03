@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@theme inline {
+    --font-sans: var(--font-google), sans-serif;
+    --font-serif: var(--font-noto), sans-serif;
+}

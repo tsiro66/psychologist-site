@@ -1,0 +1,126 @@
+---
+import Button from "./Button.astro";
+const navLinks = [
+  { label: "Αρχική", href: "#" },
+  { label: "Υπηρεσίες", href: "#services" },
+  { label: "Σύμβουλοι", href: "#" },
+  { label: "Ο χώρος μας", href: "#" },
+  { label: "Επικοινωνία", href: "#contact" },
+];
+---
+
+<header
+  class="navbar fixed top-0 left-0 right-0 px-10 py-3 z-50 transition-all duration-500 animate-nav-drop opacity-0"
+  style="animation-fill-mode: forwards;"
+>
+  <nav class="flex items-center justify-between">
+    <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
+      <img
+        src="/logo.png"
+        alt="Logo"
+        class="h-15 nav-logo transition-all duration-500"
+      />
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8 lg:pl-8">
+      {
+        navLinks.map((link, i) => (
+          <li
+            class="animate-blur-in opacity-0"
+            style={`animation-delay: ${0.2 + i * 0.1}s; animation-fill-mode: forwards;`}
+          >
+            <a
+              href={link.href}
+              class="nav-link text-zinc-950 transition-colors duration-500"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div
+      class="flex items-center animate-blur-in opacity-0"
+      style="animation-delay: 0.8s; animation-fill-mode: forwards;"
+    >
+      <Button variant="nav">Δωρεάν συνεδρία γνωριμίας</Button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  @reference "../styles/global.css";
+  @keyframes navDrop {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes blurIn {
+    from {
+      filter: blur(8px);
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-nav-drop {
+    animation: navDrop 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-blur-in {
+    animation: blurIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Scrolled state — always violet-950 */
+  .navbar.is-scrolled {
+    @apply bg-violet-950;
+  }
+
+  .navbar.is-scrolled .nav-link {
+    color: oklch(0.746 0.085 274.039); /* violet-400 */
+  }
+
+  .navbar.is-scrolled .nav-link:hover {
+    color: oklch(0.841 0.238 136.547); /* lime-400 */
+  }
+
+  .navbar.is-scrolled .nav-logo {
+    filter: brightness(0) invert(1);
+  }
+
+  .navbar.is-scrolled :global(.nav-btn) {
+    background-color: oklch(0.841 0.238 136.547); /* lime-400 */
+    color: oklch(0.208 0.042 264.695); /* violet-950 */
+  }
+
+  .navbar.is-scrolled :global(.nav-btn:hover) {
+    background-color: oklch(0.768 0.233 130.85); /* lime-500 */
+  }
+</style>
+
+<script>
+  const navbar = document.querySelector(".navbar")!;
+
+  function updateNavbar() {
+    if (window.scrollY > 20) {
+      navbar.classList.add("is-scrolled", "backdrop-blur-md");
+    } else {
+      navbar.classList.remove("is-scrolled", "backdrop-blur-md");
+    }
+  }
+
+  window.addEventListener("scroll", updateNavbar, { passive: true });
+  updateNavbar();
+</script>

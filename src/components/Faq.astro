@@ -1,0 +1,180 @@
+---
+const faqs = [
+  {
+    question: "Πώς ξέρω αν χρειάζομαι ψυχοθεραπεία;",
+    hint: "Σημάδια που αξίζει να προσέξεις",
+    answer:
+      "Αν νιώθεις ότι το άγχος, η θλίψη ή οι δυσκολίες στις σχέσεις σου επηρεάζουν την καθημερινότητά σου, η ψυχοθεραπεία μπορεί να βοηθήσει. Δεν χρειάζεται να περιμένεις να φτάσεις σε κρίση — η πρόληψη και η αυτογνωσία είναι εξίσου σημαντικές.",
+  },
+  {
+    question: "Πόσο διαρκεί μια συνεδρία;",
+    hint: "Διάρκεια και συχνότητα",
+    answer:
+      "Κάθε συνεδρία διαρκεί 50 λεπτά. Η συχνότητα των συνεδριών (εβδομαδιαία ή δεκαπενθήμερη) καθορίζεται μαζί, ανάλογα με τις ανάγκες σου και τους θεραπευτικούς στόχους.",
+  },
+  {
+    question: "Οι συνεδρίες γίνονται και διαδικτυακά;",
+    hint: "Online και δια ζώσης επιλογές",
+    answer:
+      "Ναι, προσφέρουμε τόσο δια ζώσης όσο και online συνεδρίες μέσω ασφαλούς βιντεοκλήσης. Οι διαδικτυακές συνεδρίες είναι εξίσου αποτελεσματικές και προσφέρουν μεγαλύτερη ευελιξία.",
+  },
+  {
+    question: "Είναι εμπιστευτικές οι συνεδρίες;",
+    hint: "Απόρρητο και δεοντολογία",
+    answer:
+      "Απολύτως. Η εμπιστευτικότητα αποτελεί θεμέλιο της θεραπευτικής σχέσης. Όλες οι πληροφορίες που μοιράζεσαι παραμένουν αυστηρά εμπιστευτικές, σύμφωνα με τον κώδικα δεοντολογίας και την ισχύουσα νομοθεσία.",
+  },
+  {
+    question: "Τι είναι η δωρεάν συνεδρία γνωριμίας;",
+    hint: "20 λεπτά χωρίς δέσμευση",
+    answer:
+      "Είναι μια σύντομη συνάντηση 20 λεπτών, χωρίς καμία δέσμευση, όπου γνωριζόμαστε, συζητάμε τις ανάγκες σου και αποφασίζουμε μαζί αν η συνεργασία μας είναι η κατάλληλη για εσένα.",
+  },
+  {
+    question: "Ποιο είναι το κόστος κάθε συνεδρίας;",
+    hint: "Τιμές και ασφαλιστική κάλυψη",
+    answer:
+      "Το κόστος εξαρτάται από τον τύπο της υπηρεσίας (ατομική, ζεύγους, ομαδική). Μπορείς να επικοινωνήσεις μαζί μας για αναλυτικές πληροφορίες τιμών. Συνεργαζόμαστε και με ασφαλιστικούς φορείς.",
+  },
+];
+---
+
+<section id="faq" class="relative py-28 px-6 bg-stone-50">
+  <div class="px-10">
+    <!-- Section Header -->
+    <div class="text-center mb-20">
+      <span
+        class="inline-block text-sm tracking-widest uppercase text-lime-600 font-semibold mb-4 faq-reveal opacity-0"
+      >
+        Συχνές ερωτήσεις
+      </span>
+      <h2
+        class="text-4xl md:text-5xl font-serif text-neutral-950 leading-tight faq-reveal opacity-0"
+        style="animation-delay: 0.1s;"
+      >
+        Έχεις <span class="text-violet-600 italic">απορίες</span>;
+      </h2>
+        <p
+        class="mt-5 text-neutral-500 max-w-xl mx-auto leading-relaxed faq-reveal opacity-0"
+        style="animation-delay: 0.2s;"
+      >
+        Βρες απαντήσεις στις πιο συχνές ερωτήσεις σχετικά με τη θεραπεία και τον
+        τρόπο λειτουργίας μας.
+      </p>
+    </div>
+
+    <!-- FAQ Rows -->
+    <div class="border-t border-stone-200">
+      {
+        faqs.map((faq, i) => (
+          <div
+            class="faq-row group border-b border-stone-200 faq-reveal opacity-0"
+            style={`animation-delay: ${0.15 + i * 0.08}s;`}
+          >
+            <button
+              class="faq-toggle w-full grid grid-cols-[1fr_1fr_auto] md:grid-cols-[1fr_1.5fr_auto] items-center gap-4 md:gap-8 py-6 md:py-7 text-left cursor-pointer"
+              aria-expanded="false"
+            >
+              <h3 class="text-base md:text-lg font-semibold text-neutral-950 group-hover:text-lime-600 transition-colors duration-300">
+                {faq.question}
+              </h3>
+              <p class="text-sm text-neutral-500 leading-relaxed">
+                {faq.hint}
+              </p>
+              <span class="faq-icon w-9 h-9 rounded-full border border-stone-300 flex items-center justify-center flex-shrink-0 group-hover:border-lime-400 transition-all duration-500">
+                <svg
+                  class="w-4 h-4 text-neutral-400 group-hover:text-lime-600 transition-all duration-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="faq-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+              <div class="overflow-hidden">
+                <p class="pb-7 text-sm text-neutral-500 leading-relaxed max-w-3xl">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes faqReveal {
+    from {
+      filter: blur(8px);
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .faq-reveal.is-visible {
+    animation: faqReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .faq-row.is-open .faq-content {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-row.is-open .faq-icon {
+    border-color: oklch(0.532 0.157 131.589);
+    background-color: oklch(0.532 0.157 131.589);
+  }
+
+  .faq-row.is-open .faq-icon svg {
+    color: white;
+    transform: rotate(45deg);
+  }
+</style>
+
+<script>
+  const faqObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          faqObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document.querySelectorAll(".faq-reveal").forEach((el) => {
+    faqObserver.observe(el);
+  });
+
+  document.querySelectorAll(".faq-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const row = btn.closest(".faq-row")!;
+      const isOpen = row.classList.contains("is-open");
+
+      document.querySelectorAll(".faq-row.is-open").forEach((openRow) => {
+        openRow.classList.remove("is-open");
+        openRow.querySelector(".faq-toggle")?.setAttribute("aria-expanded", "false");
+      });
+
+      if (!isOpen) {
+        row.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+</script>

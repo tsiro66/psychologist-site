@@ -1,0 +1,176 @@
+---
+const services = [
+  {
+    title: "Ατομική Ψυχοθεραπεία",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    title: "Θεραπεία Ζεύγους",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    title: "Παιδοψυχολογία",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    title: "Διαχείριση Άγχους",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    title: "Ομαδική Θεραπεία",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    title: "Συμβουλευτική Γονέων",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+];
+---
+
+<section id="services" class="relative py-28 px-6 bg-violet-950">
+  <div class="px-10">
+    <!-- Section Header -->
+    <div class="text-center mb-20">
+      <span
+        class="inline-block text-sm tracking-widest uppercase text-lime-400 font-semibold mb-4 service-reveal opacity-0"
+      >
+        Υπηρεσίες
+      </span>
+      <h2
+        class="text-4xl md:text-5xl font-serif text-white leading-tight service-reveal opacity-0"
+        style="animation-delay: 0.1s;"
+      >
+        Πώς μπορούμε να <span class="text-lime-400 italic">βοηθήσουμε</span>
+      </h2>
+      <p
+        class="mt-5 text-violet-300 max-w-2xl mx-auto leading-relaxed service-reveal opacity-0"
+        style="animation-delay: 0.2s;"
+      >
+        Προσφέρουμε ένα ευρύ φάσμα υπηρεσιών ψυχικής υγείας, προσαρμοσμένες στις
+        μοναδικές ανάγκες κάθε ατόμου.
+      </p>
+    </div>
+
+    <!-- Two-column layout: titles left, description right -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-12 lg:gap-20 items-start max-w-7xl mx-auto">
+      <!-- Left: Service titles -->
+      <div class="border-t border-violet-800">
+        {
+          services.map((service, i) => (
+            <button
+              class="service-title-btn w-full text-left border-b border-violet-800 py-5 md:py-6 cursor-pointer group transition-colors duration-300 service-reveal opacity-0"
+              data-index={i}
+              style={`animation-delay: ${0.15 + i * 0.08}s;`}
+            >
+              <span class="text-base md:text-lg font-semibold text-violet-400 group-hover:text-lime-400 transition-colors duration-300">
+                {service.title}
+              </span>
+            </button>
+          ))
+        }
+      </div>
+
+      <!-- Right: Description panel -->
+      <div
+        class="lg:sticky lg:top-32 service-reveal opacity-0"
+        style="animation-delay: 0.4s;"
+      >
+        <div class="rounded-2xl p-8 md:p-10">
+          <h3
+            id="service-panel-title"
+            class="text-xl md:text-2xl font-semibold text-white mb-5 transition-opacity duration-300"
+          >
+            {services[0].title}
+          </h3>
+          <p
+            id="service-panel-description"
+            class="text-sm md:text-base text-violet-300 leading-relaxed transition-opacity duration-300"
+          >
+            {services[0].description}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes serviceReveal {
+    from {
+      filter: blur(8px);
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .service-reveal.is-visible {
+    animation: serviceReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .service-title-btn.is-active span {
+    color: oklch(0.841 0.238 136.547); /* lime-400 */
+  }
+
+  .service-title-btn.is-active {
+    border-color: oklch(0.841 0.238 136.547); /* lime-400 */
+  }
+</style>
+
+<script define:vars={{ services }}>
+  // Scroll reveal
+  const serviceObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          serviceObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document.querySelectorAll(".service-reveal").forEach((el) => {
+    serviceObserver.observe(el);
+  });
+
+  // Tab switching
+  const buttons = document.querySelectorAll(".service-title-btn");
+  const panelTitle = document.getElementById("service-panel-title");
+  const panelDescription = document.getElementById("service-panel-description");
+
+  // Set first as active
+  buttons[0]?.classList.add("is-active");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.getAttribute("data-index"));
+
+      // Update active state
+      buttons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+
+      // Fade out, swap, fade in
+      panelTitle.style.opacity = "0";
+      panelDescription.style.opacity = "0";
+
+      setTimeout(() => {
+        panelTitle.textContent = services[index].title;
+        panelDescription.textContent = services[index].description;
+        panelTitle.style.opacity = "1";
+        panelDescription.style.opacity = "1";
+      }, 200);
+    });
+  });
+</script>

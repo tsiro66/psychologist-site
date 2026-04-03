@@ -1,0 +1,87 @@
+---
+import Button from "../components/Button.astro";
+
+const title = "Βρες την ηρεμία σου μεσώ της ψυχοθεραπείας";
+const words = title.split(" ");
+---
+
+<section
+  class="relative flex flex-col items-center min-h-screen text-center px-6 pt-60 overflow-hidden"
+>
+  <div
+    class="absolute inset-0 bg-cover bg-center bg-no-repeat -z-20"
+    style="background-image: url('/bg.jpg');"
+  >
+  </div>
+  <div class="absolute inset-0 bg-white/10 -z-10"></div>
+  <h1
+    class="text-5xl md:text-6xl leading-[1.1] max-w-6xl text-neutral-950 font-serif flex flex-wrap justify-center gap-x-[0.25em] gap-y-2"
+  >
+    {
+      words.map((word, i) => (
+        <span
+          class="inline-block animate-blur-in opacity-0"
+          style={`animation-delay: ${i * 0.12}s; animation-fill-mode: forwards;`}
+        >
+          {word === "ψυχοθεραπείας" ? (
+            <span class="text-violet-600 italic">{word}</span>
+          ) : (
+            word
+          )}
+        </span>
+      ))
+    }
+  </h1>
+
+  <p
+    class="mt-6 text-base text-neutral-600 leading-relaxed animate-fade-in-up opacity-0"
+    style="animation-delay: 1.2s; animation-fill-mode: forwards;"
+  >
+    Είτε αντιμετωπίζεις άγχος, κατάθλιψη, είτε απλά θέλεις να κατανοήσεις
+    καλύτερα τον εαυτό σου,
+    <br />
+    είμαστε εδώ για να σε στηρίξουμε σε κάθε βήμα του ταξιδιού σου προς την ευεξία.
+  </p>
+
+  <div
+    class="mt-5 flex items-center gap-4 animate-fade-in-up opacity-0"
+    style="animation-delay: 1.5s; animation-fill-mode: forwards;"
+  >
+    <Button href="/quote" variant="primary">Μάθε περισσότερα</Button>
+    <Button href="/demo" variant="secondary">Κλείσε ραντεβού</Button>
+  </div>
+</section>
+
+<style>
+  @keyframes blurIn {
+    from {
+      filter: blur(12px);
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      filter: blur(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-blur-in {
+    animation: blurIn 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+</style>
