@@ -14,12 +14,8 @@ const navLinks = [
   style="animation-fill-mode: forwards;"
 >
   <nav class="flex items-center justify-between">
-    <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
-      <img
-        src="/logo.png"
-        alt="Logo"
-        class="h-15 nav-logo transition-all duration-500"
-      />
+    <a href="/" class="flex flex-col hover:opacity-80 transition-opacity">
+      <span class="text-2xl font-bold tracking-wide nav-logo transition-all duration-500 font-serif text-lime-700">Νικολάου Έλενα</span>
     </a>
 
     <ul class="hidden md:flex items-center gap-8 lg:pl-8">
@@ -97,7 +93,7 @@ const navLinks = [
   }
 
   .navbar.is-scrolled .nav-logo {
-    filter: brightness(0) invert(1);
+    color: white;
   }
 
   .navbar.is-scrolled :global(.nav-btn) {
