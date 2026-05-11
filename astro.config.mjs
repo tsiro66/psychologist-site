@@ -4,6 +4,8 @@ import { defineConfig, fontProviders } from "astro/config";
 
 import vercel from "@astrojs/vercel";
 
+import svelte from "@astrojs/svelte";
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
@@ -30,4 +32,5 @@ export default defineConfig({
   ],
 
   adapter: vercel(),
+  integrations: [svelte()],
 });

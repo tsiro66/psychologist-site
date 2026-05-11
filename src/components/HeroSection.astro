@@ -8,7 +8,7 @@ const words = title.split(" ");
 ---
 
 <section
-  class="relative flex flex-col items-center min-h-screen text-center px-6 pt-60 overflow-hidden bg-neutral-50"
+  class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 md:px-6 overflow-hidden bg-neutral-50"
 >
   <Image
     src={bgImage}
@@ -26,7 +26,7 @@ const words = title.split(" ");
   </div>
 
   <h1
-    class="relative z-10 text-5xl md:text-6xl leading-[1.1] max-w-6xl text-neutral-950 font-serif flex flex-wrap justify-center gap-x-[0.25em]
+    class="relative z-10 text-3xl sm:text-5xl md:text-6xl leading-[1.1] max-w-6xl text-neutral-950 font-serif flex flex-wrap justify-center gap-x-[0.25em]
      gap-y-2"
   >
     {
@@ -51,16 +51,16 @@ const words = title.split(" ");
   >
     Είτε αντιμετωπίζεις άγχος, κατάθλιψη, είτε απλά θέλεις να κατανοήσεις
     καλύτερα τον εαυτό σου,
-    <br />
+    <br class="hidden md:inline" />
     είμαστε εδώ για να σε στηρίξουμε σε κάθε βήμα του ταξιδιού σου προς την ευεξία.
   </p>
 
   <div
-    class="relative z-10 mt-5 flex items-center gap-4 animate-fade-in-up opacity-0"
+    class="relative z-10 mt-5 flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up opacity-0 w-full sm:w-auto"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
-    <Button href="/quote" variant="primary">Μάθε περισσότερα</Button>
-    <Button href="/demo" variant="secondary">Κλείσε ραντεβού</Button>
+    <Button href="/about" variant="primary" className="w-full sm:w-auto text-center justify-center">Μάθε περισσότερα</Button>
+    <Button href="/booking" variant="secondary" className="w-full sm:w-auto text-center justify-center">Κλείσε ραντεβού</Button>
   </div>
 
   <div
@@ -70,13 +70,14 @@ const words = title.split(" ");
     <span
       class="text-sm uppercase tracking-[0.5em] text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
     >
-      Δες τις υπηρεσιες
+      Δες περισσοτερα
     </span>
 
     <div class="w-[2px] h-14 bg-white/40 relative overflow-hidden rounded-full">
       <div class="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line"></div>
     </div>
   </div>
+  
 </section>
 
 <style>

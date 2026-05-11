@@ -19,23 +19,23 @@ const services = [
 ---
 
 <footer class="sticky bottom-0 bg-violet-950 text-white">
-  <div class="px-16 pt-24 pb-10">
+  <div class="px-6 md:px-16 pt-14 md:pt-24 pb-10">
     <!-- Top area -->
     <div
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-12 lg:gap-8 mb-20"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-6 sm:gap-8 mb-10 md:mb-20"
     >
       <!-- Brand column -->
-      <div>
-        <a href="/" class="inline-block mb-6">
+      <div class="col-span-1 sm:col-span-2 lg:col-span-1">
+        <a href="/" class="inline-block mb-4">
           <Image
             class="nav-logo"
             src="/logo.png"
             alt="Logo"
-            width={200}
-            height={200}
+            width={150}
+            height={150}
           />
         </a>
-        <p class="text-sm text-violet-300 leading-relaxed max-w-xs mb-8">
+        <p class="text-sm text-violet-300 leading-relaxed max-w-xs mb-6">
           Ένας ασφαλής χώρος για να εξερευνήσεις τον εαυτό σου, να
           αντιμετωπίσεις τις προκλήσεις και να ανακαλύψεις τη δύναμή σου.
         </p>
@@ -115,7 +115,7 @@ const services = [
       </div>
 
       <!-- Services column -->
-      <div>
+      <div class="hidden sm:block">
         <h4
           class="text-sm font-semibold text-white uppercase tracking-wider mb-6"
         >
@@ -168,7 +168,7 @@ const services = [
           </li>
           <li>
             <a
-              href="mailto:info@nikolaouelena.gr"
+              href="mailto:info@katerinakritikoy.gr"
               class="flex items-center gap-3 text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
             >
               <svg
@@ -184,7 +184,7 @@ const services = [
                   d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
                 ></path>
               </svg>
-              info@nikolaouelena.gr
+              info@katerinakritikoy.gr
             </a>
           </li>
           <li>
@@ -227,7 +227,7 @@ const services = [
       class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
     >
       <p class="text-xs text-violet-500">
-        &copy; 2026 Νικολάου Ελένα. Με επιφύλαξη παντός δικαιώματος.
+        &copy; 2026 Κατερίνα Κρητικού. Με επιφύλαξη παντός δικαιώματος.
       </p>
       <div class="flex items-center gap-6">
         <a
