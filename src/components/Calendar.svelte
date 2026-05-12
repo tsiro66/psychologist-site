@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte';
+
   let viewDate = $state(new Date());
   let selectedDate = $state(null);
   let selectedHour = $state(null);
@@ -9,7 +11,7 @@
   let errorMsg = $state('');
 
   let daysInMonth = $derived(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate());
-  let startDay = $derived(() => {
+  let startDay = $derived.by(() => {
     const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay();
     return d === 0 ? 6 : d - 1;
   });
@@ -17,8 +19,18 @@
   const days = ["Δε", "Τρ", "Τε", "Πε", "Πα", "Σα", "Κυ"];
   const hours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  let _now = $state(Date.now());
+  let today = $derived.by(() => {
+    const d = new Date(_now);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  });
+
+  onMount(() => {
+    const refresh = () => { _now = Date.now(); };
+    document.addEventListener('visibilitychange', refresh);
+    return () => document.removeEventListener('visibilitychange', refresh);
+  });
 
   function isPast(day) {
     const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
@@ -32,12 +44,17 @@
     return d.getTime() === today.getTime();
   }
 
+  function isWeekend(day) {
+    const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day).getDay();
+    return d === 0 || d === 6;
+  }
+
   function isSelected(day) {
     return selectedDate?.getDate() === day && selectedDate?.getMonth() === viewDate.getMonth() && selectedDate?.getFullYear() === viewDate.getFullYear();
   }
 
   function selectDate(day) {
-    if (isPast(day)) return;
+    if (isPast(day) || isWeekend(day)) return;
     selectedDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     selectedHour = null;
   }
@@ -60,6 +77,11 @@
     return prev >= currentMonth;
   }
 
+  function canGoNext() {
+    const max = new Date(today.getFullYear(), today.getMonth() + 3, 1);
+    return new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1) <= max;
+  }
+
   let formattedDate = $derived(
     selectedDate
       ? selectedDate.toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
@@ -72,7 +94,12 @@
       : null
   );
 
-  let canSubmit = $derived(selectedDate && selectedHour && name.trim() && phone.trim() && !submitting);
+  function isValidPhone(p) {
+    return /^\d{10}$/.test(p.trim());
+  }
+
+  let phoneInvalid = $derived(phone.trim().length > 0 && !isValidPhone(phone));
+  let canSubmit = $derived(selectedDate && selectedHour && name.trim() && isValidPhone(phone) && !submitting);
 
   async function handleSubmit() {
     if (!canSubmit) return;
@@ -118,6 +145,12 @@
       <p class="text-neutral-500 mb-1 capitalize">{formattedDate}</p>
       <p class="text-neutral-500 mb-6">Ώρα: {selectedHour}</p>
       <p class="text-sm text-neutral-400">Θα επικοινωνήσουμε μαζί σου σύντομα για επιβεβαίωση.</p>
+      <button
+        onclick={() => { submitted = false; selectedDate = null; selectedHour = null; name = ''; phone = ''; errorMsg = ''; }}
+        class="mt-6 text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
+      >
+        Νέα κράτηση
+      </button>
     </div>
   </div>
 {:else}
@@ -141,7 +174,8 @@
           </button>
           <button
             onclick={nextMonth}
-            class="p-2 text-violet-300 hover:text-lime-400 transition-colors cursor-pointer"
+            disabled={!canGoNext()}
+            class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
           >
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -159,18 +193,19 @@
         </div>
 
         <div class="grid grid-cols-7 gap-1 text-center">
-          {#each Array(startDay()) as _}
+          {#each Array(startDay) as _}
             <div class="p-2"></div>
           {/each}
 
           {#each Array.from({ length: daysInMonth }, (_, i) => i + 1) as day}
             <button
               onclick={() => selectDate(day)}
-              disabled={isPast(day)}
+              disabled={isPast(day) || isWeekend(day)}
+              aria-label={new Date(viewDate.getFullYear(), viewDate.getMonth(), day).toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long' })}
               class="relative p-2 text-sm rounded-sm transition-all duration-200 cursor-pointer
                 {isSelected(day)
                   ? 'bg-violet-950 text-white font-semibold shadow-md'
-                  : isPast(day)
+                  : isPast(day) || isWeekend(day)
                     ? 'text-neutral-300 cursor-not-allowed'
                     : isToday(day)
                       ? 'bg-lime-50 text-lime-700 font-semibold hover:bg-lime-100'
@@ -199,6 +234,7 @@
             {#each hours as hour}
               <button
                 onclick={() => selectHour(hour)}
+                aria-pressed={selectedHour === hour}
                 class="py-2.5 px-3 text-sm font-medium rounded-sm border transition-all duration-200 cursor-pointer
                   {selectedHour === hour
                     ? 'bg-violet-950 border-violet-950 text-white shadow-md'
@@ -236,13 +272,16 @@
               placeholder="π.χ. 6912345678"
               class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
             />
+            {#if phoneInvalid}
+              <p class="text-xs text-red-500 mt-1">Εισάγετε 10ψήφιο τηλέφωνο</p>
+            {/if}
           </div>
         </div>
       </div>
 
       <div class="mt-4 animate-slide-in">
         {#if errorMsg}
-          <p class="text-sm text-red-600 mb-3">{errorMsg}</p>
+          <p class="text-sm text-red-600 mb-3" aria-live="polite">{errorMsg}</p>
         {/if}
         <button
           onclick={handleSubmit}

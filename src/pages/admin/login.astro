@@ -1,0 +1,62 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+
+export const prerender = false;
+---
+
+<AdminLayout title="Σύνδεση">
+  <section class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-sm">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-serif text-neutral-950">Σύνδεση</h1>
+      </div>
+      <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm p-6">
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="password" class="block text-sm text-neutral-600 mb-1.5">Κωδικός</label>
+            <input
+              id="password"
+              type="password"
+              required
+              class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+            />
+          </div>
+          <p id="error-msg" class="text-sm text-red-600 hidden"></p>
+          <button
+            type="submit"
+            class="w-full py-3 px-7 text-sm font-semibold border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white transition-colors duration-200 cursor-pointer"
+          >
+            Είσοδος
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</AdminLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const form = document.getElementById("login-form")!;
+    const errorMsg = document.getElementById("error-msg")!;
+    const password = document.getElementById("password") as HTMLInputElement;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMsg.classList.add("hidden");
+
+      const res = await fetch("/api/admin-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: password.value }),
+      });
+
+      if (!res.ok) {
+        errorMsg.textContent = "Λάθος κωδικός";
+        errorMsg.classList.remove("hidden");
+        return;
+      }
+
+      window.location.href = "/admin/bookings";
+    });
+  });
+</script>

@@ -34,7 +34,7 @@ const services = [
       </span>
       <h2
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight service-reveal opacity-0"
-        style="animation-delay: 0.1s;"
+        style="animation-delay: 0.05s;"
       >
         Πώς μπορούμε να <span class="text-violet-600 italic">βοηθήσουμε</span>
       </h2>
@@ -46,7 +46,7 @@ const services = [
         services.map((service, i) => (
           <div
             class="border-t border-stone-200 py-14 md:py-20 service-reveal opacity-0"
-            style={`animation-delay: ${0.25 + i * 0.15}s;`}
+            style={`animation-delay: ${i * 0.1}s;`}
           >
             <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-12 items-start">
               <!-- Number -->
@@ -88,7 +88,7 @@ const services = [
     <!-- CTA -->
     <div
       class="text-center mt-20 service-reveal opacity-0"
-      style="animation-delay: 0.75s;"
+      style="animation-delay: 0.2s;"
     >
       <Button href="/booking" variant="primary">Κλείσε δωρεάν συνεδρία γνωριμίας</Button>
     </div>
