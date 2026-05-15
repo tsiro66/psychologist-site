@@ -9,6 +9,9 @@
   let submitting = $state(false);
   let submitted = $state(false);
   let errorMsg = $state('');
+  let step = $state(1);
+  let bookedHours = $state([]);
+  let loadingHours = $state(false);
 
   let daysInMonth = $derived(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate());
   let startDay = $derived.by(() => {
@@ -53,14 +56,35 @@
     return selectedDate?.getDate() === day && selectedDate?.getMonth() === viewDate.getMonth() && selectedDate?.getFullYear() === viewDate.getFullYear();
   }
 
-  function selectDate(day) {
+  async function selectDate(day) {
     if (isPast(day) || isWeekend(day)) return;
     selectedDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     selectedHour = null;
+    step = 2;
+    loadingHours = true;
+    bookedHours = [];
+    try {
+      const dateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+      const res = await fetch(`/api/booking?date=${dateStr}`);
+      if (res.ok) {
+        const data = await res.json();
+        bookedHours = data.bookedHours ?? [];
+      }
+    } catch {}
+    loadingHours = false;
   }
 
   function selectHour(hour) {
     selectedHour = hour;
+    step = 3;
+  }
+
+  function goBack() {
+    if (step === 2) {
+      step = 1;
+    } else if (step === 3) {
+      step = 2;
+    }
   }
 
   function prevMonth() {
@@ -85,6 +109,12 @@
   let formattedDate = $derived(
     selectedDate
       ? selectedDate.toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+      : null
+  );
+
+  let shortDate = $derived(
+    selectedDate
+      ? selectedDate.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' })
       : null
   );
 
@@ -131,10 +161,21 @@
       submitting = false;
     }
   }
+
+  function reset() {
+    submitted = false;
+    selectedDate = null;
+    selectedHour = null;
+    name = '';
+    phone = '';
+    errorMsg = '';
+    step = 1;
+    bookedHours = [];
+  }
 </script>
 
 {#if submitted}
-  <div class="w-full max-w-md mx-auto text-center animate-slide-in">
+  <div class="w-full max-w-md mx-auto text-center animate-step">
     <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm px-8 py-12">
       <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-lime-50 flex items-center justify-center">
         <svg class="w-8 h-8 text-lime-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -146,7 +187,7 @@
       <p class="text-neutral-500 mb-6">Ώρα: {selectedHour}</p>
       <p class="text-sm text-neutral-400">Θα επικοινωνήσουμε μαζί σου σύντομα για επιβεβαίωση.</p>
       <button
-        onclick={() => { submitted = false; selectedDate = null; selectedHour = null; name = ''; phone = ''; errorMsg = ''; }}
+        onclick={reset}
         class="mt-6 text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
       >
         Νέα κράτηση
@@ -155,163 +196,237 @@
   </div>
 {:else}
   <div class="w-full max-w-md mx-auto">
-    <!-- Calendar Card -->
-    <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
-      <!-- Month Header -->
-      <div class="flex justify-between items-center px-6 py-5 bg-violet-950">
-        <h2 class="font-serif text-xl text-white capitalize">
-          {viewDate.toLocaleDateString('el-GR', { month: 'long', year: 'numeric' })}
-        </h2>
-        <div class="flex gap-1">
-          <button
-            onclick={prevMonth}
-            disabled={!canGoPrev()}
-            class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-          <button
-            onclick={nextMonth}
-            disabled={!canGoNext()}
-            class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
+    <!-- Progress Steps -->
+    <div class="flex items-center justify-center gap-2 mb-6">
+      {#each [1, 2, 3] as s}
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300
+            {s < step
+              ? 'bg-lime-600 text-white'
+              : s === step
+                ? 'bg-violet-950 text-white'
+                : 'bg-stone-100 text-neutral-400'}">
+            {#if s < step}
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            {:else}
+              {s}
+            {/if}
+          </div>
+          {#if s < 3}
+            <div class="w-10 h-0.5 transition-all duration-300 {s < step ? 'bg-lime-600' : 'bg-stone-200'}"></div>
+          {/if}
         </div>
-      </div>
-
-      <!-- Day Names & Grid -->
-      <div class="px-4 pt-4 pb-5">
-        <div class="grid grid-cols-7 gap-1 text-center mb-1">
-          {#each days as d}
-            <div class="text-xs font-semibold text-neutral-400 uppercase tracking-wider py-2">{d}</div>
-          {/each}
-        </div>
-
-        <div class="grid grid-cols-7 gap-1 text-center">
-          {#each Array(startDay) as _}
-            <div class="p-2"></div>
-          {/each}
-
-          {#each Array.from({ length: daysInMonth }, (_, i) => i + 1) as day}
-            <button
-              onclick={() => selectDate(day)}
-              disabled={isPast(day) || isWeekend(day)}
-              aria-label={new Date(viewDate.getFullYear(), viewDate.getMonth(), day).toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long' })}
-              class="relative p-2 text-sm rounded-sm transition-all duration-200 cursor-pointer
-                {isSelected(day)
-                  ? 'bg-violet-950 text-white font-semibold shadow-md'
-                  : isPast(day) || isWeekend(day)
-                    ? 'text-neutral-300 cursor-not-allowed'
-                    : isToday(day)
-                      ? 'bg-lime-50 text-lime-700 font-semibold hover:bg-lime-100'
-                      : 'text-neutral-700 hover:bg-violet-50 hover:text-violet-900'}"
-            >
-              {day}
-              {#if isToday(day)}
-                <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-lime-500"></span>
-              {/if}
-            </button>
-          {/each}
-        </div>
-      </div>
+      {/each}
     </div>
 
-    <!-- Hour Selection -->
-    {#if selectedDate}
-      <div class="mt-4 bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden animate-slide-in">
-        <div class="px-6 py-4 border-b border-stone-200">
-          <p class="text-sm text-neutral-500">Επέλεξες:</p>
-          <p class="font-serif text-lg text-neutral-950 capitalize">{formattedDate}</p>
-        </div>
-        <div class="px-6 py-5">
-          <p class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-3">Διαθέσιμες ώρες</p>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            {#each hours as hour}
+    <!-- Step 1: Date Selection -->
+    {#if step === 1}
+      <div class="animate-step">
+        <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
+          <div class="flex justify-between items-center px-6 py-5 bg-violet-950">
+            <h2 class="font-serif text-xl text-white capitalize">
+              {viewDate.toLocaleDateString('el-GR', { month: 'long', year: 'numeric' })}
+            </h2>
+            <div class="flex gap-1">
               <button
-                onclick={() => selectHour(hour)}
-                aria-pressed={selectedHour === hour}
-                class="py-2.5 px-3 text-sm font-medium rounded-sm border transition-all duration-200 cursor-pointer
-                  {selectedHour === hour
-                    ? 'bg-violet-950 border-violet-950 text-white shadow-md'
-                    : 'border-stone-200 text-neutral-700 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-900'}"
+                onclick={prevMonth}
+                disabled={!canGoPrev()}
+                aria-label="Προηγούμενος μήνας"
+                title="Προηγούμενος μήνας"
+                class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               >
-                {hour}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
               </button>
-            {/each}
+              <button
+                onclick={nextMonth}
+                disabled={!canGoNext()}
+                aria-label="Επόμενος μήνας"
+                title="Επόμενος μήνας"
+                class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="px-4 pt-4 pb-5">
+            <div class="grid grid-cols-7 gap-1 text-center mb-1">
+              {#each days as d}
+                <div class="text-xs font-semibold text-neutral-400 uppercase tracking-wider py-2">{d}</div>
+              {/each}
+            </div>
+
+            <div class="grid grid-cols-7 gap-1 text-center">
+              {#each Array(startDay) as _}
+                <div class="p-2"></div>
+              {/each}
+
+              {#each Array.from({ length: daysInMonth }, (_, i) => i + 1) as day}
+                <button
+                  onclick={() => selectDate(day)}
+                  disabled={isPast(day) || isWeekend(day)}
+                  aria-label={new Date(viewDate.getFullYear(), viewDate.getMonth(), day).toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  class="relative p-2 text-sm rounded-sm transition-all duration-200 cursor-pointer
+                    {isSelected(day)
+                      ? 'bg-violet-950 text-white font-semibold shadow-md'
+                      : isPast(day) || isWeekend(day)
+                        ? 'text-neutral-300 cursor-not-allowed'
+                        : isToday(day)
+                          ? 'bg-lime-50 text-lime-700 font-semibold hover:bg-lime-100'
+                          : 'text-neutral-700 hover:bg-violet-50 hover:text-violet-900'}"
+                >
+                  {day}
+                  {#if isToday(day)}
+                    <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-lime-500"></span>
+                  {/if}
+                </button>
+              {/each}
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-sm text-neutral-400 mt-4">Επίλεξε ημερομηνία</p>
+      </div>
+    {/if}
+
+    <!-- Step 2: Hour Selection -->
+    {#if step === 2}
+      <div class="animate-step">
+        <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-stone-200 flex items-center gap-3">
+            <button
+              onclick={goBack}
+              aria-label="Πίσω"
+              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-violet-700 transition-colors cursor-pointer"
+            >
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <div>
+              <p class="text-sm text-neutral-500">Ημερομηνία</p>
+              <p class="font-serif text-lg text-neutral-950 capitalize">{formattedDate}</p>
+            </div>
+          </div>
+          <div class="px-6 py-5">
+            <p class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-4">Επίλεξε ώρα</p>
+            {#if loadingHours}
+              <div class="text-center py-6 text-neutral-400 text-sm">Φόρτωση διαθέσιμων ωρών...</div>
+            {:else}
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                {#each hours as hour}
+                  {@const booked = bookedHours.includes(hour)}
+                  <button
+                    onclick={() => selectHour(hour)}
+                    disabled={booked}
+                    aria-pressed={selectedHour === hour}
+                    class="py-2.5 px-3 text-sm font-medium rounded-sm border transition-all duration-200
+                      {booked
+                        ? 'border-stone-100 bg-stone-50 text-neutral-300 line-through cursor-not-allowed'
+                        : selectedHour === hour
+                          ? 'bg-violet-950 border-violet-950 text-white shadow-md cursor-pointer'
+                          : 'border-stone-200 text-neutral-700 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-900 cursor-pointer'}"
+                  >
+                    {hour}
+                  </button>
+                {/each}
+              </div>
+              {#if bookedHours.length === hours.length}
+                <p class="text-sm text-neutral-400 text-center mt-4">Δεν υπάρχουν διαθέσιμες ώρες. Επίλεξε άλλη ημέρα.</p>
+              {/if}
+            {/if}
           </div>
         </div>
       </div>
     {/if}
 
-    <!-- Contact Info & Submit -->
-    {#if selectedDate && selectedHour}
-      <div class="mt-4 bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden animate-slide-in">
-        <div class="px-6 py-5 space-y-4">
-          <p class="text-sm font-semibold text-neutral-500 uppercase tracking-wider">Στοιχεία επικοινωνίας</p>
-          <div>
-            <label for="booking-name" class="block text-sm text-neutral-600 mb-1.5">Ονοματεπώνυμο</label>
-            <input
-              id="booking-name"
-              type="text"
-              bind:value={name}
-              placeholder="π.χ. Μαρία Παπαδοπούλου"
-              class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
-            />
+    <!-- Step 3: Contact Details -->
+    {#if step === 3}
+      <div class="animate-step">
+        <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-stone-200 flex items-center gap-3">
+            <button
+              onclick={goBack}
+              aria-label="Πίσω"
+              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-violet-700 transition-colors cursor-pointer"
+            >
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <div>
+              <p class="text-sm text-neutral-500 capitalize">{formattedDate}</p>
+              <p class="font-serif text-lg text-neutral-950">{selectedHour}</p>
+            </div>
           </div>
-          <div>
-            <label for="booking-phone" class="block text-sm text-neutral-600 mb-1.5">Τηλέφωνο</label>
-            <input
-              id="booking-phone"
-              type="tel"
-              bind:value={phone}
-              placeholder="π.χ. 6912345678"
-              class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
-            />
-            {#if phoneInvalid}
-              <p class="text-xs text-red-500 mt-1">Εισάγετε 10ψήφιο τηλέφωνο</p>
-            {/if}
+          <div class="px-6 py-5 space-y-4">
+            <p class="text-sm font-semibold text-neutral-500 uppercase tracking-wider">Στοιχεία επικοινωνίας</p>
+            <div>
+              <label for="booking-name" class="block text-sm text-neutral-600 mb-1.5">Ονοματεπώνυμο</label>
+              <input
+                id="booking-name"
+                type="text"
+                bind:value={name}
+                placeholder="π.χ. Μαρία Παπαδοπούλου"
+                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+              />
+            </div>
+            <div>
+              <label for="booking-phone" class="block text-sm text-neutral-600 mb-1.5">Τηλέφωνο</label>
+              <input
+                id="booking-phone"
+                type="tel"
+                bind:value={phone}
+                placeholder="π.χ. 6912345678"
+                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+              />
+              {#if phoneInvalid}
+                <p class="text-xs text-red-500 mt-1">Εισάγετε 10ψήφιο τηλέφωνο</p>
+              {/if}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-4 animate-slide-in">
-        {#if errorMsg}
-          <p class="text-sm text-red-600 mb-3" aria-live="polite">{errorMsg}</p>
-        {/if}
-        <button
-          onclick={handleSubmit}
-          disabled={!canSubmit}
-          class="w-full py-3.5 px-7 text-sm font-semibold border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white transition-colors duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          {#if submitting}
-            Αποστολή...
-          {:else}
-            Κράτηση για {formattedDate}, {selectedHour}
+        <div class="mt-4">
+          {#if errorMsg}
+            <p class="text-sm text-red-600 mb-3" aria-live="polite">{errorMsg}</p>
           {/if}
-        </button>
+          <button
+            onclick={handleSubmit}
+            disabled={!canSubmit}
+            class="w-full py-3.5 px-7 text-sm font-semibold border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white transition-colors duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {#if submitting}
+              Αποστολή...
+            {:else}
+              Κράτηση
+            {/if}
+          </button>
+        </div>
       </div>
     {/if}
   </div>
 {/if}
 
 <style>
-  @keyframes slideIn {
+  @keyframes stepIn {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateX(12px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
 
-  .animate-slide-in {
-    animation: slideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  .animate-step {
+    animation: stepIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 </style>

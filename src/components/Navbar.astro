@@ -81,12 +81,15 @@ const navLinks = [
 
 <!-- Fullscreen mobile menu -->
 <div
-  class="mobile-menu fixed inset-0 z-40 bg-violet-950 lg:hidden hidden flex-col justify-center items-center"
+  class="mobile-menu fixed inset-0 z-40 bg-violet-950 lg:hidden flex flex-col justify-center items-center opacity-0 pointer-events-none transition-all duration-400 ease-out"
 >
   <ul class="flex flex-col items-center gap-2">
     {
-      navLinks.map((link) => (
-        <li>
+      navLinks.map((link, i) => (
+        <li
+          class="mobile-menu-item translate-y-4 opacity-0"
+          style={`transition-delay: ${80 + i * 60}ms;`}
+        >
           <a
             href={link.href}
             class="mobile-nav-link block py-3 px-4 text-2xl font-semibold text-violet-300 hover:text-lime-400 transition-colors duration-300"
@@ -96,7 +99,10 @@ const navLinks = [
         </li>
       ))
     }
-    <li class="pt-6">
+    <li
+      class="mobile-menu-item pt-6 translate-y-4 opacity-0"
+      style={`transition-delay: ${80 + navLinks.length * 60}ms;`}
+    >
       <Button
         href="/booking"
         variant="nav"
@@ -203,6 +209,21 @@ const navLinks = [
   .navbar.menu-open .hamburger-line {
     background-color: white;
   }
+
+  /* Mobile menu transitions */
+  .mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-menu-item {
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  }
+
+  .mobile-menu.is-open .mobile-menu-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
 
 <script>
@@ -221,8 +242,7 @@ const navLinks = [
 
     function openMenu() {
       menuToggle.classList.add("is-open");
-      mobileMenu.classList.remove("hidden");
-      mobileMenu.classList.add("flex");
+      mobileMenu.classList.add("is-open");
       navbar.classList.add("menu-open");
       document.body.style.overflow = "hidden";
       menuToggle.setAttribute("aria-expanded", "true");
@@ -230,8 +250,7 @@ const navLinks = [
 
     function closeMenu() {
       menuToggle.classList.remove("is-open");
-      mobileMenu.classList.add("hidden");
-      mobileMenu.classList.remove("flex");
+      mobileMenu.classList.remove("is-open");
       navbar.classList.remove("menu-open");
       document.body.style.overflow = "";
       menuToggle.setAttribute("aria-expanded", "false");

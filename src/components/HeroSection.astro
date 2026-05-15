@@ -8,7 +8,7 @@ const words = title.split(" ");
 ---
 
 <section
-  class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 md:px-6 overflow-hidden bg-neutral-50"
+  class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 md:px-6 overflow-hidden bg-neutral-50 pb-24"
 >
   <Image
     src={bgImage}
@@ -56,11 +56,11 @@ const words = title.split(" ");
   </p>
 
   <div
-    class="relative z-10 mt-5 flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up opacity-0 w-full sm:w-auto"
+    class="relative z-10 mt-5 flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
-    <Button href="/about" variant="primary" className="w-full sm:w-auto text-center justify-center">Μάθε περισσότερα</Button>
-    <Button href="/booking" variant="secondary" className="w-full sm:w-auto text-center justify-center">Κλείσε ραντεβού</Button>
+    <Button href="/about" variant="primary" className="text-center justify-center">Μάθε περισσότερα</Button>
+    <Button href="/booking" variant="secondary" className="text-center justify-center">Κλείσε ραντεβού</Button>
   </div>
 
   <div

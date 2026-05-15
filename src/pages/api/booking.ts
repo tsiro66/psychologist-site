@@ -3,7 +3,23 @@ import { getSupabase } from "../../lib/supabase";
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ url }) => {
+  const date = url.searchParams.get("date");
+
+  if (date) {
+    const { data, error } = await getSupabase()
+      .from("bookings")
+      .select("hour")
+      .eq("date", date);
+
+    if (error) {
+      return new Response(JSON.stringify({ error: "Αποτυχία φόρτωσης" }), { status: 500 });
+    }
+
+    const bookedHours = (data ?? []).map((b: { hour: string }) => b.hour);
+    return new Response(JSON.stringify({ bookedHours }), { status: 200 });
+  }
+
   const { data, error } = await getSupabase()
     .from("bookings")
     .select("*")
@@ -46,6 +62,32 @@ export const PATCH: APIRoute = async ({ request }) => {
   if (date) updates.date = date;
   if (hour) updates.hour = hour;
 
+  if (date || hour) {
+    const { data: current } = await getSupabase()
+      .from("bookings")
+      .select("date, hour")
+      .eq("id", id)
+      .single();
+
+    const checkDate = date || current?.date;
+    const checkHour = hour || current?.hour;
+
+    const { data: conflict } = await getSupabase()
+      .from("bookings")
+      .select("id")
+      .eq("date", checkDate)
+      .eq("hour", checkHour)
+      .neq("id", id)
+      .limit(1);
+
+    if (conflict && conflict.length > 0) {
+      return new Response(
+        JSON.stringify({ error: "Η ώρα αυτή είναι ήδη κρατημένη." }),
+        { status: 409 }
+      );
+    }
+  }
+
   const { error } = await getSupabase().from("bookings").update(updates).eq("id", id);
 
   if (error) {
@@ -65,6 +107,20 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  const { data: existing } = await getSupabase()
+    .from("bookings")
+    .select("id")
+    .eq("date", date)
+    .eq("hour", hour)
+    .limit(1);
+
+  if (existing && existing.length > 0) {
+    return new Response(
+      JSON.stringify({ error: "Η ώρα αυτή είναι ήδη κρατημένη. Επίλεξε άλλη ώρα." }),
+      { status: 409 }
+    );
+  }
+
   const { error } = await getSupabase().from("bookings").insert({
     name,
     phone,
@@ -73,7 +129,6 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (error) {
-
     return new Response(JSON.stringify({ error: "Κάτι πήγε στραβά. Δοκίμασε ξανά." }), {
       status: 500,
     });
