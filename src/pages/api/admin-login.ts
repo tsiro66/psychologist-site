@@ -1,21 +1,23 @@
 import type { APIRoute } from "astro";
+import { getSupabaseServer } from "../../lib/supabase";
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const { password } = await request.json();
+  const { email, password } = await request.json();
 
-  if (!password || password !== import.meta.env.ADMIN_PASSWORD) {
-    return new Response(JSON.stringify({ error: "Λάθος κωδικός" }), { status: 401 });
-  }
-
-  cookies.set("admin_token", import.meta.env.ADMIN_TOKEN, {
-    path: "/",
-    httpOnly: true,
-    secure: import.meta.env.PROD,
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+  const supabase = getSupabaseServer(cookies, request);
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
+
+  if (error) {
+    return new Response(
+      JSON.stringify({ error: "Λάθος email ή κωδικός" }),
+      { status: 401 },
+    );
+  }
 
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };

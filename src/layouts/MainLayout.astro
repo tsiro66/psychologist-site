@@ -20,7 +20,7 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <Font cssVariable="--font-google" preload />
-    <Font cssVariable="--font-noto" preload />
+    <Font cssVariable="--font-noto" />
     <ClientRouter />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}

@@ -1,13 +1,27 @@
 import type { APIRoute } from "astro";
-import { getSupabase } from "../../lib/supabase";
+import type { AstroCookies } from "astro";
+import { getSupabaseAdmin, getSupabaseServer } from "../../lib/supabase";
 
 export const prerender = false;
+
+async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Response | null> {
+  const supabase = getSupabaseServer(cookies, request);
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return new Response(
+      JSON.stringify({ error: "Μη εξουσιοδοτημένη πρόσβαση" }),
+      { status: 401 },
+    );
+  }
+  return null;
+}
 
 export const GET: APIRoute = async ({ url }) => {
   const date = url.searchParams.get("date");
 
   if (date) {
-    const { data, error } = await getSupabase()
+    const { data, error } = await getSupabaseAdmin()
       .from("bookings")
       .select("hour")
       .eq("date", date);
@@ -20,7 +34,7 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(JSON.stringify({ bookedHours }), { status: 200 });
   }
 
-  const { data, error } = await getSupabase()
+  const { data, error } = await getSupabaseAdmin()
     .from("bookings")
     .select("*")
     .order("date", { ascending: true })
@@ -33,14 +47,17 @@ export const GET: APIRoute = async ({ url }) => {
   return new Response(JSON.stringify(data), { status: 200 });
 };
 
-export const DELETE: APIRoute = async ({ request }) => {
+export const DELETE: APIRoute = async ({ request, cookies }) => {
+  const authError = await requireAdmin(cookies, request);
+  if (authError) return authError;
+
   const { id } = await request.json();
 
   if (!id) {
     return new Response(JSON.stringify({ error: "ID απαιτείται" }), { status: 400 });
   }
 
-  const { error } = await getSupabase().from("bookings").delete().eq("id", id);
+  const { error } = await getSupabaseAdmin().from("bookings").delete().eq("id", id);
 
   if (error) {
     return new Response(JSON.stringify({ error: "Αποτυχία διαγραφής" }), { status: 500 });
@@ -49,7 +66,10 @@ export const DELETE: APIRoute = async ({ request }) => {
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };
 
-export const PATCH: APIRoute = async ({ request }) => {
+export const PATCH: APIRoute = async ({ request, cookies }) => {
+  const authError = await requireAdmin(cookies, request);
+  if (authError) return authError;
+
   const { id, name, phone, date, hour } = await request.json();
 
   if (!id) {
@@ -63,7 +83,7 @@ export const PATCH: APIRoute = async ({ request }) => {
   if (hour) updates.hour = hour;
 
   if (date || hour) {
-    const { data: current } = await getSupabase()
+    const { data: current } = await getSupabaseAdmin()
       .from("bookings")
       .select("date, hour")
       .eq("id", id)
@@ -72,7 +92,7 @@ export const PATCH: APIRoute = async ({ request }) => {
     const checkDate = date || current?.date;
     const checkHour = hour || current?.hour;
 
-    const { data: conflict } = await getSupabase()
+    const { data: conflict } = await getSupabaseAdmin()
       .from("bookings")
       .select("id")
       .eq("date", checkDate)
@@ -88,7 +108,7 @@ export const PATCH: APIRoute = async ({ request }) => {
     }
   }
 
-  const { error } = await getSupabase().from("bookings").update(updates).eq("id", id);
+  const { error } = await getSupabaseAdmin().from("bookings").update(updates).eq("id", id);
 
   if (error) {
     return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), { status: 500 });
@@ -107,7 +127,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const { data: existing } = await getSupabase()
+  const { data: existing } = await getSupabaseAdmin()
     .from("bookings")
     .select("id")
     .eq("date", date)
@@ -121,7 +141,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const { error } = await getSupabase().from("bookings").insert({
+  const { error } = await getSupabaseAdmin().from("bookings").insert({
     name,
     phone,
     date,
