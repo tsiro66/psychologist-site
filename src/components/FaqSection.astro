@@ -44,7 +44,7 @@ const faqs = [
     <!-- Section Header -->
     <div class="mb-20">
       <span
-        class="inline-block text-sm tracking-widest uppercase text-lime-600 font-semibold mb-4 faq-reveal opacity-0"
+        class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 faq-reveal opacity-0"
       >
         Συχνες ερωτησεις
       </span>
@@ -52,7 +52,7 @@ const faqs = [
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight faq-reveal opacity-0"
         style="animation-delay: 0.1s;"
       >
-        Έχεις <span class="text-violet-600 italic">απορίες;</span>
+        Έχεις <span class="text-primary-700 italic">απορίες;</span>
       </h2>
       <p
         class="mt-5 text-neutral-500 max-w-xl leading-relaxed faq-reveal opacity-0"
@@ -75,15 +75,15 @@ const faqs = [
               class="faq-toggle w-full grid grid-cols-[1fr_auto] md:grid-cols-[1fr_1.5fr_auto] items-center gap-4 md:gap-8 py-5 md:py-7 text-left cursor-pointer"
               aria-expanded="false"
             >
-              <h3 class="text-sm sm:text-base md:text-lg font-semibold text-neutral-950 group-hover:text-lime-600 transition-colors duration-300">
+              <h3 class="text-sm sm:text-base md:text-lg font-semibold text-neutral-950 group-hover:text-primary-600 transition-colors duration-300">
                 {faq.question}
               </h3>
               <p class="hidden md:block text-sm text-neutral-500 leading-relaxed">
                 {faq.hint}
               </p>
-              <span class="faq-icon w-8 h-8 md:w-9 md:h-9 rounded-full border border-stone-300 flex items-center justify-center flex-shrink-0 group-hover:border-lime-400 transition-all duration-500">
+              <span class="faq-icon w-8 h-8 md:w-9 md:h-9 rounded-full border border-stone-300 flex items-center justify-center flex-shrink-0 group-hover:border-primary-400 transition-all duration-500">
                 <svg
-                  class="w-4 h-4 text-neutral-400 group-hover:text-lime-600 transition-all duration-500"
+                  class="w-4 h-4 text-neutral-400 group-hover:text-primary-600 transition-all duration-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke-width="2"
@@ -134,8 +134,8 @@ const faqs = [
   }
 
   .faq-row.is-open .faq-icon {
-    border-color: oklch(0.532 0.157 131.589);
-    background-color: oklch(0.532 0.157 131.589);
+    border-color: var(--color-primary-600);
+    background-color: var(--color-primary-600);
   }
 
   .faq-row.is-open .faq-icon svg {

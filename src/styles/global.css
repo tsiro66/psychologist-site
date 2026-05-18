@@ -3,4 +3,34 @@
 @theme inline {
     --font-sans: var(--font-google), sans-serif;
     --font-serif: var(--font-noto), sans-serif;
+
+    /* ── Change these 3 to retheme the entire site ── */
+    --color-primary:  oklch(0.50 0.13 245);
+    --color-accent: oklch(0.82 0.07 230);
+    --color-dark: oklch(0.30 0.09 250);
+
+    /* Auto-derived shades — no need to edit below */
+    --color-primary-50: color-mix(in oklch, var(--color-primary) 5%, white);
+    --color-primary-100: color-mix(in oklch, var(--color-primary) 12%, white);
+    --color-primary-200: color-mix(in oklch, var(--color-primary) 25%, white);
+    --color-primary-300: color-mix(in oklch, var(--color-primary) 40%, white);
+    --color-primary-400: color-mix(in oklch, var(--color-primary) 55%, white);
+    --color-primary-500: color-mix(in oklch, var(--color-primary) 72%, white);
+    --color-primary-600: color-mix(in oklch, var(--color-primary) 88%, white);
+    --color-primary-700: var(--color-primary);
+    --color-primary-800: color-mix(in oklch, var(--color-primary), black 15%);
+
+    --color-accent-100: color-mix(in oklch, var(--color-accent) 12%, white);
+    --color-accent-300: color-mix(in oklch, var(--color-accent) 55%, white);
+    --color-accent-400: color-mix(in oklch, var(--color-accent) 78%, white);
+    --color-accent-500: var(--color-accent);
+    --color-accent-600: color-mix(in oklch, var(--color-accent), black 15%);
+
+    --color-dark-400: color-mix(in oklch, var(--color-dark) 30%, white);
+    --color-dark-500: color-mix(in oklch, var(--color-dark) 45%, white);
+    --color-dark-600: color-mix(in oklch, var(--color-dark) 57%, white);
+    --color-dark-700: color-mix(in oklch, var(--color-dark) 68%, white);
+    --color-dark-800: color-mix(in oklch, var(--color-dark) 82%, white);
+    --color-dark-900: var(--color-dark);
+    --color-dark-950: color-mix(in oklch, var(--color-dark), black 35%);
 }

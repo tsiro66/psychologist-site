@@ -42,7 +42,7 @@ const values = [
     <!-- Section Header -->
     <div class="mb-20">
       <span
-        class="inline-block text-sm tracking-widest uppercase text-lime-600 font-semibold mb-4 about-reveal opacity-0"
+        class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 about-reveal opacity-0"
       >
         Σχετικα
       </span>
@@ -50,7 +50,7 @@ const values = [
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight about-reveal opacity-0"
         style="animation-delay: 0.1s;"
       >
-        Λίγα λόγια <span class="text-violet-600 italic">για εμένα</span>
+        Λίγα λόγια <span class="text-primary-700 italic">για εμένα</span>
       </h2>
       <p
         class="mt-5 text-neutral-500 max-w-2xl leading-relaxed about-reveal opacity-0"
@@ -130,11 +130,11 @@ const values = [
         {
           values.map((value, i) => (
             <div
-              class="p-8 bg-gradient-to-br from-violet-600 to-violet-800 text-white shadow-xl shadow-violet-300/40 about-reveal opacity-0"
+              class="p-8 bg-gradient-to-br from-primary-700 to-dark-800 text-white shadow-xl shadow-primary-300/30 about-reveal opacity-0"
               style={`animation-delay: ${0.45 + i * 0.1}s;`}
             >
               <h4 class="text-lg font-semibold mb-3">{value.title}</h4>
-              <p class="text-sm text-violet-200 leading-relaxed">
+              <p class="text-sm text-primary-200 leading-relaxed">
                 {value.description}
               </p>
             </div>

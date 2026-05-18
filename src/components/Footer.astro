@@ -9,16 +9,13 @@ const navLinks = [
 ];
 
 const services = [
-  "Ατομική Ψυχοθεραπεία",
-  "Θεραπεία Ζεύγους",
-  "Παιδοψυχολογία",
-  "Διαχείριση Άγχους",
-  "Ομαδική Θεραπεία",
-  "Συμβουλευτική Γονέων",
+  "Ατομικές και Ομαδικές Συνεδρίες",
+  "Συμβουλευτική Ζευγαριών, Γονέων και Εφήβων",
+  "Υποστήριξη Προσωπικής Ανάπτυξης και ΛΟΑΤΚΙ+ Ατόμων",
 ];
 ---
 
-<footer class="sticky bottom-0 bg-violet-950 text-white">
+<footer class="sticky bottom-0 bg-dark-950 text-white">
   <div class="px-6 md:px-16 pt-14 md:pt-24 pb-10">
     <!-- Top area -->
     <div
@@ -28,14 +25,14 @@ const services = [
       <div class="col-span-1 sm:col-span-2 lg:col-span-1">
         <a href="/" class="inline-block mb-4">
           <Image
-            class="nav-logo [filter:hue-rotate(150deg)_saturate(2)]"
+            class="nav-logo filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)] hidden sm:block"
             src="/logo.png"
             alt="Logo"
             width={150}
             height={150}
           />
         </a>
-        <p class="text-sm text-violet-300 leading-relaxed max-w-xs mb-6">
+        <p class="text-sm text-primary-300 leading-relaxed max-w-xs mb-6">
           Ένας ασφαλής χώρος για να εξερευνήσεις τον εαυτό σου, να
           αντιμετωπίσεις τις προκλήσεις και να ανακαλύψεις τη δύναμή σου.
         </p>
@@ -43,11 +40,11 @@ const services = [
           <!-- Instagram -->
           <a
             href="#"
-            class="w-9 h-9 rounded-full border border-violet-700 flex items-center justify-center hover:border-lime-400 hover:bg-lime-400/10 transition-all duration-300"
+            class="w-9 h-9 rounded-full border border-dark-600 flex items-center justify-center hover:border-accent-400 hover:bg-accent-400/10 transition-all duration-300"
             aria-label="Instagram"
           >
             <svg
-              class="w-4 h-4 text-violet-400 hover:text-lime-400"
+              class="w-4 h-4 text-dark-400 hover:text-accent-300"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -59,11 +56,11 @@ const services = [
           <!-- Facebook -->
           <a
             href="#"
-            class="w-9 h-9 rounded-full border border-violet-700 flex items-center justify-center hover:border-lime-400 hover:bg-lime-400/10 transition-all duration-300"
+            class="w-9 h-9 rounded-full border border-dark-600 flex items-center justify-center hover:border-accent-400 hover:bg-accent-400/10 transition-all duration-300"
             aria-label="Facebook"
           >
             <svg
-              class="w-4 h-4 text-violet-400"
+              class="w-4 h-4 text-dark-400"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -75,11 +72,11 @@ const services = [
           <!-- LinkedIn -->
           <a
             href="#"
-            class="w-9 h-9 rounded-full border border-violet-700 flex items-center justify-center hover:border-lime-400 hover:bg-lime-400/10 transition-all duration-300"
+            class="w-9 h-9 rounded-full border border-dark-600 flex items-center justify-center hover:border-accent-400 hover:bg-accent-400/10 transition-all duration-300"
             aria-label="LinkedIn"
           >
             <svg
-              class="w-4 h-4 text-violet-400"
+              class="w-4 h-4 text-dark-400"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -104,7 +101,7 @@ const services = [
               <li>
                 <a
                   href={link.href}
-                  class="text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
+                  class="text-sm text-dark-400 hover:text-accent-300 transition-colors duration-300"
                 >
                   {link.label}
                 </a>
@@ -126,8 +123,8 @@ const services = [
             services.map((service) => (
               <li>
                 <a
-                  href="#services"
-                  class="text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
+                  href="/services"
+                  class="text-sm text-dark-400 hover:text-accent-300 transition-colors duration-300"
                 >
                   {service}
                 </a>
@@ -148,7 +145,7 @@ const services = [
           <li>
             <a
               href="tel:+302101234567"
-              class="flex items-center gap-3 text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
+              class="flex items-center gap-3 text-sm text-dark-400 hover:text-accent-300 transition-colors duration-300"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -169,7 +166,7 @@ const services = [
           <li>
             <a
               href="mailto:info@katerinakritikoy.gr"
-              class="flex items-center gap-3 text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
+              class="flex items-center gap-3 text-sm text-dark-400 hover:text-accent-300 transition-colors duration-300"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -192,7 +189,7 @@ const services = [
               href="https://maps.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-start gap-3 text-sm text-violet-400 hover:text-lime-400 transition-colors duration-300"
+              class="flex items-start gap-3 text-sm text-dark-400 hover:text-accent-300 transition-colors duration-300"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -220,25 +217,25 @@ const services = [
     </div>
 
     <!-- Divider -->
-    <div class="border-t border-violet-800"></div>
+    <div class="border-t border-dark-700"></div>
 
     <!-- Bottom bar -->
     <div
       class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
     >
-      <p class="text-xs text-violet-500">
+      <p class="text-xs text-dark-500">
         &copy; 2026 Κατερίνα Κρητικού. Με επιφύλαξη παντός δικαιώματος.
       </p>
       <div class="flex items-center gap-6">
         <a
           href="#"
-          class="text-xs text-violet-500 hover:text-violet-300 transition-colors duration-300"
+          class="text-xs text-dark-500 hover:text-primary-300 transition-colors duration-300"
         >
           Πολιτική απορρήτου
         </a>
         <a
           href="#"
-          class="text-xs text-violet-500 hover:text-violet-300 transition-colors duration-300"
+          class="text-xs text-dark-500 hover:text-primary-300 transition-colors duration-300"
         >
           Όροι χρήσης
         </a>

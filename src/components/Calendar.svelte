@@ -177,8 +177,8 @@
 {#if submitted}
   <div class="w-full max-w-md mx-auto text-center animate-step">
     <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm px-8 py-12">
-      <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-lime-50 flex items-center justify-center">
-        <svg class="w-8 h-8 text-lime-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-primary-50 flex items-center justify-center">
+        <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
         </svg>
       </div>
@@ -188,7 +188,7 @@
       <p class="text-sm text-neutral-400">Θα επικοινωνήσουμε μαζί σου σύντομα για επιβεβαίωση.</p>
       <button
         onclick={reset}
-        class="mt-6 text-sm font-semibold text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
+        class="mt-6 text-sm font-semibold text-primary-700 hover:text-primary-800 transition-colors cursor-pointer"
       >
         Νέα κράτηση
       </button>
@@ -202,9 +202,9 @@
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300
             {s < step
-              ? 'bg-lime-600 text-white'
+              ? 'bg-primary-600 text-white'
               : s === step
-                ? 'bg-violet-950 text-white'
+                ? 'bg-dark-900 text-white'
                 : 'bg-stone-100 text-neutral-400'}">
             {#if s < step}
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -215,7 +215,7 @@
             {/if}
           </div>
           {#if s < 3}
-            <div class="w-10 h-0.5 transition-all duration-300 {s < step ? 'bg-lime-600' : 'bg-stone-200'}"></div>
+            <div class="w-10 h-0.5 transition-all duration-300 {s < step ? 'bg-primary-600' : 'bg-stone-200'}"></div>
           {/if}
         </div>
       {/each}
@@ -225,7 +225,7 @@
     {#if step === 1}
       <div class="animate-step">
         <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
-          <div class="flex justify-between items-center px-6 py-5 bg-violet-950">
+          <div class="flex justify-between items-center px-6 py-5 bg-dark-900">
             <h2 class="font-serif text-xl text-white capitalize">
               {viewDate.toLocaleDateString('el-GR', { month: 'long', year: 'numeric' })}
             </h2>
@@ -235,7 +235,7 @@
                 disabled={!canGoPrev()}
                 aria-label="Προηγούμενος μήνας"
                 title="Προηγούμενος μήνας"
-                class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                class="p-2 text-primary-300 hover:text-accent-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               >
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -246,7 +246,7 @@
                 disabled={!canGoNext()}
                 aria-label="Επόμενος μήνας"
                 title="Επόμενος μήνας"
-                class="p-2 text-violet-300 hover:text-lime-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                class="p-2 text-primary-300 hover:text-accent-300 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
               >
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -274,16 +274,16 @@
                   aria-label={new Date(viewDate.getFullYear(), viewDate.getMonth(), day).toLocaleDateString('el-GR', { weekday: 'long', day: 'numeric', month: 'long' })}
                   class="relative p-2 text-sm rounded-sm transition-all duration-200 cursor-pointer
                     {isSelected(day)
-                      ? 'bg-violet-950 text-white font-semibold shadow-md'
+                      ? 'bg-dark-900 text-white font-semibold shadow-md'
                       : isPast(day) || isWeekend(day)
                         ? 'text-neutral-300 cursor-not-allowed'
                         : isToday(day)
-                          ? 'bg-lime-50 text-lime-700 font-semibold hover:bg-lime-100'
-                          : 'text-neutral-700 hover:bg-violet-50 hover:text-violet-900'}"
+                          ? 'bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100'
+                          : 'text-neutral-700 hover:bg-primary-50 hover:text-dark-900'}"
                 >
                   {day}
                   {#if isToday(day)}
-                    <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-lime-500"></span>
+                    <span class="absolute bottom-0.5 left-1/2 -trandark-x-1/2 w-1 h-1 rounded-full bg-primary-500"></span>
                   {/if}
                 </button>
               {/each}
@@ -303,7 +303,7 @@
             <button
               onclick={goBack}
               aria-label="Πίσω"
-              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-violet-700 transition-colors cursor-pointer"
+              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-primary-700 transition-colors cursor-pointer"
             >
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -330,8 +330,8 @@
                       {booked
                         ? 'border-stone-100 bg-stone-50 text-neutral-300 line-through cursor-not-allowed'
                         : selectedHour === hour
-                          ? 'bg-violet-950 border-violet-950 text-white shadow-md cursor-pointer'
-                          : 'border-stone-200 text-neutral-700 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-900 cursor-pointer'}"
+                          ? 'bg-dark-900 border-dark-900 text-white shadow-md cursor-pointer'
+                          : 'border-stone-200 text-neutral-700 hover:border-primary-300 hover:bg-primary-50 hover:text-dark-900 cursor-pointer'}"
                   >
                     {hour}
                   </button>
@@ -354,7 +354,7 @@
             <button
               onclick={goBack}
               aria-label="Πίσω"
-              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-violet-700 transition-colors cursor-pointer"
+              class="p-1.5 -ml-1.5 text-neutral-400 hover:text-primary-700 transition-colors cursor-pointer"
             >
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -374,7 +374,7 @@
                 type="text"
                 bind:value={name}
                 placeholder="π.χ. Μαρία Παπαδοπούλου"
-                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
               />
             </div>
             <div>
@@ -384,7 +384,7 @@
                 type="tel"
                 bind:value={phone}
                 placeholder="π.χ. 6912345678"
-                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+                class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
               />
               {#if phoneInvalid}
                 <p class="text-xs text-red-500 mt-1">Εισάγετε 10ψήφιο τηλέφωνο</p>
@@ -400,7 +400,7 @@
           <button
             onclick={handleSubmit}
             disabled={!canSubmit}
-            class="w-full py-3.5 px-7 text-sm font-semibold border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white transition-colors duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-full py-3.5 px-7 text-sm font-semibold border border-primary-600 text-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:text-white transition-colors duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {#if submitting}
               Αποστολή...

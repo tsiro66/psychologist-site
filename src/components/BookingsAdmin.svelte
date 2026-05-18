@@ -124,7 +124,7 @@
   {:else if error}
     <div class="text-center py-16">
       <p class="text-red-600 mb-4">{error}</p>
-      <button onclick={fetchBookings} class="text-sm font-semibold text-violet-600 hover:text-violet-800 cursor-pointer">
+      <button onclick={fetchBookings} class="text-sm font-semibold text-primary-700 hover:text-primary-800 cursor-pointer">
         Δοκίμασε ξανά
       </button>
     </div>
@@ -138,7 +138,7 @@
       <button
         onclick={() => filter = filter === 'all' ? 'all' : 'all'}
         class="bg-white/60 backdrop-blur-sm border rounded-sm px-5 py-4 text-left cursor-pointer transition-all
-          {filter === 'all' ? 'border-violet-400 ring-1 ring-violet-400' : 'border-stone-200 hover:border-stone-300'}"
+          {filter === 'all' ? 'border-primary-400 ring-1 ring-primary-400' : 'border-stone-200 hover:border-stone-300'}"
       >
         <p class="text-sm text-neutral-500 uppercase tracking-wider font-semibold">Συνολο</p>
         <p class="text-3xl font-serif text-neutral-950 mt-1">{bookings.length}</p>
@@ -146,10 +146,10 @@
       <button
         onclick={() => filter = filter === 'upcoming' ? 'all' : 'upcoming'}
         class="bg-white/60 backdrop-blur-sm border rounded-sm px-5 py-4 text-left cursor-pointer transition-all
-          {filter === 'upcoming' ? 'border-lime-400 ring-1 ring-lime-400' : 'border-stone-200 hover:border-stone-300'}"
+          {filter === 'upcoming' ? 'border-accent-400 ring-1 ring-accent-400' : 'border-stone-200 hover:border-stone-300'}"
       >
         <p class="text-sm text-neutral-500 uppercase tracking-wider font-semibold">Επερχομενες</p>
-        <p class="text-3xl font-serif text-lime-600 mt-1">{upcomingCount}</p>
+        <p class="text-3xl font-serif text-primary-600 mt-1">{upcomingCount}</p>
       </button>
       <button
         onclick={() => filter = filter === 'past' ? 'all' : 'past'}
@@ -163,10 +163,10 @@
 
     <!-- Bookings List -->
     <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
-      <div class="px-6 py-4 bg-violet-950 flex justify-between items-center">
+      <div class="px-6 py-4 bg-dark-900 flex justify-between items-center">
         <h2 class="font-serif text-xl text-white">Κρατήσεις</h2>
         {#if filter !== 'all'}
-          <button onclick={() => filter = 'all'} class="text-sm text-violet-300 hover:text-lime-400 transition-colors cursor-pointer">
+          <button onclick={() => filter = 'all'} class="text-sm text-primary-300 hover:text-accent-300 transition-colors cursor-pointer">
             Εμφάνιση όλων
           </button>
         {/if}
@@ -197,7 +197,7 @@
                   <td class="px-6 py-4 text-right space-x-3">
                     <button
                       onclick={() => startEdit(booking)}
-                      class="text-sm text-violet-500 hover:text-violet-700 transition-colors cursor-pointer"
+                      class="text-sm text-primary-500 hover:text-primary-700 transition-colors cursor-pointer"
                     >
                       Επεξεργασία
                     </button>
@@ -227,7 +227,7 @@
                 <div class="flex gap-3">
                   <button
                     onclick={() => startEdit(booking)}
-                    class="text-sm text-violet-500 hover:text-violet-700 transition-colors cursor-pointer"
+                    class="text-sm text-primary-500 hover:text-primary-700 transition-colors cursor-pointer"
                   >
                     Επεξ.
                   </button>
@@ -254,7 +254,7 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick={cancelEdit}></div>
     <div class="relative bg-white border border-stone-200 rounded-sm w-full max-w-md shadow-xl">
-      <div class="px-6 py-4 bg-violet-950">
+      <div class="px-6 py-4 bg-dark-900">
         <h3 class="font-serif text-lg text-white">Επεξεργασία κράτησης</h3>
       </div>
       <div class="px-6 py-5 space-y-4">
@@ -264,7 +264,7 @@
             id="edit-name"
             type="text"
             bind:value={editName}
-            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
           />
         </div>
         <div>
@@ -273,7 +273,7 @@
             id="edit-phone"
             type="tel"
             bind:value={editPhone}
-            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
           />
         </div>
         <div>
@@ -282,7 +282,7 @@
             id="edit-date"
             type="date"
             bind:value={editDate}
-            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
           />
         </div>
         <div>
@@ -290,7 +290,7 @@
           <select
             id="edit-hour"
             bind:value={editHour}
-            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400 transition-colors"
+            class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
           >
             {#each hours as h}
               <option value={h}>{h}</option>
@@ -308,7 +308,7 @@
         <button
           onclick={saveEdit}
           disabled={saving}
-          class="px-5 py-2.5 text-sm font-semibold border border-lime-600 text-lime-600 hover:bg-lime-700 hover:border-lime-700 hover:text-white transition-colors cursor-pointer disabled:opacity-40"
+          class="px-5 py-2.5 text-sm font-semibold border border-primary-600 text-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:text-white transition-colors cursor-pointer disabled:opacity-40"
         >
           {saving ? 'Αποθήκευση...' : 'Αποθήκευση'}
         </button>

@@ -24,7 +24,7 @@ const navLinks = [
         alt="Logo"
         width={150}
         height={150}
-        class="logo-green opacity-0 transition-opacity duration-500 [filter:hue-rotate(150deg)_saturate(2)]"
+        class="logo-green opacity-0 transition-opacity duration-500 filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)]"
       />
       <!-- purple — shown when at top -->
       <Image
@@ -32,11 +32,11 @@ const navLinks = [
         alt=""
         width={150}
         height={150}
-        class="logo-purple absolute inset-0 [filter:hue-rotate(150deg)_saturate(18)] opacity-100 transition-opacity duration-500"
+        class="logo-purple absolute inset-0 filter-[hue-rotate(100deg)_saturate(2)_brightness(0.6)_contrast(1.2)] opacity-100 transition-opacity duration-500"
       />
     </a>
 
-    <ul class="hidden lg:flex items-center gap-8 lg:pl-8">
+    <ul class="hidden lg:flex items-center self-stretch gap-8 lg:pl-8">
       {
         navLinks.map((link, i) => (
           <li
@@ -45,7 +45,7 @@ const navLinks = [
           >
             <a
               href={link.href}
-              class="nav-link text-zinc-950 hover:text-lime-700 transition-colors duration-500"
+              class="nav-link text-dark-900 hover:text-primary-700 transition-colors duration-500 tracking-wide text-base font-medium h-full flex items-center px-10"
             >
               {link.label}
             </a>
@@ -69,10 +69,10 @@ const navLinks = [
         aria-expanded="false"
       >
         <span
-          class="hamburger-line w-8 h-0.5 bg-zinc-950 transition-all duration-300 origin-center"
+          class="hamburger-line w-8 h-0.5 bg-dark-950 transition-all duration-300 origin-center"
         ></span>
         <span
-          class="hamburger-line w-8 h-0.5 bg-zinc-950 transition-all duration-300 origin-center"
+          class="hamburger-line w-8 h-0.5 bg-dark-950 transition-all duration-300 origin-center"
         ></span>
       </button>
     </div>
@@ -81,18 +81,18 @@ const navLinks = [
 
 <!-- Fullscreen mobile menu -->
 <div
-  class="mobile-menu fixed inset-0 z-40 bg-violet-950 lg:hidden flex flex-col justify-center items-center opacity-0 pointer-events-none transition-all duration-400 ease-out"
+  class="mobile-menu fixed inset-0 z-40 bg-dark-900 lg:hidden flex flex-col justify-center items-center opacity-0 pointer-events-none transition-all duration-400 ease-out"
 >
   <ul class="flex flex-col items-center gap-2">
     {
       navLinks.map((link, i) => (
         <li
-          class="mobile-menu-item translate-y-4 opacity-0"
+          class="mobile-menu-item trandark-y-4 opacity-0"
           style={`transition-delay: ${80 + i * 60}ms;`}
         >
           <a
             href={link.href}
-            class="mobile-nav-link block py-3 px-4 text-2xl font-semibold text-violet-300 hover:text-lime-400 transition-colors duration-300"
+            class="mobile-nav-link block py-3 px-4 text-2xl font-semibold text-primary-300 hover:text-accent-300 transition-colors duration-300"
           >
             {link.label}
           </a>
@@ -100,7 +100,7 @@ const navLinks = [
       ))
     }
     <li
-      class="mobile-menu-item pt-6 translate-y-4 opacity-0"
+      class="mobile-menu-item pt-6 trandark-y-4 opacity-0"
       style={`transition-delay: ${80 + navLinks.length * 60}ms;`}
     >
       <Button
@@ -147,17 +147,17 @@ const navLinks = [
     animation: blurIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Scrolled state — always violet-950 */
+  /* Scrolled state */
   .navbar.is-scrolled {
-    @apply bg-violet-950;
+    @apply bg-dark-900;
   }
 
   .navbar.is-scrolled .nav-link {
-    color: oklch(0.746 0.085 274.039); /* violet-400 */
+    color: var(--color-primary-300);
   }
 
   .navbar.is-scrolled .nav-link:hover {
-    color: oklch(0.841 0.238 136.547); /* lime-400 */
+    color: var(--color-accent-300);
   }
 
   .navbar.is-scrolled .logo-green {
@@ -173,12 +173,12 @@ const navLinks = [
   }
 
   .navbar.is-scrolled :global(.nav-btn) {
-    background-color: oklch(76.81% 0.198 135.54); /* lime-500 */
-    color: oklch(0.208 0.042 264.695); /* violet-950 */
+    background-color: var(--color-primary-700);
+    color: white;
   }
 
   .navbar.is-scrolled :global(.nav-btn:hover) {
-    background-color: oklch(0.768 0.233 130.85); /* lime-500 */
+    background-color: var(--color-primary-800);
   }
 
   .navbar.is-scrolled .hamburger-line {
@@ -186,11 +186,11 @@ const navLinks = [
   }
 
   .navbar.is-scrolled .mobile-nav-link {
-    color: oklch(0.746 0.085 274.039); /* violet-400 */
+    color: var(--color-primary-300);
   }
 
   .navbar.is-scrolled .mobile-nav-link:hover {
-    color: oklch(0.841 0.238 136.547); /* lime-400 */
+    color: var(--color-accent-300);
   }
 
   /* Hamburger open state — 2 lines to X */
@@ -203,7 +203,7 @@ const navLinks = [
 
   /* When menu open, ensure navbar bg so hamburger is visible */
   .navbar.menu-open {
-    @apply bg-violet-950;
+    @apply bg-dark-900;
   }
 
   .navbar.menu-open .hamburger-line {
