@@ -29,7 +29,7 @@ const contactInfo = [
 ];
 ---
 
-<section id="contact" class="relative py-16 md:py-28 px-4 md:px-6 bg-zinc-50">
+<section id="contact" class="relative py-16 md:py-28 px-4 md:px-6 bg-primary-50">
   <div class="max-w-6xl mx-auto">
     <!-- Section Header -->
     <div class="mb-16">
@@ -57,10 +57,11 @@ const contactInfo = [
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
       <!-- Contact Form -->
       <div
-        class="lg:col-span-3 bg-white p-5 sm:p-8 md:p-10 border border-stone-200 shadow-xl shadow-stone-200/60 contact-reveal opacity-0"
+        class="lg:col-span-3 flex flex-col bg-white p-5 sm:p-8 md:p-10 border border-stone-200 shadow-xl shadow-stone-200/60 contact-reveal opacity-0"
         style="animation-delay: 0.25s;"
       >
-        <form class="space-y-6">
+        <form id="contact-form" class="flex flex-col h-full">
+          <div class="space-y-6 flex-1">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label
@@ -73,9 +74,11 @@ const contactInfo = [
                 type="text"
                 id="name"
                 name="name"
+                required
                 placeholder="Το όνομά σου"
-                class="w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
+                class="field-input w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
               />
+              <span class="field-error hidden mt-1 text-xs text-red-600"></span>
             </div>
             <div>
               <label
@@ -88,9 +91,11 @@ const contactInfo = [
                 type="email"
                 id="email"
                 name="email"
+                required
                 placeholder="Το email σου"
-                class="w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
+                class="field-input w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
               />
+              <span class="field-error hidden mt-1 text-xs text-red-600"></span>
             </div>
           </div>
 
@@ -107,8 +112,9 @@ const contactInfo = [
               id="phone"
               name="phone"
               placeholder="Το τηλέφωνό σου"
-              class="w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
+              class="field-input w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300"
             />
+            <span class="field-error hidden mt-1 text-xs text-red-600"></span>
           </div>
 
 
@@ -123,14 +129,18 @@ const contactInfo = [
             <textarea
               id="message"
               name="message"
+              required
               rows="10"
               placeholder="Πες μας λίγα λόγια για εσένα και τι σε απασχολεί..."
-              class="w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300 resize-none"
+              class="field-input w-full px-4 py-3 bg-white border border-stone-200 text-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all duration-300 resize-none"
             ></textarea>
+            <span class="field-error hidden mt-1 text-xs text-red-600"></span>
           </div>
 
-          <Button variant="primary" className="w-full text-center justify-center py-3.5">
-            Αποστολή μηνύματος
+          </div>
+          <div id="form-status" class="hidden text-sm p-3 rounded mt-4"></div>
+          <Button type="submit" variant="primary" className="w-full text-center justify-center py-3.5 mt-6">
+            <span id="btn-text">Αποστολή μηνύματος</span>
           </Button>
         </form>
       </div>
@@ -218,6 +228,14 @@ const contactInfo = [
   .contact-reveal.is-visible {
     animation: contactReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+
+  .field-input.has-error {
+    border-color: var(--color-red-400);
+  }
+  .field-input.has-error:focus {
+    border-color: var(--color-red-400);
+    --tw-ring-color: var(--color-red-100);
+  }
 </style>
 
 <script>
@@ -236,6 +254,106 @@ const contactInfo = [
 
     document.querySelectorAll(".contact-reveal").forEach((el) => {
       contactObserver.observe(el);
+    });
+
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const status = document.getElementById("form-status")!;
+    const btnText = document.getElementById("btn-text")!;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/;
+
+    function showFieldError(field: HTMLElement, msg: string) {
+      field.classList.add("has-error");
+      const err = field.parentElement?.querySelector(".field-error") as HTMLElement;
+      if (err) {
+        err.textContent = msg;
+        err.classList.remove("hidden");
+      }
+    }
+
+    function clearFieldError(field: HTMLElement) {
+      field.classList.remove("has-error");
+      const err = field.parentElement?.querySelector(".field-error") as HTMLElement;
+      if (err) {
+        err.textContent = "";
+        err.classList.add("hidden");
+      }
+    }
+
+    function validate(): boolean {
+      let valid = true;
+      const name = form.querySelector<HTMLInputElement>("#name")!;
+      const email = form.querySelector<HTMLInputElement>("#email")!;
+      const phone = form.querySelector<HTMLInputElement>("#phone")!;
+      const message = form.querySelector<HTMLTextAreaElement>("#message")!;
+
+      [name, email, phone, message].forEach(clearFieldError);
+
+      if (!name.value.trim()) {
+        showFieldError(name, "Το όνομα είναι υποχρεωτικό.");
+        valid = false;
+      }
+
+      if (!email.value.trim()) {
+        showFieldError(email, "Το email είναι υποχρεωτικό.");
+        valid = false;
+      } else if (!emailRegex.test(email.value.trim())) {
+        showFieldError(email, "Μη έγκυρη διεύθυνση email.");
+        valid = false;
+      }
+
+      if (phone.value.trim() && !phoneRegex.test(phone.value.trim())) {
+        showFieldError(phone, "Μη έγκυρος αριθμός τηλεφώνου.");
+        valid = false;
+      }
+
+      if (!message.value.trim()) {
+        showFieldError(message, "Το μήνυμα είναι υποχρεωτικό.");
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    form.querySelectorAll<HTMLElement>(".field-input").forEach((field) => {
+      field.addEventListener("input", () => clearFieldError(field));
+    });
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.classList.add("hidden");
+
+      if (!validate()) return;
+
+      const data = Object.fromEntries(new FormData(form));
+      btnText.textContent = "Αποστολή...";
+      const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+
+        if (!res.ok) {
+          status.textContent = json.error || "Κάτι πήγε στραβά.";
+          status.className = "text-sm p-3 rounded bg-red-50 text-red-700";
+        } else {
+          status.textContent = "Το μήνυμά σου στάλθηκε! Θα επικοινωνήσουμε σύντομα.";
+          status.className = "text-sm p-3 rounded bg-green-50 text-green-700";
+          form.reset();
+        }
+      } catch {
+        status.textContent = "Σφάλμα δικτύου. Δοκίμασε ξανά.";
+        status.className = "text-sm p-3 rounded bg-red-50 text-red-700";
+      } finally {
+        btnText.textContent = "Αποστολή μηνύματος";
+        btn.disabled = false;
+      }
     });
   });
 </script>

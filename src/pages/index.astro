@@ -61,10 +61,10 @@ const faqs = [
       <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight mb-12 home-reveal opacity-0" style="animation-delay: 0.1s;">
         Πώς μπορούμε να <span class="text-primary-700 italic">βοηθήσουμε</span>
       </h2>
-      <div class="border-t border-stone-200">
+      <div class="">
         {services.map((title, i) => (
           <div
-            class="flex items-center justify-between gap-4 py-5 md:py-6 border-b border-stone-200 home-reveal opacity-0"
+            class="flex items-center justify-between gap-4 py-5 md:py-6 border-b border-primary-200 home-reveal opacity-0"
             style={`animation-delay: ${0.15 + i * 0.08}s;`}
           >
             <span class="text-base md:text-lg font-semibold text-neutral-950">{title}</span>
@@ -89,10 +89,10 @@ const faqs = [
       <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight mb-12 home-reveal opacity-0" style="animation-delay: 0.1s;">
         Έχεις <span class="text-primary-700 italic">απορίες;</span>
       </h2>
-      <div class="border-t border-stone-200">
+      <div class="">
         {faqs.map((question, i) => (
           <div
-            class="flex items-center justify-between py-5 md:py-6 border-b border-stone-200 home-reveal opacity-0"
+            class="flex items-center justify-between py-5 md:py-6 border-b border-primary-200 home-reveal opacity-0"
             style={`animation-delay: ${0.15 + i * 0.08}s;`}
           >
             <span class="text-base md:text-lg text-neutral-950">{question}</span>

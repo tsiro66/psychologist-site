@@ -1,22 +1,24 @@
 ---
-import "../styles/global.css";
-import ClientRouter from "astro/components/ClientRouter.astro";
-import Font from "astro/components/Font.astro";
-
-const title = "404"
+import MainLayout from "../layouts/MainLayout.astro";
+import Button from "../components/Button.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <Font cssVariable="--font-google" preload />
-    <Font cssVariable="--font-noto" preload />
-    <ClientRouter />
-    <title>{title}</title>
-  </head>
-  <body class="flex flex-col min-h-screen font-sans items-center justify-center bg-dark-900 text-white">
-    404 - Η σελίδα δεν βρέθηκε
-  </body>
+<MainLayout title="404 — Η σελίδα δεν βρέθηκε" navbarScrolled>
+  <section class="flex items-center justify-center min-h-screen px-4 md:px-6 text-center">
+    <div class="max-w-2xl mx-auto">
+      <span class="text-8xl md:text-9xl font-serif font-bold text-primary-700 leading-none select-none">
+        404
+      </span>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif text-white mt-6 mb-4">
+        Η σελίδα δεν <span class="text-accent-300 italic">βρέθηκε</span>
+      </h1>
+      <p class="text-base md:text-lg text-primary-200 leading-relaxed mb-10 max-w-md mx-auto">
+        Η σελίδα που ψάχνεις δεν υπάρχει ή έχει μετακινηθεί.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button href="/" variant="primary">Αρχική σελίδα</Button>
+        <Button href="/contact" variant="secondary">Επικοινωνία</Button>
+      </div>
+    </div>
+  </section>
+</MainLayout>

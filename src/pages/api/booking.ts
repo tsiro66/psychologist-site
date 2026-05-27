@@ -34,17 +34,34 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(JSON.stringify({ bookedHours }), { status: 200 });
   }
 
-  const { data, error } = await getSupabaseAdmin()
+  const filter = url.searchParams.get("filter") || "all";
+  const limit = Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 200);
+  const offset = parseInt(url.searchParams.get("offset") || "0", 10);
+  const today = new Date().toISOString().split("T")[0];
+
+  let query = getSupabaseAdmin()
     .from("bookings")
-    .select("*")
-    .order("date", { ascending: true })
-    .order("hour", { ascending: true });
+    .select("*", { count: "exact" });
+
+  if (filter === "upcoming") {
+    query = query.gte("date", today);
+  } else if (filter === "past") {
+    query = query.lt("date", today);
+  }
+
+  const ascending = filter !== "past";
+  query = query
+    .order("date", { ascending })
+    .order("hour", { ascending })
+    .range(offset, offset + limit - 1);
+
+  const { data, error, count } = await query;
 
   if (error) {
     return new Response(JSON.stringify({ error: "Αποτυχία φόρτωσης" }), { status: 500 });
   }
 
-  return new Response(JSON.stringify(data), { status: 200 });
+  return new Response(JSON.stringify({ data, total: count ?? 0 }), { status: 200 });
 };
 
 export const DELETE: APIRoute = async ({ request, cookies }) => {

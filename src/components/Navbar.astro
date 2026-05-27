@@ -45,7 +45,7 @@ const navLinks = [
           >
             <a
               href={link.href}
-              class="nav-link text-dark-900 hover:text-primary-700 transition-colors duration-500 tracking-wide text-base font-medium h-full flex items-center px-10"
+              class="nav-link text-dark-900 hover:text-primary-700 transition-colors duration-500 tracking-wide text-base font-medium h-full flex items-center "
             >
               {link.label}
             </a>
@@ -105,7 +105,7 @@ const navLinks = [
     >
       <Button
         href="/booking"
-        variant="nav"
+        variant="primary"
         className="text-center justify-center px-10 py-3"
         >Δωρεάν συνεδρία γνωριμίας</Button
       >
@@ -232,8 +232,10 @@ const navLinks = [
     const menuToggle = document.querySelector(".mobile-menu-toggle")!;
     const mobileMenu = document.querySelector(".mobile-menu")!;
 
+    const forceScrolled = document.body.hasAttribute("data-navbar-scrolled");
+
     function updateNavbar() {
-      if (window.scrollY > 20) {
+      if (forceScrolled || window.scrollY > 20) {
         navbar.classList.add("is-scrolled", "backdrop-blur-md");
       } else {
         navbar.classList.remove("is-scrolled", "backdrop-blur-md");
