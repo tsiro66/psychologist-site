@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import type { AstroCookies } from "astro";
-import { getSupabaseAdmin, getSupabaseServer } from "../../lib/supabase";
+import { getSupabaseAdmin, getSupabaseServer, type Database } from "../../lib/supabase";
 
 export const prerender = false;
 
@@ -93,7 +93,7 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ error: "ID απαιτείται" }), { status: 400 });
   }
 
-  const updates: Record<string, string> = {};
+  const updates: Database["public"]["Tables"]["bookings"]["Update"] = {};
   if (name) updates.name = name;
   if (phone) updates.phone = phone;
   if (date) updates.date = date;

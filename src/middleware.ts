@@ -5,8 +5,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
   if (pathname.startsWith("/admin")) {
-    const supabase = getSupabaseServer(context.cookies, context.request);
-    const { data: { user } } = await supabase.auth.getUser();
+    let user = null;
+    try {
+      const supabase = getSupabaseServer(context.cookies, context.request);
+      const { data } = await supabase.auth.getUser();
+      user = data?.user ?? null;
+    } catch {
+      user = null;
+    }
     context.locals.user = user;
 
     if (pathname !== "/admin/login" && !user) {

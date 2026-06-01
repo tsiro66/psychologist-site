@@ -1,12 +1,27 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import type { AstroCookies } from "astro";
 
-let _supabaseAdmin: ReturnType<typeof createClient> | null = null;
+export interface Database {
+  public: {
+    Tables: {
+      bookings: {
+        Row: { id: string; name: string; phone: string; date: string; hour: string };
+        Insert: { name: string; phone: string; date: string; hour: string };
+        Update: { name?: string; phone?: string; date?: string; hour?: string };
+        Relationships: [];
+      };
+    };
+    Views: {};
+    Functions: {};
+  };
+}
 
-export function getSupabaseAdmin() {
+let _supabaseAdmin: SupabaseClient<Database> | null = null;
+
+export function getSupabaseAdmin(): SupabaseClient<Database> {
   if (!_supabaseAdmin) {
-    _supabaseAdmin = createClient(
+    _supabaseAdmin = createClient<Database>(
       import.meta.env.SUPABASE_URL,
       import.meta.env.SUPABASE_SERVICE_ROLE_KEY,
     );
