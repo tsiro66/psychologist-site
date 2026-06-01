@@ -2,7 +2,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
-import vercel from "@astrojs/vercel";
+import cloudflare from "@astrojs/cloudflare";
 
 import svelte from "@astrojs/svelte";
 
@@ -31,6 +31,6 @@ export default defineConfig({
     },
   ],
 
-  adapter: vercel(),
+  adapter: cloudflare(),
   integrations: [svelte()],
 });
