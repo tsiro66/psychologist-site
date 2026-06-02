@@ -3,9 +3,10 @@ import { Resend } from "resend";
 
 export const prerender = false;
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+export const POST: APIRoute = async ({ request, locals }) => {
+  const env = locals.runtime.env;
+  const resend = new Resend(env.RESEND_API_KEY);
 
-export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
   const { name, email, phone, message } = body;
 
@@ -18,7 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { error } = await resend.emails.send({
     from: "Φόρμα Επικοινωνίας <onboarding@resend.dev>",
-    to: import.meta.env.CONTACT_EMAIL,
+    to: env.CONTACT_EMAIL,
     replyTo: email,
     subject: `Νέο μήνυμα από ${name}`,
     html: `

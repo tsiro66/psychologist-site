@@ -17,40 +17,28 @@ export interface Database {
   };
 }
 
-let _supabaseAdmin: SupabaseClient<Database> | null = null;
-
-export function getSupabaseAdmin(): SupabaseClient<Database> {
-  if (!_supabaseAdmin) {
-    _supabaseAdmin = createClient<Database>(
-      import.meta.env.SUPABASE_URL,
-      import.meta.env.SUPABASE_SERVICE_ROLE_KEY,
-    );
-  }
-  return _supabaseAdmin;
+export function getSupabaseAdmin(env: Env): SupabaseClient<Database> {
+  return createClient<Database>(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
-export function getSupabaseServer(cookies: AstroCookies, request: Request) {
-  return createServerClient(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        getAll() {
-          const cookieHeader = request.headers.get("cookie") ?? "";
-          return cookieHeader
-            .split(";")
-            .filter(Boolean)
-            .map((c) => {
-              const [name, ...rest] = c.trim().split("=");
-              return { name, value: rest.join("=") };
-            });
-        },
-        setAll(cookiesToSet) {
-          for (const { name, value, options } of cookiesToSet) {
-            cookies.set(name, value, options);
-          }
-        },
+export function getSupabaseServer(env: Env, cookies: AstroCookies, request: Request) {
+  return createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll() {
+        const cookieHeader = request.headers.get("cookie") ?? "";
+        return cookieHeader
+          .split(";")
+          .filter(Boolean)
+          .map((c) => {
+            const [name, ...rest] = c.trim().split("=");
+            return { name, value: rest.join("=") };
+          });
+      },
+      setAll(cookiesToSet) {
+        for (const { name, value, options } of cookiesToSet) {
+          cookies.set(name, value, options);
+        }
       },
     },
-  );
+  });
 }

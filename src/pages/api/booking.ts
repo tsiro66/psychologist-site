@@ -4,8 +4,8 @@ import { getSupabaseAdmin, getSupabaseServer, type Database } from "../../lib/su
 
 export const prerender = false;
 
-async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Response | null> {
-  const supabase = getSupabaseServer(cookies, request);
+async function requireAdmin(env: Env, cookies: AstroCookies, request: Request): Promise<Response | null> {
+  const supabase = getSupabaseServer(env, cookies, request);
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -17,11 +17,12 @@ async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Re
   return null;
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
+  const env = locals.runtime.env;
   const date = url.searchParams.get("date");
 
   if (date) {
-    const { data, error } = await getSupabaseAdmin()
+    const { data, error } = await getSupabaseAdmin(env)
       .from("bookings")
       .select("hour")
       .eq("date", date);
@@ -39,7 +40,7 @@ export const GET: APIRoute = async ({ url }) => {
   const offset = parseInt(url.searchParams.get("offset") || "0", 10);
   const today = new Date().toISOString().split("T")[0];
 
-  let query = getSupabaseAdmin()
+  let query = getSupabaseAdmin(env)
     .from("bookings")
     .select("*", { count: "exact" });
 
@@ -64,8 +65,9 @@ export const GET: APIRoute = async ({ url }) => {
   return new Response(JSON.stringify({ data, total: count ?? 0 }), { status: 200 });
 };
 
-export const DELETE: APIRoute = async ({ request, cookies }) => {
-  const authError = await requireAdmin(cookies, request);
+export const DELETE: APIRoute = async ({ request, cookies, locals }) => {
+  const env = locals.runtime.env;
+  const authError = await requireAdmin(env, cookies, request);
   if (authError) return authError;
 
   const { id } = await request.json();
@@ -74,7 +76,7 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ error: "ID απαιτείται" }), { status: 400 });
   }
 
-  const { error } = await getSupabaseAdmin().from("bookings").delete().eq("id", id);
+  const { error } = await getSupabaseAdmin(env).from("bookings").delete().eq("id", id);
 
   if (error) {
     return new Response(JSON.stringify({ error: "Αποτυχία διαγραφής" }), { status: 500 });
@@ -83,8 +85,9 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };
 
-export const PATCH: APIRoute = async ({ request, cookies }) => {
-  const authError = await requireAdmin(cookies, request);
+export const PATCH: APIRoute = async ({ request, cookies, locals }) => {
+  const env = locals.runtime.env;
+  const authError = await requireAdmin(env, cookies, request);
   if (authError) return authError;
 
   const { id, name, phone, date, hour } = await request.json();
@@ -100,7 +103,7 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   if (hour) updates.hour = hour;
 
   if (date || hour) {
-    const { data: current } = await getSupabaseAdmin()
+    const { data: current } = await getSupabaseAdmin(env)
       .from("bookings")
       .select("date, hour")
       .eq("id", id)
@@ -109,7 +112,7 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
     const checkDate = date || current?.date;
     const checkHour = hour || current?.hour;
 
-    const { data: conflict } = await getSupabaseAdmin()
+    const { data: conflict } = await getSupabaseAdmin(env)
       .from("bookings")
       .select("id")
       .eq("date", checkDate)
@@ -125,7 +128,7 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
     }
   }
 
-  const { error } = await getSupabaseAdmin().from("bookings").update(updates).eq("id", id);
+  const { error } = await getSupabaseAdmin(env).from("bookings").update(updates).eq("id", id);
 
   if (error) {
     return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), { status: 500 });
@@ -134,7 +137,8 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const env = locals.runtime.env;
   const body = await request.json();
   const { name, phone, date, hour } = body;
 
@@ -144,7 +148,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const { data: existing } = await getSupabaseAdmin()
+  const { data: existing } = await getSupabaseAdmin(env)
     .from("bookings")
     .select("id")
     .eq("date", date)
@@ -158,7 +162,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const { error } = await getSupabaseAdmin().from("bookings").insert({
+  const { error } = await getSupabaseAdmin(env).from("bookings").insert({
     name,
     phone,
     date,

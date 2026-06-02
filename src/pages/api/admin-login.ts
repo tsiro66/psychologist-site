@@ -3,10 +3,10 @@ import { getSupabaseServer } from "../../lib/supabase";
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
   const { email, password } = await request.json();
 
-  const supabase = getSupabaseServer(cookies, request);
+  const supabase = getSupabaseServer(locals.runtime.env, cookies, request);
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
