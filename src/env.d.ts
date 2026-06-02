@@ -1,7 +1,5 @@
 /// <reference types="astro/client" />
 
-type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
-
 interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
@@ -11,8 +9,12 @@ interface Env {
   SESSION: KVNamespace;
 }
 
+declare module "cloudflare:workers" {
+  export const env: Env;
+}
+
 declare namespace App {
-  interface Locals extends Runtime {
+  interface Locals {
     user: import("@supabase/supabase-js").User | null;
   }
 }

@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
+import { env } from "cloudflare:workers";
 import type { AstroCookies } from "astro";
 
 export interface Database {
@@ -17,11 +18,11 @@ export interface Database {
   };
 }
 
-export function getSupabaseAdmin(env: Env): SupabaseClient<Database> {
+export function getSupabaseAdmin(): SupabaseClient<Database> {
   return createClient<Database>(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
-export function getSupabaseServer(env: Env, cookies: AstroCookies, request: Request) {
+export function getSupabaseServer(cookies: AstroCookies, request: Request) {
   return createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
