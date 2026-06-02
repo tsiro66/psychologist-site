@@ -1,11 +1,6 @@
 name = "psychologist-site"
-main = "./dist/server/entry.mjs"
 compatibility_date = "2025-04-15"
 compatibility_flags = ["nodejs_compat"]
-
-[assets]
-directory = "./dist/client"
-binding = "ASSETS"
 
 [[kv_namespaces]]
 binding = "SESSION"
