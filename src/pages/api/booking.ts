@@ -4,6 +4,22 @@ import { getSupabaseAdmin, getSupabaseServer, type Database } from "../../lib/su
 
 export const prerender = false;
 
+const ALLOWED_HOURS = new Set([
+  "09:00", "10:00", "11:00", "12:00", "13:00",
+  "14:00", "15:00", "16:00", "17:00", "18:00",
+]);
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const PHONE_RE = /^\d{10}$/;
+
+function validateBooking(input: { name?: unknown; phone?: unknown; date?: unknown; hour?: unknown }): string | null {
+  const { name, phone, date, hour } = input;
+  if (typeof name !== "string" || !name.trim() || name.length > 100) return "Μη έγκυρο όνομα";
+  if (typeof phone !== "string" || !PHONE_RE.test(phone.trim())) return "Μη έγκυρο τηλέφωνο";
+  if (typeof date !== "string" || !DATE_RE.test(date)) return "Μη έγκυρη ημερομηνία";
+  if (typeof hour !== "string" || !ALLOWED_HOURS.has(hour)) return "Μη έγκυρη ώρα";
+  return null;
+}
+
 async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Response | null> {
   const supabase = getSupabaseServer(cookies, request);
   const { data: { user } } = await supabase.auth.getUser();
@@ -17,10 +33,13 @@ async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Re
   return null;
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request, cookies }) => {
   const date = url.searchParams.get("date");
 
   if (date) {
+    if (!DATE_RE.test(date)) {
+      return new Response(JSON.stringify({ error: "Μη έγκυρη ημερομηνία" }), { status: 400 });
+    }
     const { data, error } = await getSupabaseAdmin()
       .from("bookings")
       .select("hour")
@@ -33,6 +52,9 @@ export const GET: APIRoute = async ({ url }) => {
     const bookedHours = (data ?? []).map((b: { hour: string }) => b.hour);
     return new Response(JSON.stringify({ bookedHours }), { status: 200 });
   }
+
+  const authError = await requireAdmin(cookies, request);
+  if (authError) return authError;
 
   const filter = url.searchParams.get("filter") || "all";
   const limit = Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 200);
@@ -94,10 +116,30 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   }
 
   const updates: Database["public"]["Tables"]["bookings"]["Update"] = {};
-  if (name) updates.name = name;
-  if (phone) updates.phone = phone;
-  if (date) updates.date = date;
-  if (hour) updates.hour = hour;
+  if (name !== undefined) {
+    if (typeof name !== "string" || !name.trim() || name.length > 100) {
+      return new Response(JSON.stringify({ error: "Μη έγκυρο όνομα" }), { status: 400 });
+    }
+    updates.name = name.trim();
+  }
+  if (phone !== undefined) {
+    if (typeof phone !== "string" || !PHONE_RE.test(phone.trim())) {
+      return new Response(JSON.stringify({ error: "Μη έγκυρο τηλέφωνο" }), { status: 400 });
+    }
+    updates.phone = phone.trim();
+  }
+  if (date !== undefined) {
+    if (typeof date !== "string" || !DATE_RE.test(date)) {
+      return new Response(JSON.stringify({ error: "Μη έγκυρη ημερομηνία" }), { status: 400 });
+    }
+    updates.date = date;
+  }
+  if (hour !== undefined) {
+    if (typeof hour !== "string" || !ALLOWED_HOURS.has(hour)) {
+      return new Response(JSON.stringify({ error: "Μη έγκυρη ώρα" }), { status: 400 });
+    }
+    updates.hour = hour;
+  }
 
   if (date || hour) {
     const { data: current } = await getSupabaseAdmin()
@@ -138,10 +180,9 @@ export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
   const { name, phone, date, hour } = body;
 
-  if (!name || !phone || !date || !hour) {
-    return new Response(JSON.stringify({ error: "Όλα τα πεδία είναι υποχρεωτικά" }), {
-      status: 400,
-    });
+  const invalid = validateBooking({ name, phone, date, hour });
+  if (invalid) {
+    return new Response(JSON.stringify({ error: invalid }), { status: 400 });
   }
 
   const { data: existing } = await getSupabaseAdmin()
@@ -159,8 +200,8 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { error } = await getSupabaseAdmin().from("bookings").insert({
-    name,
-    phone,
+    name: (name as string).trim(),
+    phone: (phone as string).trim(),
     date,
     hour,
   });

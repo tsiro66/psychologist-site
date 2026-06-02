@@ -256,9 +256,10 @@ const contactInfo = [
       contactObserver.observe(el);
     });
 
-    const form = document.getElementById("contact-form") as HTMLFormElement;
-    const status = document.getElementById("form-status")!;
-    const btnText = document.getElementById("btn-text")!;
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const status = document.getElementById("form-status");
+    const btnText = document.getElementById("btn-text");
+    if (!form || !status || !btnText) return;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/;
