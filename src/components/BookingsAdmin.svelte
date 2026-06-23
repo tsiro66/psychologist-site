@@ -5,6 +5,7 @@
   import Pagination from './Pagination.svelte';
   import BookingModal from './BookingModal.svelte';
   import ConfirmModal from './ConfirmModal.svelte';
+  import BulkBlockModal from './BulkBlockModal.svelte';
   import { formatDate } from '../lib/booking-utils.js';
 
   let bookings = $state([]);
@@ -23,6 +24,10 @@
   let modalSaving = $state(false);
   let modalError = $state('');
   let confirmDeleteId = $state(null);
+
+  let showBulkBlock = $state(false);
+  let bulkSaving = $state(false);
+  let bulkError = $state('');
 
   let totalPages = $derived(Math.max(1, Math.ceil(total / perPage)));
 
@@ -143,6 +148,37 @@
     }
   }
 
+  function openBulkBlock() {
+    showBulkBlock = true;
+    bulkError = '';
+  }
+
+  function closeBulkBlock() {
+    showBulkBlock = false;
+  }
+
+  async function handleBulkBlock(payload) {
+    bulkSaving = true;
+    bulkError = '';
+    try {
+      const res = await fetch('/api/booking/bulk-block', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        bulkError = data.error || 'Αποτυχία αποκλεισμού.';
+        return;
+      }
+      showBulkBlock = false;
+    } catch {
+      bulkError = 'Αποτυχία αποκλεισμού.';
+    } finally {
+      bulkSaving = false;
+    }
+  }
+
   $effect(() => {
     fetchBookings();
     fetchCounts();
@@ -173,14 +209,22 @@
     <FilterStats {counts} {filter} onFilterChange={setFilter} />
 
     <div class="bg-white/60 backdrop-blur-sm border border-stone-200 rounded-sm overflow-hidden">
-      <div class="px-6 py-4 bg-dark-900 flex justify-between items-center">
+      <div class="px-6 py-4 bg-dark-900 flex justify-between items-center gap-2">
         <h2 class="font-serif text-xl text-white">Κρατήσεις</h2>
-        <button
-          onclick={startCreate}
-          class="px-4 py-1.5 text-sm font-semibold border border-primary-400 text-primary-300 hover:bg-primary-600 hover:border-primary-600 hover:text-white rounded-sm transition-colors cursor-pointer"
-        >
-          + Νέα κράτηση
-        </button>
+        <div class="flex gap-2">
+          <button
+            onclick={openBulkBlock}
+            class="px-4 py-1.5 text-sm font-semibold border border-primary-400 text-primary-300 hover:bg-primary-600 hover:border-primary-600 hover:text-white rounded-sm transition-colors cursor-pointer"
+          >
+            Μαζικός αποκλεισμός
+          </button>
+          <button
+            onclick={startCreate}
+            class="px-4 py-1.5 text-sm font-semibold border border-primary-400 text-primary-300 hover:bg-primary-600 hover:border-primary-600 hover:text-white rounded-sm transition-colors cursor-pointer"
+          >
+            + Νέα κράτηση
+          </button>
+        </div>
       </div>
 
       {#if bookings.length === 0}
@@ -240,4 +284,13 @@
       onCancel={cancelDelete}
     />
   {/if}
+{/if}
+
+{#if showBulkBlock}
+  <BulkBlockModal
+    saving={bulkSaving}
+    externalError={bulkError}
+    onSave={handleBulkBlock}
+    onCancel={closeBulkBlock}
+  />
 {/if}

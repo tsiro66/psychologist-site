@@ -1,13 +1,11 @@
 import type { APIRoute } from "astro";
 import type { AstroCookies } from "astro";
 import { getSupabaseAdmin, getSupabaseServer, type Database } from "../../lib/supabase";
+import { hours } from "../../lib/booking-utils.js";
 
 export const prerender = false;
 
-const ALLOWED_HOURS = new Set([
-  "09:00", "10:00", "11:00", "12:00", "13:00",
-  "14:00", "15:00", "16:00", "17:00", "18:00",
-]);
+const ALLOWED_HOURS = new Set(hours);
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const PHONE_RE = /^\d{10}$/;
 
@@ -49,8 +47,32 @@ export const GET: APIRoute = async ({ url, request, cookies }) => {
       return new Response(JSON.stringify({ error: "Αποτυχία φόρτωσης" }), { status: 500 });
     }
 
-    const bookedHours = (data ?? []).map((b: { hour: string }) => b.hour);
-    return new Response(JSON.stringify({ bookedHours }), { status: 200 });
+    const bookedSet = new Set((data ?? []).map((b: { hour: string }) => b.hour));
+
+    const weekday = new Date(date + "T00:00:00").getDay();
+
+    const [
+      { data: blocked, error: blockedErr },
+      { data: recurring, error: recErr },
+    ] = await Promise.all([
+      getSupabaseAdmin()
+        .from("blocked_slots")
+        .select("hour")
+        .eq("date", date),
+      getSupabaseAdmin()
+        .from("recurring_blocks")
+        .select("hour")
+        .eq("weekday", weekday),
+    ]);
+
+    if (!blockedErr && blocked) {
+      for (const b of blocked) bookedSet.add(b.hour);
+    }
+    if (!recErr && recurring) {
+      for (const r of recurring) bookedSet.add(r.hour);
+    }
+
+    return new Response(JSON.stringify({ bookedHours: [...bookedSet] }), { status: 200 });
   }
 
   const authError = await requireAdmin(cookies, request);
@@ -195,6 +217,26 @@ export const POST: APIRoute = async ({ request }) => {
   if (existing && existing.length > 0) {
     return new Response(
       JSON.stringify({ error: "Η ώρα αυτή είναι ήδη κρατημένη. Επίλεξε άλλη ώρα." }),
+      { status: 409 }
+    );
+  }
+
+  const weekday = new Date(date + "T00:00:00").getDay();
+  const [
+    { data: blocked, error: blockedErr },
+    { data: recurring, error: recErr },
+  ] = await Promise.all([
+    getSupabaseAdmin().from("blocked_slots").select("hour").eq("date", date).limit(1),
+    getSupabaseAdmin().from("recurring_blocks").select("hour").eq("weekday", weekday).limit(1),
+  ]);
+
+  const isBlocked =
+    (blocked && blocked.some((b) => b.hour === hour)) ||
+    (recurring && recurring.some((r) => r.hour === hour));
+
+  if (isBlocked) {
+    return new Response(
+      JSON.stringify({ error: "Η ώρα αυτή δεν είναι διαθέσιμη. Επίλεξε άλλη ώρα." }),
       { status: 409 }
     );
   }
