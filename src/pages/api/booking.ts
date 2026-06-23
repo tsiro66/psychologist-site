@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 import type { AstroCookies } from "astro";
+import { Resend } from "resend";
+import { env } from "cloudflare:workers";
 import { getSupabaseAdmin, getSupabaseServer, type Database } from "../../lib/supabase";
 import { hours } from "../../lib/booking-utils.js";
 
@@ -16,6 +18,31 @@ function validateBooking(input: { name?: unknown; phone?: unknown; date?: unknow
   if (typeof date !== "string" || !DATE_RE.test(date)) return "Μη έγκυρη ημερομηνία";
   if (typeof hour !== "string" || !ALLOWED_HOURS.has(hour)) return "Μη έγκυρη ώρα";
   return null;
+}
+
+function todayInAthens(): string {
+  return new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Athens" });
+}
+
+function nowTimeInAthens(): string {
+  return new Date().toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Europe/Athens",
+  });
+}
+
+function isPastAthens(dateStr: string, hourStr: string): boolean {
+  const today = todayInAthens();
+  if (dateStr < today) return true;
+  if (dateStr > today) return false;
+  return hourStr <= nowTimeInAthens();
+}
+
+function isWeekend(dateStr: string): boolean {
+  const dow = new Date(dateStr + "T00:00:00").getDay();
+  return dow === 0 || dow === 6;
 }
 
 async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Response | null> {
@@ -81,7 +108,7 @@ export const GET: APIRoute = async ({ url, request, cookies }) => {
   const filter = url.searchParams.get("filter") || "all";
   const limit = Math.min(parseInt(url.searchParams.get("limit") || "50", 10), 200);
   const offset = parseInt(url.searchParams.get("offset") || "0", 10);
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayInAthens();
 
   let query = getSupabaseAdmin()
     .from("bookings")
@@ -112,7 +139,12 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
   const authError = await requireAdmin(cookies, request);
   if (authError) return authError;
 
-  const { id } = await request.json();
+  let id: string;
+  try {
+    ({ id } = await request.json());
+  } catch {
+    return new Response(JSON.stringify({ error: "Μη έγκυρο αίτημα" }), { status: 400 });
+  }
 
   if (!id) {
     return new Response(JSON.stringify({ error: "ID απαιτείται" }), { status: 400 });
@@ -131,7 +163,12 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   const authError = await requireAdmin(cookies, request);
   if (authError) return authError;
 
-  const { id, name, phone, date, hour } = await request.json();
+  let id: string, name: string, phone: string, date: string, hour: string;
+  try {
+    ({ id, name, phone, date, hour } = await request.json());
+  } catch {
+    return new Response(JSON.stringify({ error: "Μη έγκυρο αίτημα" }), { status: 400 });
+  }
 
   if (!id) {
     return new Response(JSON.stringify({ error: "ID απαιτείται" }), { status: 400 });
@@ -173,6 +210,23 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
     const checkDate = date || current?.date;
     const checkHour = hour || current?.hour;
 
+    if (!checkDate || !checkHour) {
+      return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), { status: 500 });
+    }
+
+    if (isPastAthens(checkDate, checkHour)) {
+      return new Response(
+        JSON.stringify({ error: "Δεν γίνεται κράτηση για παρελθοντική ώρα." }),
+        { status: 400 },
+      );
+    }
+    if (date !== undefined && isWeekend(checkDate)) {
+      return new Response(
+        JSON.stringify({ error: "Δεν γίνεται κράτηση Σαββατοκύριακο." }),
+        { status: 400 },
+      );
+    }
+
     const { data: conflict } = await getSupabaseAdmin()
       .from("bookings")
       .select("id")
@@ -192,6 +246,18 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
   const { error } = await getSupabaseAdmin().from("bookings").update(updates).eq("id", id);
 
   if (error) {
+    if (error.code === "23505") {
+      return new Response(
+        JSON.stringify({ error: "Η ώρα αυτή είναι ήδη κρατημένη." }),
+        { status: 409 }
+      );
+    }
+    if (error.code === "23514") {
+      return new Response(
+        JSON.stringify({ error: "Η ώρα αυτή δεν είναι διαθέσιμη." }),
+        { status: 409 }
+      );
+    }
     return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), { status: 500 });
   }
 
@@ -199,7 +265,12 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
-  const body = await request.json();
+  let body: { name?: unknown; phone?: unknown; date?: unknown; hour?: unknown };
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ error: "Μη έγκυρο αίτημα" }), { status: 400 });
+  }
   const { name, phone, date, hour } = body;
 
   const invalid = validateBooking({ name, phone, date, hour });
@@ -207,11 +278,29 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: invalid }), { status: 400 });
   }
 
+  const nameStr = name as string;
+  const phoneStr = phone as string;
+  const dateStr = date as string;
+  const hourStr = hour as string;
+
+  if (isPastAthens(dateStr, hourStr)) {
+    return new Response(
+      JSON.stringify({ error: "Δεν γίνεται κράτηση για παρελθοντική ώρα." }),
+      { status: 400 },
+    );
+  }
+  if (isWeekend(dateStr)) {
+    return new Response(
+      JSON.stringify({ error: "Δεν γίνεται κράτηση Σαββατοκύριακο." }),
+      { status: 400 },
+    );
+  }
+
   const { data: existing } = await getSupabaseAdmin()
     .from("bookings")
     .select("id")
-    .eq("date", date)
-    .eq("hour", hour)
+    .eq("date", dateStr)
+    .eq("hour", hourStr)
     .limit(1);
 
   if (existing && existing.length > 0) {
@@ -221,18 +310,18 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const weekday = new Date(date + "T00:00:00").getDay();
+  const weekday = new Date(dateStr + "T00:00:00").getDay();
   const [
-    { data: blocked, error: blockedErr },
-    { data: recurring, error: recErr },
+    { data: blocked },
+    { data: recurring },
   ] = await Promise.all([
-    getSupabaseAdmin().from("blocked_slots").select("hour").eq("date", date).limit(1),
+    getSupabaseAdmin().from("blocked_slots").select("hour").eq("date", dateStr).limit(1),
     getSupabaseAdmin().from("recurring_blocks").select("hour").eq("weekday", weekday).limit(1),
   ]);
 
   const isBlocked =
-    (blocked && blocked.some((b) => b.hour === hour)) ||
-    (recurring && recurring.some((r) => r.hour === hour));
+    (blocked && blocked.some((b) => b.hour === hourStr)) ||
+    (recurring && recurring.some((r) => r.hour === hourStr));
 
   if (isBlocked) {
     return new Response(
@@ -242,17 +331,55 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { error } = await getSupabaseAdmin().from("bookings").insert({
-    name: (name as string).trim(),
-    phone: (phone as string).trim(),
-    date,
-    hour,
+    name: nameStr.trim(),
+    phone: phoneStr.trim(),
+    date: dateStr,
+    hour: hourStr,
   });
 
   if (error) {
+    if (error.code === "23505") {
+      return new Response(
+        JSON.stringify({ error: "Η ώρα αυτή είναι ήδη κρατημένη. Επίλεξε άλλη ώρα." }),
+        { status: 409 },
+      );
+    }
+    if (error.code === "23514") {
+      return new Response(
+        JSON.stringify({ error: "Η ώρα αυτή δεν είναι διαθέσιμη. Επίλεξε άλλη ώρα." }),
+        { status: 409 },
+      );
+    }
     return new Response(JSON.stringify({ error: "Κάτι πήγε στραβά. Δοκίμασε ξανά." }), {
       status: 500,
     });
   }
 
+  try {
+    const resend = new Resend(env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: "Νέο Ραντεβού <noreply@katerinakritikou.gr>",
+      to: env.CONTACT_EMAIL,
+      subject: `Νέο ραντεβού — ${nameStr.trim()} (${dateStr} ${hourStr})`,
+      html: `
+        <h2>Νέο ραντεβού</h2>
+        <p><strong>Όνομα:</strong> ${escapeHtml(nameStr.trim())}</p>
+        <p><strong>Τηλέφωνο:</strong> ${escapeHtml(phoneStr.trim())}</p>
+        <p><strong>Ημερομηνία:</strong> ${escapeHtml(dateStr)}</p>
+        <p><strong>Ώρα:</strong> ${escapeHtml(hourStr)}</p>
+      `,
+    });
+  } catch (err) {
+    console.error("Resend error (booking):", err);
+  }
+
   return new Response(JSON.stringify({ success: true }), { status: 200 });
 };
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}

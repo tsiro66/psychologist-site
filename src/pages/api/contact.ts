@@ -10,7 +10,12 @@ const PHONE_RE = /^[+]?[\d\s\-().]{7,20}$/;
 export const POST: APIRoute = async ({ request }) => {
   const resend = new Resend(env.RESEND_API_KEY);
 
-  const body = await request.json();
+  let body: { name?: string; email?: string; phone?: string; message?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ error: "Μη έγκυρο αίτημα" }), { status: 400 });
+  }
   const { name, email, phone, message } = body;
 
   if (typeof name !== "string" || !name.trim() || name.length > 100) {

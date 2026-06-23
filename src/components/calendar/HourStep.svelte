@@ -6,6 +6,7 @@
     bookedHours,
     selectedHour,
     loadingHours,
+    hoursError = false,
     formattedDate,
     onSelectHour,
     onGoBack,
@@ -40,6 +41,10 @@
       {#if loadingHours}
         <div class="text-center py-6 text-neutral-400 text-sm">
           Φόρτωση διαθέσιμων ωρών...
+        </div>
+      {:else if hoursError}
+        <div class="text-center py-6 text-red-500 text-sm">
+          Αποτυχία φόρτωσης διαθέσιμων ωρών. Επίλεξε άλλη ημέρα.
         </div>
       {:else}
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">

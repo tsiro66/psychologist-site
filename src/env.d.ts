@@ -6,7 +6,6 @@ interface Env {
   SUPABASE_SERVICE_ROLE_KEY: string;
   RESEND_API_KEY: string;
   CONTACT_EMAIL: string;
-  SESSION: KVNamespace;
 }
 
 declare module "cloudflare:workers" {

@@ -11,8 +11,8 @@ const contactInfo = [
   {
     icon: "email",
     label: "Email",
-    value: "info@katerinakritikoy.gr",
-    href: "mailto:info@katerinakritikoy.gr",
+    value: "info@katerinakritikou.gr",
+    href: "mailto:info@katerinakritikou.gr",
   },
   {
     icon: "location",
@@ -256,10 +256,11 @@ const contactInfo = [
       contactObserver.observe(el);
     });
 
-    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const formEl = document.getElementById("contact-form") as HTMLFormElement | null;
     const status = document.getElementById("form-status");
     const btnText = document.getElementById("btn-text");
-    if (!form || !status || !btnText) return;
+    if (!formEl || !status || !btnText) return;
+    const form = formEl;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[+]?[\d\s\-().]{7,20}$/;
@@ -321,7 +322,7 @@ const contactInfo = [
       field.addEventListener("input", () => clearFieldError(field));
     });
 
-    form?.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       status.classList.add("hidden");
 

@@ -15,6 +15,7 @@
   let submitting = $state(false);
   let submitted = $state(false);
   let errorMsg = $state("");
+  let hoursError = $state(false);
   let step = $state(1);
   let bookedHours = $state([]);
   let loadingHours = $state(false);
@@ -32,6 +33,13 @@
     };
     document.addEventListener("visibilitychange", refresh);
     return () => document.removeEventListener("visibilitychange", refresh);
+  });
+
+  let pollHandle;
+  $effect(() => {
+    if (step !== 2) return;
+    pollHandle = setInterval(() => loadBookedHours(true), 30_000);
+    return () => clearInterval(pollHandle);
   });
 
   function canGoPrev() {
@@ -53,21 +61,28 @@
     viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
   }
 
+  async function loadBookedHours(silent = false) {
+    if (!selectedDate) return;
+    const dateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
+    if (!silent) loadingHours = true;
+    try {
+      const res = await fetch(`/api/booking?date=${dateStr}`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      bookedHours = data.bookedHours ?? [];
+      hoursError = false;
+    } catch {
+      if (!silent) hoursError = true;
+    }
+    if (!silent) loadingHours = false;
+  }
+
   async function selectDate(day) {
     selectedDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     selectedHour = null;
     step = 2;
-    loadingHours = true;
     bookedHours = [];
-    try {
-      const dateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
-      const res = await fetch(`/api/booking?date=${dateStr}`);
-      if (res.ok) {
-        const data = await res.json();
-        bookedHours = data.bookedHours ?? [];
-      }
-    } catch {}
-    loadingHours = false;
+    await loadBookedHours();
   }
 
   function selectHour(hour) {
@@ -208,6 +223,7 @@
         {bookedHours}
         {selectedHour}
         {loadingHours}
+        {hoursError}
         {formattedDate}
         onSelectHour={selectHour}
         onGoBack={goBack}

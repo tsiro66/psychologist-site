@@ -1,5 +1,6 @@
 <script>
   import { hours, validateFields } from '../lib/booking-utils.js';
+  import { trapFocus } from '../lib/modal.js';
 
   let {
     title,
@@ -11,19 +12,11 @@
     onCancel,
   } = $props();
 
-  let name = $state('');
-  let phone = $state('');
-  let date = $state('');
-  let hour = $state('');
+  let name = $state(initialValues.name ?? '');
+  let phone = $state(initialValues.phone ?? '');
+  let date = $state(initialValues.date ?? '');
+  let hour = $state(initialValues.hour ?? '');
   let errors = $state({});
-
-  $effect(() => {
-    name = initialValues.name;
-    phone = initialValues.phone;
-    date = initialValues.date;
-    hour = initialValues.hour;
-    errors = {};
-  });
 
   function handleSubmit() {
     errors = validateFields(name, phone, date, hour);
@@ -42,9 +35,16 @@
 
 <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
   <button type="button" class="absolute inset-0 bg-black/40 backdrop-blur-sm cursor-default" aria-label="Κλείσιμο" onclick={onCancel}></button>
-  <div class="relative bg-white rounded-sm w-full max-w-md shadow-xl">
+  <div
+    class="relative bg-white rounded-sm w-full max-w-md shadow-xl"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    use:trapFocus
+    oncancel={onCancel}
+  >
     <div class="px-6 py-4 bg-dark-900">
-      <h3 class="font-serif text-lg text-white">{title}</h3>
+      <h3 id="modal-title" class="font-serif text-lg text-white">{title}</h3>
     </div>
     <div class="px-6 py-5 space-y-4">
       {#if externalError}

@@ -1,5 +1,6 @@
 <script>
   import { hours } from "../lib/booking-utils.js";
+  import { trapFocus } from "../lib/modal.js";
 
   let { saving = false, externalError = "", onSave, onCancel } = $props();
 
@@ -105,9 +106,14 @@
   ></button>
   <div
     class="relative bg-white rounded-sm w-full max-w-lg shadow-xl max-h-[90vh] overflow-y-auto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bulk-title"
+    use:trapFocus
+    oncancel={onCancel}
   >
     <div class="px-6 py-4 bg-dark-900">
-      <h3 class="font-serif text-lg text-white">Μαζικός αποκλεισμός ωρών</h3>
+      <h3 id="bulk-title" class="font-serif text-lg text-white">Μαζικός αποκλεισμός ωρών</h3>
     </div>
     <div class="px-6 py-5 space-y-5">
       {#if externalError}

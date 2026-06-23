@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import FilterStats from './FilterStats.svelte';
   import BookingRow from './BookingRow.svelte';
   import BookingCard from './BookingCard.svelte';
@@ -67,12 +68,10 @@
     if (filter === f) return;
     filter = f;
     page = 0;
-    fetchBookings();
   }
 
   function goToPage(p) {
     page = p;
-    fetchBookings();
   }
 
   function requestDelete(id) {
@@ -181,6 +180,9 @@
 
   $effect(() => {
     fetchBookings();
+  });
+
+  onMount(() => {
     fetchCounts();
   });
 </script>

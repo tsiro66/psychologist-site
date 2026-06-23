@@ -4,7 +4,15 @@ import { getSupabaseServer } from "../../lib/supabase";
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
-  const { email, password } = await request.json();
+  let email: string, password: string;
+  try {
+    ({ email, password } = await request.json());
+  } catch {
+    return new Response(
+      JSON.stringify({ error: "Μη έγκυρο αίτημα" }),
+      { status: 400 },
+    );
+  }
 
   const supabase = getSupabaseServer(cookies, request);
   const { error } = await supabase.auth.signInWithPassword({

@@ -2,7 +2,7 @@
 
 @theme inline {
     --font-sans: var(--font-google), sans-serif;
-    --font-serif: var(--font-noto), sans-serif;
+    --font-serif: var(--font-noto), serif;
 
     /* ── Change these 3 to retheme the entire site ── */
     --color-primary:  oklch(0.50 0.13 245);

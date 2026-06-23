@@ -1,4 +1,6 @@
 <script>
+  import { trapFocus } from '../lib/modal.js';
+
   let {
     title,
     message,
@@ -11,9 +13,16 @@
 
 <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
   <button type="button" class="absolute inset-0 bg-black/40 backdrop-blur-sm cursor-default" aria-label="Κλείσιμο" onclick={onCancel}></button>
-  <div class="relative bg-white rounded-sm w-full max-w-md shadow-xl">
+  <div
+    class="relative bg-white rounded-sm w-full max-w-md shadow-xl"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    use:trapFocus
+    oncancel={onCancel}
+  >
     <div class="px-6 py-4 bg-dark-900">
-      <h3 class="font-serif text-lg text-white">{title}</h3>
+      <h3 id="confirm-title" class="font-serif text-lg text-white">{title}</h3>
     </div>
     <div class="px-6 py-5">
       <p class="text-sm text-neutral-600">{message}</p>
