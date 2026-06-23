@@ -167,12 +167,12 @@
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        bulkError = data.error || 'Αποτυχία αποκλεισμού.';
+        bulkError = data.error || 'Αποτυχία κράτησης.';
         return;
       }
       showBulkBlock = false;
     } catch {
-      bulkError = 'Αποτυχία αποκλεισμού.';
+      bulkError = 'Αποτυχία κράτησης.';
     } finally {
       bulkSaving = false;
     }
@@ -218,7 +218,7 @@
             onclick={openBulkBlock}
             class="px-4 py-1.5 text-sm font-semibold border border-primary-400 text-primary-300 hover:bg-primary-600 hover:border-primary-600 hover:text-white rounded-sm transition-colors cursor-pointer"
           >
-            Μαζικός αποκλεισμός
+            Μαζικές κρατήσεις
           </button>
           <button
             onclick={startCreate}

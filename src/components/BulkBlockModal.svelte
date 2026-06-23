@@ -113,7 +113,7 @@
     oncancel={onCancel}
   >
     <div class="px-6 py-4 bg-dark-900">
-      <h3 id="bulk-title" class="font-serif text-lg text-white">Μαζικός αποκλεισμός ωρών</h3>
+      <h3 id="bulk-title" class="font-serif text-lg text-white">Μαζικές κρατήσεις ωρών</h3>
     </div>
     <div class="px-6 py-5 space-y-5">
       {#if externalError}
@@ -182,7 +182,7 @@
         <p
           class="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-3"
         >
-          Ώρες προς αποκλεισμό
+          Ώρες προς κράτηση
         </p>
         <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
           {#each hours as h}
@@ -202,16 +202,16 @@
       </div>
 
       {#if loadingHours}
-        <p class="text-sm text-neutral-400">Φόρτωση υπαρχόντων αποκλεισμών...</p>
+        <p class="text-sm text-neutral-400">Φόρτωση υπαρχόντων κρατήσεων...</p>
       {/if}
 
       {#if selectedHours.size > 0}
         <p class="text-sm text-neutral-500">
           {#if mode === "weekday"}
-            Αποκλείονται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
+            Κρατούνται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
             ώρες κάθε <span class="font-semibold text-neutral-900">{previewLabel}</span>.
           {:else}
-            Αποκλείονται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
+            Κρατούνται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
             ώρες στις <span class="font-semibold text-neutral-900">{previewLabel}</span>.
           {/if}
         </p>
