@@ -3,30 +3,27 @@ import { Image } from "astro:assets";
 import aboutImage from "../assets/about.png";
 import Button from "./Button.astro";
 
-const credentials = [
+type Credential = { label: string; detail: string | string[] };
+
+const credentials: Credential[] = [
   {
     label: "European University Cyprus",
     detail: "Ψυχολογία (παρόν)",
   },
   {
     label: "Κέντρο Εφαρμοσμένης Ψυχοθεραπείας & Συμβουλευτικής Αθηνών",
-    detail: "Δίπλωμα στη Συμβουλευτική Ψυχικής Υγείας",
-  },
-  {
-    label: "Κέντρο Εφαρμοσμένης Ψυχοθεραπείας και Συμβουλευτικής Αθηνών",
-    detail: "Παρατήρηση ομάδας αυτογνωσίας: συμπεριφορά ατόμων, ανάλυση χαρακτήρων, παρατήρηση συγκρούσεων, συναισθηματική κατάσταση, συμπεριφορά μέσα στην ομάδα.",
-  },
-  {
-    label: "Ε.Κ.Π.Α.",
-    detail: "Γνωσιακή Συμπεριφοριστική Θεραπεία: θεωρία και κλινική πράξη.",
+    detail: [
+      "Δίπλωμα στη Συμβουλευτική Ψυχικής Υγείας.",
+      "Παρατήρηση ομάδας αυτογνωσίας: συμπεριφορά ατόμων, ανάλυση χαρακτήρων, παρατήρηση συγκρούσεων, συναισθηματική κατάσταση, συμπεριφορά μέσα στην ομάδα.",
+    ],
   },
   {
     label: "Ε.Κ.Π.Α.",
-    detail: "Διαχείριση Συναισθηματικού & Ψυχικού Τραύματος.",
-  },
-  {
-    label: "Ε.Κ.Π.Α.",
-    detail: "Όταν ένας γάμος διαλύεται: διαζύγιο, διαχείριση γονικών συγκρούσεων, λήψη αποφάσεων, προγραμματισμός γονεϊκής φροντίδας, περίοδος χάριτος.",
+    detail: [
+      "Γνωσιακή Συμπεριφοριστική Θεραπεία: θεωρία και κλινική πράξη.",
+      "Διαχείριση Συναισθηματικού & Ψυχικού Τραύματος.",
+      "Όταν ένας γάμος διαλύεται: διαζύγιο, διαχείριση γονικών συγκρούσεων, λήψη αποφάσεων, προγραμματισμός γονεϊκής φροντίδας, περίοδος χάριτος.",
+    ],
   },
   {
     label: "Δέντρο Θεραπείας Ι.Κ.Ε.",
@@ -46,15 +43,18 @@ const credentials = [
   },
   {
     label: "Unisert Professional",
-    detail: "Πρόγραμμα υποστήριξης και παρέμβασης στις ειδικές μαθησιακές δυσκολίες.",
+    detail:
+      "Πρόγραμμα υποστήριξης και παρέμβασης στις ειδικές μαθησιακές δυσκολίες.",
   },
   {
     label: "Play Therapy Greece",
-    detail: "Circle of Security Parenting — Attachment (πρόγραμμα 15 ωρών και 2 τρίωρων συναντήσεων στο attachment των ενηλίκων).",
+    detail:
+      "Circle of Security Parenting — Attachment (πρόγραμμα 15 ωρών και 2 τρίωρων συναντήσεων στο attachment των ενηλίκων).",
   },
   {
     label: "Marte Meo",
-    detail: "Γνωριμία με τη μέθοδο: ενίσχυση αυτοπεποίθησης, θετική καθοδήγηση, δεξιότητες παιχνιδιού, σχολική ετοιμότητα.",
+    detail:
+      "Γνωριμία με τη μέθοδο: ενίσχυση αυτοπεποίθησης, θετική καθοδήγηση, δεξιότητες παιχνιδιού, σχολική ετοιμότητα.",
   },
   {
     label: "Yoga",
@@ -62,7 +62,13 @@ const credentials = [
   },
   {
     label: "City Unity College — Στιγμές Σπουδές",
-    detail: "Σκιαγραφώντας θύτες και θύματα γυναικοκτονιών · άγχος, κρίσεις πανικού και γνωσιακή συμπεριφοριστική θεραπεία · ιδιοσυγκρασιακή διατροφή: από τη θεωρία στην πράξη · μουσικοθεραπεία: θεωρία και εφαρμογές · σχεδιασμός και συντονισμός ψυχοεκπαιδευτικών ομάδων.",
+    detail: [
+      "Σκιαγραφώντας θύτες και θύματα γυναικοκτονιών.",
+      "Άγχος, κρίσεις πανικού και γνωσιακή συμπεριφοριστική θεραπεία.",
+      "Ιδιοσυγκρασιακή διατροφή: από τη θεωρία στην πράξη.",
+      "Μουσικοθεραπεία: θεωρία και εφαρμογές.",
+      "Σχεδιασμός και συντονισμός ψυχοεκπαιδευτικών ομάδων.",
+    ],
   },
 ];
 
@@ -109,13 +115,16 @@ const values = [
         class="mt-5 text-neutral-500 max-w-2xl leading-relaxed about-reveal opacity-0"
         style="animation-delay: 0.2s;"
       >
-        Ως Σύμβουλος Ψυχικής Υγείας, Mindfulness Instructor και Yoga Teacher, η προσέγγισή μου είναι βαθιά ανθρωποκεντρική και ολιστική. Κεντρικός μου στόχος είναι η ενδυνάμωση των ανθρώπων ώστε να διεκδικήσουν μια πιο υγιή, ισορροπημένη και δημιουργική ζωή.
+        Ως Σύμβουλος Ψυχικής Υγείας, Mindfulness Instructor και Yoga Teacher, η
+        προσέγγισή μου είναι βαθιά ανθρωποκεντρική και ολιστική. Κεντρικός μου
+        στόχος είναι η ενδυνάμωση των ανθρώπων ώστε να διεκδικήσουν μια πιο υγιή,
+        ισορροπημένη και δημιουργική ζωή.
       </p>
     </div>
 
-    <!-- Image + Credentials -->
+    <!-- Image + Intro -->
     <div
-      class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-12"
+      class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20"
     >
       <div class="about-reveal opacity-0" style="animation-delay: 0.25s;">
         <Image
@@ -127,50 +136,67 @@ const values = [
         />
       </div>
 
-      <!-- Credentials -->
-      <div class="flex flex-col gap-4">
-        <h3 class="text-2xl font-serif text-neutral-950 mb-2 about-reveal opacity-0" style="animation-delay: 0.3s;">
-          Σπουδές
-        </h3>
+      <div
+        class="space-y-4 text-sm md:text-base text-neutral-600 leading-relaxed about-reveal opacity-0"
+        style="animation-delay: 0.3s;"
+      >
+        <p>
+          Καλώς ήρθες, είμαι η Κατερίνα Κρητικού. Πιστεύω βαθιά ότι η ψυχική
+          ισορροπία δεν είναι η απουσία δυσκολιών, αλλά η ικανότητά μας να
+          παραμένουμε σταθεροί και γαλήνιοι μέσα σε αυτές. Ως Σύμβουλος Ψυχικής
+          Υγείας, Mindfulness Instructor και Yoga Teacher, η προσέγγισή μου είναι
+          ολιστική.
+        </p>
+        <p>
+          Συνδυάζω την συμβουλευτική ψυχολογία με την συνειδητή αναπνοή και την
+          σοφία του σώματος, βοηθώντας σε να απελευθερώσεις το άγχος, να
+          διαχειριστείς το παρόν σου και να επανασυνδεθείς με τον αυθεντικό εαυτό
+          σου.
+        </p>
+        <p>
+          Εδώ, σε έναν ασφαλή χώρο χωρίς κριτική, είμαι δίπλα σου για να
+          περπατήσουμε μαζί τη δική σου διαδρομή προς την προσωπική ανάπτυξη, την
+          αυτοεκτίμηση και την εσωτερική σου γαλήνη.
+        </p>
+      </div>
+    </div>
+
+    <!-- Studies -->
+    <div class="mb-20">
+      <h3
+        class="text-2xl font-serif text-neutral-950 mb-10 about-reveal opacity-0"
+        style="animation-delay: 0.35s;"
+      >
+        Σπουδές
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         {
           credentials.map((cred, i) => (
             <div
               class="p-6 border border-stone-200 bg-white shadow-md shadow-stone-200/50 about-reveal opacity-0"
-              style={`animation-delay: ${0.35 + i * 0.1}s;`}
+              style={`animation-delay: ${0.4 + i * 0.08}s;`}
             >
-              <span class="block text-sm font-semibold text-neutral-950 mb-1">
+              <span class="block text-sm font-semibold text-neutral-950 mb-2">
                 {cred.label}
               </span>
-              <span class="text-sm text-neutral-500">{cred.detail}</span>
+              {Array.isArray(cred.detail) ? (
+                <ul class="space-y-1.5">
+                  {cred.detail.map((d) => (
+                    <li class="text-sm text-neutral-500 leading-relaxed flex items-start gap-2">
+                      <span class="mt-1.5 w-1 h-1 rounded-full bg-primary-400 flex-shrink-0"></span>
+                      <span>{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <span class="text-sm text-neutral-500 leading-relaxed">
+                  {cred.detail}
+                </span>
+              )}
             </div>
           ))
         }
       </div>
-    </div>
-
-    <!-- Bio (full width) -->
-    <div
-      class="space-y-4 text-sm md:text-base text-neutral-600 leading-relaxed mb-20 about-reveal opacity-0"
-      style="animation-delay: 0.5s;"
-    >
-      <p>
-        Καλώς ήρθες, είμαι η Κατερίνα Κρητικού. Πιστεύω βαθιά ότι η ψυχική
-        ισορροπία δεν είναι η απουσία δυσκολιών, αλλά η ικανότητά μας να
-        παραμένουμε σταθεροί και γαλήνιοι μέσα σε αυτές. Ως Σύμβουλος Ψυχικής
-        Υγείας, Mindfulness Instructor και Yoga Teacher, η προσέγγισή μου είναι
-        ολιστική.
-      </p>
-      <p>
-        Συνδυάζω την συμβουλευτική ψυχολογία με την συνειδητή αναπνοή και την
-        σοφία του σώματος, βοηθώντας σε να απελευθερώσεις το άγχος, να
-        διαχειριστείς το παρόν σου και να επανασυνδεθείς με τον αυθεντικό εαυτό
-        σου.
-      </p>
-      <p>
-        Εδώ, σε έναν ασφαλή χώρο χωρίς κριτική, είμαι δίπλα σου για να
-        περπατήσουμε μαζί τη δική σου διαδρομή προς την προσωπική ανάπτυξη, την
-        αυτοεκτίμηση και την εσωτερική σου γαλήνη.
-      </p>
     </div>
 
     <!-- Values -->
