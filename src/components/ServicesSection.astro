@@ -127,19 +127,6 @@ const services = [
       "Η εφηβεία είναι μια περίοδος μεγάλων αλλαγών, εντόνων συναισθημάτων και αναζήτησης ταυτότητας. Προσφέρω στους εφήβους έναν δικό τους, απολύτως εμπιστευτικό χώρο, έξω από το οικογενειακό περιβάλλον, για να εκφράσουν ελεύθερα τις ανησυχίες τους, να διαχειριστούν το σχολικό άγχος, τις σχέσεις τους και να ενισχύσουν την αυτοεκτίμησή τους.",
   },
 ];
-
-const serviceList = [
-  "Ατομικές συνεδρίες",
-  "Ομαδικές συνεδρίες",
-  "Συμβουλευτική ζευγαριών",
-  "Συμβουλευτική γονέων",
-  "Συμβουλευτική εφήβων",
-  "Προσωπική ανάπτυξη",
-  "ΛΟΑΤΚΙ+",
-  "Mindfulness",
-  "Θεραπευτική γιόγκα",
-  "Διαλογισμός",
-];
 ---
 
 <section id="services" class="relative py-16 md:py-28 px-4 md:px-6 bg-primary-50">
@@ -187,66 +174,67 @@ const serviceList = [
     </div>
 
     <!-- Services -->
-    <div class="flex flex-col">
+    <div class="border-t border-stone-200">
       {
         services.map((service, i) => (
           <div
-            class="border-t border-stone-200 py-14 md:py-20 service-reveal opacity-0"
-            style={`animation-delay: ${i * 0.1}s;`}
+            class="service-row group border-b border-stone-200 service-reveal opacity-0"
+            style={`animation-delay: ${i * 0.08}s;`}
           >
-            <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-12 items-start">
-              <!-- Number -->
-              <span class="text-4xl md:text-5xl lg:text-6xl font-serif text-stone-200 leading-none select-none">
+            <button
+              class="service-toggle w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 md:gap-8 py-8 md:py-10 text-left cursor-pointer"
+              aria-expanded="false"
+            >
+              <span class="text-2xl md:text-3xl lg:text-4xl font-serif text-stone-200 leading-none select-none">
                 {service.number}
               </span>
+              <h3 class="text-xl md:text-2xl lg:text-3xl font-serif text-neutral-950 group-hover:text-primary-700 transition-colors duration-300">
+                {service.title}
+              </h3>
+              <span class="service-icon w-8 h-8 md:w-9 md:h-9 rounded-full border border-stone-300 flex items-center justify-center flex-shrink-0 group-hover:border-primary-400 transition-all duration-500">
+                <svg
+                  class="w-4 h-4 text-neutral-400 group-hover:text-primary-600 transition-all duration-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="service-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+              <div class="overflow-hidden">
+                <div class="pb-10 pl-0 md:pl-14 max-w-3xl">
+                  <p class="text-base md:text-lg text-neutral-600 leading-relaxed">
+                    {service.description}
+                  </p>
 
-              <!-- Content -->
-              <div>
-                <h3 class="text-2xl md:text-3xl font-serif text-neutral-950 mb-6">
-                  {service.title}
-                </h3>
-                <p class="text-base md:text-lg text-neutral-600 leading-relaxed">
-                  {service.description}
-                </p>
-
-                {service.groups?.map((group) => (
-                  <div class="mt-8">
-                    <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-600 mb-4">
-                      {group.heading}
-                    </h4>
-                    <ul class="space-y-3">
-                      {group.items.map((item) => (
-                        <li class="flex items-start gap-3 text-base md:text-lg text-neutral-600 leading-relaxed">
-                          <span class="mt-2 w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                  {service.groups?.map((group) => (
+                    <div class="mt-8">
+                      <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-600 mb-4">
+                        {group.heading}
+                      </h4>
+                      <ul class="space-y-3">
+                        {group.items.map((item) => (
+                          <li class="flex items-start gap-3 text-base md:text-lg text-neutral-600 leading-relaxed">
+                            <span class="mt-2 w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         ))
       }
-      <div class="border-t border-stone-200"></div>
-    </div>
-
-    <!-- Service chips -->
-    <div class="mt-16 service-reveal opacity-0" style="animation-delay: 0.2s;">
-      <h3 class="text-lg font-serif text-neutral-950 mb-6">Υπηρεσίες</h3>
-      <div class="flex flex-wrap gap-3">
-        {
-          serviceList.map((s) => (
-            <span class="px-4 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-primary-200">
-              {s}
-            </span>
-          ))
-        }
-      </div>
-      <p class="mt-6 text-sm text-neutral-500">
-        Συνεδρίες online / δια ζώσης.
-      </p>
     </div>
 
     <!-- CTA -->
@@ -276,6 +264,20 @@ const serviceList = [
   .service-reveal.is-visible {
     animation: serviceReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+
+  .service-row.is-open .service-content {
+    grid-template-rows: 1fr;
+  }
+
+  .service-row.is-open .service-icon {
+    border-color: var(--color-primary-600);
+    background-color: var(--color-primary-600);
+  }
+
+  .service-row.is-open .service-icon svg {
+    color: white;
+    transform: rotate(45deg);
+  }
 </style>
 
 <script>
@@ -294,6 +296,22 @@ const serviceList = [
 
     document.querySelectorAll(".service-reveal").forEach((el) => {
       serviceObserver.observe(el);
+    });
+    document.querySelectorAll(".service-toggle").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest(".service-row")!;
+        const isOpen = row.classList.contains("is-open");
+
+        document.querySelectorAll(".service-row.is-open").forEach((openRow) => {
+          openRow.classList.remove("is-open");
+          openRow.querySelector(".service-toggle")?.setAttribute("aria-expanded", "false");
+        });
+
+        if (!isOpen) {
+          row.classList.add("is-open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
     });
   });
 </script>
