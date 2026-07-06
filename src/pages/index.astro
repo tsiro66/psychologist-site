@@ -6,15 +6,21 @@ import Button from "../components/Button.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 
 const services = [
-  "Ατομικές και Ομαδικές Συνεδρίες",
-  "Συμβουλευτική Ζευγαριών, Γονέων και Εφήβων",
-  "Υποστήριξη Προσωπικής Ανάπτυξης και ΛΟΑΤΚΙ+ Ατόμων",
+  "Ατομικές Συνεδρίες",
+  "Συμβουλευτική Ζευγαριών & Σχέσεων",
+  "Διαχείριση Κρίσεων Πανικού & Άγχους",
+  "Υποστήριξη στην Κατάθλιψη",
+  "Προσωπική Ανάπτυξη & Αυτοβελτίωση",
+  "ΛΟΑΤΚΙ+",
+  "Mindfulness",
+  "Συμβουλευτική Γονέων",
+  "Συμβουλευτική Εφήβων",
 ];
 
 const faqs = [
-  "Πώς ξέρω αν χρειάζομαι ψυχοθεραπεία;",
-  "Πόσο διαρκεί μια συνεδρία;",
-  "Οι συνεδρίες γίνονται και διαδικτυακά;",
+  "Τι να περιμένω; — Η πρώτη συνεδρία",
+  "Πόση διάρκεια έχει μια συνεδρία;",
+  "Οι συνεδρίες γίνονται και online;",
 ];
 ---
 
@@ -27,13 +33,13 @@ const faqs = [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div>
           <span class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 home-reveal opacity-0">
-            Σχετικα
+            Σχετικά
           </span>
           <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight mb-6 home-reveal opacity-0" style="animation-delay: 0.1s;">
             Λίγα λόγια <span class="text-primary-700 italic">για εμένα</span>
           </h2>
           <p class="text-base md:text-lg text-neutral-600 leading-relaxed mb-8 home-reveal opacity-0" style="animation-delay: 0.2s;">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Καλώς ήρθες, είμαι η Κατερίνα Κρητικού. Πιστεύω βαθιά ότι η ψυχική ισορροπία δεν είναι η απουσία δυσκολιών, αλλά η ικανότητά μας να παραμένουμε σταθεροί και γαλήνιοι μέσα σε αυτές. Ως Σύμβουλος Ψυχικής Υγείας, Mindfulness Instructor και Yoga Teacher, η προσέγγισή μου είναι ολιστική.
           </p>
           <div class="home-reveal opacity-0" style="animation-delay: 0.3s;">
             <Button href="/about" variant="primary">Μάθε περισσότερα</Button>
@@ -56,10 +62,10 @@ const faqs = [
   <section class="py-16 md:py-28 px-4 md:px-6 bg-blue-100">
     <div class="max-w-6xl mx-auto md:text-right">
       <span class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 home-reveal opacity-0">
-        Υπηρεσιες
+        Υπηρεσίες
       </span>
       <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight mb-12 home-reveal opacity-0" style="animation-delay: 0.1s;">
-        Πώς μπορούμε να <span class="text-primary-700 italic">βοηθήσουμε</span>
+        Πώς θα <span class="text-primary-700 italic">δουλέψουμε μαζί</span>
       </h2>
       <div class="">
         {services.map((title, i) => (
@@ -84,7 +90,7 @@ const faqs = [
   <section class="py-16 md:py-28 px-4 md:px-6 bg-blue-100">
     <div class="max-w-6xl mx-auto">
       <span class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 home-reveal opacity-0">
-        Συχνες ερωτησεις
+        Συχνές ερωτήσεις
       </span>
       <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight mb-12 home-reveal opacity-0" style="animation-delay: 0.1s;">
         Έχεις <span class="text-primary-700 italic">απορίες;</span>
@@ -115,7 +121,7 @@ const faqs = [
         Κάνε το πρώτο <span class="text-accent-300 italic">βήμα</span>
       </h2>
       <p class="text-base md:text-lg text-primary-200 leading-relaxed max-w-2xl mx-auto mb-10">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Φέρε την ισορροπία στο σώμα και στο νου σου. Επικοινώνησε μαζί μου.
       </p>
       <Button href="/contact" variant="primary">Επικοινώνησε μαζί μας</Button>
     </div>

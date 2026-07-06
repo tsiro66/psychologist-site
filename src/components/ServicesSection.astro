@@ -1,25 +1,144 @@
 ---
 import Button from "./Button.astro";
 
+const signs = [
+  {
+    title: "Νιώθεις συναισθηματική εξάντληση",
+    description:
+      "Το άγχος, η θλίψη ή ο εκνευρισμός σε κατακλύζουν καθημερινά και δυσκολεύεσαι να τα διαχειριστείς.",
+  },
+  {
+    title: "Οι σχέσεις σου δυσκολεύουν",
+    description:
+      "Αντιμετωπίζεις συνέχεια συγκρούσεις ή απομάκρυνση με τον/την σύντροφο, την οικογένεια ή τους ανθρώπους στη δουλειά.",
+  },
+  {
+    title: "Το σώμα σου αντιδρά",
+    description:
+      "Βιώνεις έντονο σωματικό στρες, κρίσεις πανικού, σφίξιμο στο στήθος ή δυσκολίες στον ύπνο και νιώθεις ότι ο νους σου δεν μπορεί να ηρεμήσει.",
+  },
+  {
+    title: "Επαναλαμβάνεις τα ίδια μοτίβα",
+    description:
+      "Παρατηρείς ότι κολλάς στις ίδιες συμπεριφορές και σκέψεις, παρόλο που ξέρεις ότι σου κάνουν κακό.",
+  },
+  {
+    title: "Αντιμετωπίζεις μια μεγάλη αλλαγή",
+    description:
+      "Διανύεις περίοδο πένθους, έναν χωρισμό, μια νέα φάση ως γονέας ή οποιαδήποτε έντονη μεταβατική περίοδο.",
+  },
+  {
+    title: "Θέλεις απλά να εξελιχθείς",
+    description:
+      "Νιώθεις την ανάγκη να γνωρίσεις καλύτερα τον εαυτό σου, να βάλεις όρια και να ζήσεις με περισσότερη ηρεμία και ενσυνειδητότητα.",
+  },
+];
+
 const services = [
   {
     number: "01",
-    title: "Ατομικές και Ομαδικές Συνεδρίες",
-    who: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    expect: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    title: "Ατομικές Συνεδρίες (online / δια ζώσης)",
+    description:
+      "Οι ατομικές συνεδρίες είναι ο δικός σου προσωπικός χρόνος και χώρος. Εδώ δεν υπάρχει κριτική, σωστό ή λάθος. Υπάρχει μόνο αποδοχή και υποστήριξη. Μαζί θα φωτίσουμε αυτά που σε δυσκολεύουν, συνδυάζοντας τη συμβουλευτική με πρακτικά εργαλεία αναπνοής και ενσυνειδητότητας, ώστε να βρεις ξανά την εσωτερική σου σταθερότητα.",
   },
   {
     number: "02",
-    title: "Συμβουλευτική Ζευγαριών, Γονέων και Εφήβων",
-    who: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    expect: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    title: "Συμβουλευτική Ζευγαριών & Σχέσεων",
+    description:
+      "Κάθε σχέση περνάει από περιόδους κρίσης, αποστασιοποίησης ή εντόνων συγκρούσεων. Όταν η επικοινωνία σταματάει να λειτουργεί και οι εντάσεις επαναλαμβάνονται, είναι εύκολο να νιώσετε παγιδευμένοι, απογοητευμένοι ή μόνοι μέσα στη σχέση σας. Η συμβουλευτική ζευγαριών δεν αναζητά τον «ένοχο». Στόχος μου είναι να δημιουργήσω έναν ουδέτερο και ασφαλή χώρο, όπου θα ακουστούν ισότιμα, χωρίς κριτική.",
+    groups: [
+      {
+        heading: "Πώς μπορεί να σας βοηθήσει",
+        items: [
+          "Αποκατάσταση της επικοινωνίας: μαθαίνετε να εκφράζετε τις ανάγκες και τα παράπονά σας χωρίς επιθετικότητα, αλλά με ουσιαστική ενσυναίσθηση.",
+          "Διαχείριση συγκρούσεων: σπάμε τους κύκλους των συνεχών εντάσεων και καυγάδων και βρίσκουμε υγιείς τρόπους επίλυσης των προβλημάτων σας.",
+          "Επανασύνδεση και οικειότητα: δουλεύουμε πάνω στην εμπιστοσύνη, τη συναισθηματική εγγύτητα και την κοινή σας πορεία.",
+          "Διαχείριση κρίσεων: υποστήριξη σε δύσκολες μεταβάσεις, όπως απιστία, διαζύγιο, ή διαχείριση δύσκολων και μη κατανοητών μοτίβων συμπεριφοράς.",
+        ],
+      },
+      {
+        heading: "Τι να περιμένετε",
+        items: [
+          "Έναν ουδέτερο χώρο: είμαι εδώ ως σύμμαχος της ίδιας της σχέσης σας, όχι του ενός ή του άλλου συντρόφου. Δεν κρατάω πλευρές, ούτε βγάζω δικαστικές αποφάσεις.",
+          "Ισότιμο χρόνο: διασφαλίζω ότι και οι δύο θα έχετε τον χρόνο και την ελευθερία να εκφράσετε τη δική σας πλευρά, τις σκέψεις και τα συναισθήματά σας με ασφάλεια.",
+          "Πρακτικά εργαλεία επικοινωνίας: δεν θα μείνουμε μόνο στη θεωρία. Θα μάθετε συγκεκριμένες τεχνικές για το πώς να συζητάτε, χωρίς η κουβέντα να καταλήγει σε καυγά.",
+          "Ευελιξία: οι συνεδρίες των ζευγαριών διαρκούν 60–75 λεπτά (ανάλογα με τις ανάγκες σας).",
+        ],
+      },
+    ],
   },
   {
     number: "03",
-    title: "Υποστήριξη Προσωπικής Ανάπτυξης και ΛΟΑΤΚΙ+ Ατόμων",
-    who: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    expect: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    title: "Διαχείριση Κρίσεων Πανικού & Έντονου Άγχους",
+    description:
+      "Όταν το σώμα και ο νους εκπέμπουν σήμα κινδύνου, ο πανικός σε κατακλύζει και νιώθεις ότι χάνεις τον έλεγχο. Εδώ, η προσέγγισή μου είναι άμεση και πρακτική: μαθαίνουμε συγκεκριμένες τεχνικές συνειδητής αναπνοής και εργαλεία γείωσης (grounding) για να ηρεμούμε το νευρικό σου σύστημα την ώρα της κρίσης. Παράλληλα διερευνούμε τις βαθύτερες αιτίες του άγχους, ώστε να σταματήσεις να φοβάσαι το ίδιο σου το σώμα και να ξανακερδίσεις την ελευθερία σου.",
   },
+  {
+    number: "04",
+    title: "Υποστήριξη στην Κατάθλιψη",
+    description:
+      "Η κατάθλιψη δεν είναι απλά μια «κακή διάθεση», αλλά ένα βαρύ πέπλο που σου στερεί τη ζωντάνια, το κίνητρο και τη χαρά της καθημερινότητας. Στόχος μας είναι να φωτίσουμε σταδιακά τα αίτια αυτού του βάρους, να ανασύρουμε τις εσωτερικές σου δυνάμεις και να ξαναχτίσουμε βήμα-βήμα μια ζωή με νόημα και αυθεντική σύνδεση με τον εαυτό σου.",
+  },
+  {
+    number: "05",
+    title: "Υποστήριξη στο Πένθος & την Απώλεια",
+    description:
+      "Το πένθος δεν είναι μια κατάσταση που απλά «ξεπερνιέται», είναι μια διαδρομή που χρειάζεται να τη διανύσεις με σεβασμό και φροντίδα. Είτε πρόκειται για την απώλεια ενός αγαπημένου προσώπου, έναν επώδυνο χωρισμό, είτε για το τέλος μιας σημαντικής φάσης της ζωής σου, σου προσφέρω έναν ασφαλή χώρο να εκφράσεις τον πόνο, τον θυμό και τη θλίψη σου, μέχρι να μπορέσεις να ενσωματώσεις την απώλεια και να προχωρήσεις μπροστά.",
+  },
+  {
+    number: "06",
+    title: "Προσωπική Ανάπτυξη & Αυτοβελτίωση",
+    description:
+      "Δεν χρειάζεται να φτάσεις σε οριακό σημείο για να ζητήσεις υποστήριξη. Η προσωπική ανάπτυξη απευθύνεται σε σένα που θέλεις να γνωρίσεις βαθύτερα τον εαυτό σου, να θέσεις υγιή όρια στις σχέσεις σου, να ενισχύσεις την αυτοεκτίμησή σου και να ζήσεις μια ζωή με περισσότερη ενσυνειδητότητα και σκοπό.",
+  },
+  {
+    number: "07",
+    title: "ΛΟΑΤΚΙ+",
+    description:
+      "Κάθε άνθρωπος έχει το δικαίωμα να ζει, να αγαπά και να εκφράζεται αυθεντικά, χωρίς τον φόβο της κριτικής, του στίγματος ή της απόρριψης. Προσφέρω έναν απολύτως ασφαλή χώρο, ελεύθερο από προκαταλήψεις, για άτομα της κοινότητας που αναζητούν υποστήριξη. Δουλεύουμε σε θέματα όπως:",
+    groups: [
+      {
+        heading: "Θέματα που δουλεύουμε",
+        items: [
+          "Αποδοχή & Ταυτότητα: η διαχείριση της ταυτότητας φύλου, του σεξουαλικού προσανατολισμού και η διαδικασία του coming out.",
+          "Κοινωνική πίεση & διακρίσεις: η αντιμετώπιση του κοινωνικού στίγματος, της ομοφοβίας, στο οικογενειακό ή εργασιακό περιβάλλον.",
+          "Σχέσεις και οικογένεια: η ενδυνάμωση των συντροφικών σχέσεων, η διαχείριση συγκρούσεων και η υποστήριξη σε θέματα που αφορούν τη ΛΟΑΤΚΙ+ γονεικότητα.",
+          "Εσωτερικοποιημένη πίεση: η απελευθέρωση από ενοχές και ντροπή, με στόχο την αυτοεκτίμηση και την προσωπική σου ανάπτυξη.",
+        ],
+      },
+    ],
+  },
+  {
+    number: "08",
+    title: "Mindfulness (Ενσυνειδητότητα)",
+    description:
+      "Μαθαίνεις να εκπαιδεύεις τον νου σου να παραμένει στο παρόν, αφήνοντας πίσω τη «βαβούρα» των αρνητικών σκέψεων και το άγχος για το μέλλον. Μέσα από απλές, καθημερινές πρακτικές ενσυνειδητότητας, μειώνουμε το στρες, προλαμβάνουμε το burnout και φέρνουμε ουσιαστική ηρεμία στη ζωή σου και στην καθημερινότητά σου.",
+  },
+  {
+    number: "09",
+    title: "Συμβουλευτική Γονέων",
+    description:
+      "Ο ρόλος του γονέα είναι από τους πιο όμορφους αλλά και τους πιο απαιτητικούς στη ζωή. Μέσα από τη συμβουλευτική γονέων, σου προσφέρω υποστήριξη για να κατανοήσεις καλύτερα τις ανάγκες των παιδιών σου, να διαχειριστείς τις καθημερινές εντάσεις, να θέσεις υγιή όρια και να χτίσεις μια σχέση βαθιάς εμπιστοσύνης στην οικογένεια.",
+  },
+  {
+    number: "10",
+    title: "Συμβουλευτική Εφήβων",
+    description:
+      "Η εφηβεία είναι μια περίοδος μεγάλων αλλαγών, εντόνων συναισθημάτων και αναζήτησης ταυτότητας. Προσφέρω στους εφήβους έναν δικό τους, απολύτως εμπιστευτικό χώρο, έξω από το οικογενειακό περιβάλλον, για να εκφράσουν ελεύθερα τις ανησυχίες τους, να διαχειριστούν το σχολικό άγχος, τις σχέσεις τους και να ενισχύσουν την αυτοεκτίμησή τους.",
+  },
+];
+
+const serviceList = [
+  "Ατομικές συνεδρίες",
+  "Ομαδικές συνεδρίες",
+  "Συμβουλευτική ζευγαριών",
+  "Συμβουλευτική γονέων",
+  "Συμβουλευτική εφήβων",
+  "Προσωπική ανάπτυξη",
+  "ΛΟΑΤΚΙ+",
+  "Mindfulness",
+  "Θεραπευτική γιόγκα",
+  "Διαλογισμός",
 ];
 ---
 
@@ -30,14 +149,41 @@ const services = [
       <span
         class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4 service-reveal opacity-0"
       >
-        Υπηρεσιες
+        Υπηρεσίες
       </span>
       <h2
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-neutral-950 leading-tight service-reveal opacity-0"
         style="animation-delay: 0.05s;"
       >
-        Πώς μπορούμε να <span class="text-primary-700 italic">βοηθήσουμε</span>
+        Πώς θα <span class="text-primary-700 italic">δουλέψουμε μαζί</span>
       </h2>
+    </div>
+
+    <!-- Signs / When to seek support -->
+    <div class="mb-20 service-reveal opacity-0" style="animation-delay: 0.1s;">
+      <h3 class="text-2xl md:text-3xl font-serif text-neutral-950 mb-3">
+        Μερικά σημάδια
+      </h3>
+      <p class="text-neutral-500 max-w-2xl leading-relaxed mb-10">
+        Δεν χρειάζεται να φτάσεις στα όριά σου για να ζητήσεις υποστήριξη. Αν
+        αναγνωρίζεις τον εαυτό σου σε κάποιο από τα παρακάτω, είμαι εδώ για σένα.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          signs.map((sign, i) => (
+            <div
+              class="p-6 bg-white border border-stone-200 shadow-md shadow-stone-200/50"
+            >
+              <h4 class="text-base font-semibold text-neutral-950 mb-2">
+                {sign.title}
+              </h4>
+              <p class="text-sm text-neutral-500 leading-relaxed">
+                {sign.description}
+              </p>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
     <!-- Services -->
@@ -56,27 +202,28 @@ const services = [
 
               <!-- Content -->
               <div>
-                <h3 class="text-2xl md:text-3xl font-serif text-neutral-950 mb-8">
+                <h3 class="text-2xl md:text-3xl font-serif text-neutral-950 mb-6">
                   {service.title}
                 </h3>
-                <div class="space-y-6">
-                  <div>
-                    <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-600 mb-2">
-                      Ποιον αφορα
+                <p class="text-base md:text-lg text-neutral-600 leading-relaxed">
+                  {service.description}
+                </p>
+
+                {service.groups?.map((group) => (
+                  <div class="mt-8">
+                    <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-600 mb-4">
+                      {group.heading}
                     </h4>
-                    <p class="text-base md:text-lg text-neutral-600 leading-relaxed">
-                      {service.who}
-                    </p>
+                    <ul class="space-y-3">
+                      {group.items.map((item) => (
+                        <li class="flex items-start gap-3 text-base md:text-lg text-neutral-600 leading-relaxed">
+                          <span class="mt-2 w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div>
-                    <h4 class="text-sm font-semibold uppercase tracking-wider text-primary-600 mb-2">
-                      Τι να περιμενετε
-                    </h4>
-                    <p class="text-base md:text-lg text-neutral-600 leading-relaxed">
-                      {service.expect}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -85,12 +232,29 @@ const services = [
       <div class="border-t border-stone-200"></div>
     </div>
 
+    <!-- Service chips -->
+    <div class="mt-16 service-reveal opacity-0" style="animation-delay: 0.2s;">
+      <h3 class="text-lg font-serif text-neutral-950 mb-6">Υπηρεσίες</h3>
+      <div class="flex flex-wrap gap-3">
+        {
+          serviceList.map((s) => (
+            <span class="px-4 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-primary-200">
+              {s}
+            </span>
+          ))
+        }
+      </div>
+      <p class="mt-6 text-sm text-neutral-500">
+        Συνεδρίες online / δια ζώσης.
+      </p>
+    </div>
+
     <!-- CTA -->
     <div
       class="text-center mt-20 service-reveal opacity-0"
-      style="animation-delay: 0.2s;"
+      style="animation-delay: 0.25s;"
     >
-      <Button href="/booking" variant="primary">Κλείσε δωρεάν συνεδρία γνωριμίας</Button>
+      <Button href="/booking" variant="primary">Κλείσε ραντεβού</Button>
     </div>
   </div>
 </section>

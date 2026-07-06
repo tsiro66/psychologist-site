@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import bgImage from "../assets/bg.jpg";
 import Button from "../components/Button.astro";
 
-const title = "Βρες την ηρεμία σου μέσω της ψυχοθεραπείας";
+const title = "Η αντίληψή σου θα γίνει πιο ξεκαθαρή μόνο αν κοιτάξεις μέσα στην ψυχή σου";
 const words = title.split(" ");
 ---
 
@@ -35,7 +35,7 @@ const words = title.split(" ");
           class="inline-block animate-blur-in opacity-0"
           style={`animation-delay: ${0.5 + i * 0.12}s; animation-fill-mode: forwards;`}
         >
-          {word === "ψυχοθεραπείας" ? (
+          {word === "ψυχή" ? (
             <span class="text-primary-700 italic">{word}</span>
           ) : (
             word
@@ -46,13 +46,21 @@ const words = title.split(" ");
   </h1>
 
   <p
-    class="relative z-10 mt-6 text-base text-white/90 leading-relaxed animate-fade-in-up opacity-0 font-medium"
+    class="relative z-10 mt-3 text-sm text-white/70 italic animate-fade-in-up opacity-0 font-medium"
+    style="animation-delay: 1.15s; animation-fill-mode: forwards;"
+  >
+    — Carl Jung
+  </p>
+
+  <p
+    class="relative z-10 mt-6 text-base text-white/90 leading-relaxed animate-fade-in-up opacity-0 font-medium max-w-4xl"
     style="animation-delay: 1.2s; animation-fill-mode: forwards;"
   >
-    Είτε αντιμετωπίζεις άγχος, κατάθλιψη, είτε απλά θέλεις να κατανοήσεις
-    καλύτερα τον εαυτό σου,
-    <br class="hidden md:inline" />
-    είμαστε εδώ για να σε στηρίξουμε σε κάθε βήμα του ταξιδιού σου προς την ευεξία.
+    Είτε αντιμετωπίζεις καθημερινό άγχος, κρίσεις πανικού και κατάθλιψη, είτε
+    βιώνεις συναισθηματικό burnout, δεν χρειάζεται να το περνάς μόνος σου.
+    Είμαι εδώ για να σου προσφέρω έναν ασφαλή χώρο (online ή δια ζώσης), όπου
+    μαζί θα θεραπεύσουμε το παρόν σου και θα ξεκλειδώσουμε την προσωπική σου
+    ανάπτυξη.
   </p>
 
   <div
@@ -70,7 +78,7 @@ const words = title.split(" ");
     <span
       class="text-sm uppercase tracking-[0.5em] text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
     >
-      Δες περισσοτερα
+      Δες περισσότερα
     </span>
 
     <div class="w-[2px] h-14 bg-white/40 relative overflow-hidden rounded-full">
