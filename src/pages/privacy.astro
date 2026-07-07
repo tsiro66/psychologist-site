@@ -1,0 +1,222 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+
+const lastUpdated = "Ιούλιος 2026";
+---
+
+<MainLayout
+  title="Πολιτική Απορρήτου | Κατερίνα Κρητικού — Ψυχολόγος"
+  description="Πολιτική απορρήτου προσωπικών δεδομένων της συμβούλου ψυχικής υγείας Κατερίνας Κρητικού. Συλλογή, χρήση, δικαιώματα και φύλαξη δεδομένων (GDPR)."
+  canonical="/privacy"
+>
+  <section class="pt-32 md:pt-10 pb-16 md:pb-28 px-4 md:px-6 bg-primary-50">
+    <div class="max-w-3xl mx-auto">
+      <span
+        class="inline-block text-sm tracking-widest uppercase text-primary-600 font-semibold mb-4"
+      >
+        Νομική Σημείωση
+      </span>
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl font-serif text-neutral-950 leading-tight mb-4"
+      >
+        Πολιτική <span class="text-primary-700 italic">Απορρήτου</span>
+      </h1>
+      <p class="text-sm text-neutral-500 mb-10">Τελευταία ενημέρωση: {lastUpdated}</p>
+
+      <div class="prose-privacy space-y-10 text-neutral-700 leading-relaxed">
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            1. Υπεύθυνος επεξεργασίας
+          </h2>
+          <p>
+            Υπεύθυνος επεξεργασίας προσωπικών δεδομένων είναι η
+            <strong>Κατερίνα Κρητικού</strong>, Σύμβουλος Ψυχικής Υγείας, με
+            επαγγελματική έδρα: Βύρωνος 13 (2ος όροφος, εντός εμπορικού κέντρου),
+            Ηλιούπολη 16342, Αθήνα. Επικοινωνία:
+            <a href="tel:+306974210321" class="text-primary-700 hover:underline">+30 697 421 0321</a>
+            /
+            <a href="mailto:katkritikou1968@gmail.com" class="text-primary-700 hover:underline">katkritikou1968@gmail.com</a>.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            2. Ποια δεδομένα συλλέγουμε
+          </h2>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Φόρμα επικοινωνίας:</strong> όνομα, email, τηλέφωνο, μήνυμα.</li>
+            <li><strong>Κράτηση ραντεβού:</strong> όνομα, τηλέφωνο, επιλεγμένη ημερομηνία και ώρα.</li>
+            <li><strong>Περιεχόμενο μηνύματος:</strong> τυχόν πληροφορίες υγειονομικού/ψυχολογικού χαρακτήρα που μοιράζεστε εθελοντικά.</li>
+            <li><strong>Σύνδεση διαχειριστή:</strong> cookie συνεδρίας αυθεντικοποίησης (Supabase).</li>
+            <li><strong>Τεχνικά δεδομένα:</strong> διεύθυνση IP, τύπος περιηγητή, προσωρινά αρχεία καταγραφής διακομιστή (Cloudflare).</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            3. Σκοπός και νομική βάση
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-stone-200">
+              <thead class="bg-primary-100 text-neutral-900">
+                <tr>
+                  <th class="text-left p-3 border-b border-stone-200">Δεδομένα</th>
+                  <th class="text-left p-3 border-b border-stone-200">Σκοπός</th>
+                  <th class="text-left p-3 border-b border-stone-200">Νομική βάση</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr>
+                  <td class="p-3 border-b border-stone-100 align-top">Στοιχεία επικοινωνίας / κράτησης</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Διεκπεραίωση ραντεβού και επικοινωνία</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Εκτέλεση σύμβασης (Άρθρο 6.1.β)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 border-b border-stone-100 align-top">Περιεχόμενο μηνύματος</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Διευκόλυνση της θεραπευτικής σχέσης</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Συγκατάθεση (Άρθρο 6.1.α & 9.2.α)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 border-b border-stone-100 align-top">Αρχείο κρατήσεων</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Τήρηση επαγγελματικού αρχείου</td>
+                  <td class="p-3 border-b border-stone-100 align-top">Νομική υποχρέωση (Άρθρο 6.1.γ)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 align-top">Τεχνικά / IP</td>
+                  <td class="p-3 align-top">Ασφάλεια και σταθερότητα της ιστοσελίδας</td>
+                  <td class="p-3 align-top">Έννομο συμφέρον (Άρθρο 6.1.φ)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-sm text-neutral-500 mt-3">
+            Τα υγειονομικά δεδομένα αποτελούν ειδική κατηγορία (Άρθρο 9 GDPR) και
+            επεξεργάζονται μόνο με ρητό συγκατάθεση.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            4. Παραλήπτες και εκτελούντες επεξεργασία
+          </h2>
+          <p>Τα δεδομένα δεν πωλούνται ούτε διαβιβάζονται σε τρίτους για εμπορική χρήση. Χρησιμοποιούνται οι εξής πάροχοι:</p>
+          <ul class="list-disc pl-5 space-y-1.5 mt-3">
+            <li><strong>Supabase</strong> — βάση δεδομένων και αυθεντικοποίηση διαχειριστή.</li>
+            <li><strong>Resend</strong> — αποστολή email ειδοποιήσεων (νέα κράτηση, φόρμα επικοινωνίας).</li>
+            <li><strong>Cloudflare</strong> — φιλοξενία και διανομή της ιστοσελίδας (CDN).</li>
+            <li><strong>Google Maps</strong> — εμφάνιση χάρτη τοποθεσίας στο footer. Κατά την προβολή του χάρτη αποστέλλεται η διεύθυνση IP του περιηγητή στην Google.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            5. Διαβίβαση δεδομένων εκτός ΕΕ
+          </h2>
+          <p>
+            Σε περίπτωση που κάποιος πάροχος αποθηκεύει δεδομένα εκτός Ευρωπαϊκής
+            Ένωσης, η διαβίβαση γίνεται βάσει Τυποποιημένων Συμβατικών Ρητρών (SCC)
+            και μόνο όσο απαιτείται για την παροχή της υπηρεσίας. Ανατρέξτε στις
+            αντίστοιχες πολιτικές κάθε πάροχου για λεπτομέρειες.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            6. Χρόνος τήρησης
+          </h2>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li>Εγγραφές κρατήσεων: όσο διαρκεί η θεραπευτική σχέση και στη συνέχεια για τον χρόνο τήρησης επαγγελματικού/φορολογικού αρχείου.</li>
+            <li>Μηνύματα φόρμας επικοινωνίας: έως την εκπλήρωση του σκοπού και για εύλογο διάστημα (έως 12 μήνες).</li>
+            <li>Τεχνικά αρχεία / IP: προσωρινά, σύμφωνα με την προεπιλογή του Cloudflare.</li>
+          </ul>
+          <p class="text-sm text-neutral-500 mt-3">
+            Μετά τη λήξη του χρόνου τήρησης τα δεδομένα διαγράφονται ή ανωνυμοποιούνται.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            7. Cookies
+          </h2>
+          <p>
+            Η ιστοσελίδα χρησιμοποιεί μόνο τα αναγκαία cookies:
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5 mt-3">
+            <li>Cookie συνεδρίας αυθεντικοποίησης (Supabase), αποκλειστικά για τον διαχειριστή.</li>
+            <li>Φόρτωση του χάρτη Google Maps, ο οποίος μπορεί να τοποθετήσει δικό του cookie.</li>
+          </ul>
+          <p class="mt-3">
+            Δεν χρησιμοποιούνται cookies ανάλυσης, διαφήμισης ή παρακολούθησης.
+            Μπορείτε να διαχειριστείτε τα cookies από τις ρυθμίσεις του περιηγητή σας.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            8. Μέτρα ασφαλείας
+          </h2>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li>Κρυπτογράφηση μεταφοράς δεδομένων (HTTPS).</li>
+            <li>Περιορισμένη πρόσβαση — μόνο η υπεύθυνη επεξεργασίας έχει πρόσβαση στα αρχεία.</li>
+            <li>Κλειδιά υπηρεσίας (service keys) διατηρούνται αποκλειστικά στην πλευρά του διακομιστή.</li>
+            <li>Row-Level Security στη βάση δεδομένων (Supabase RLS).</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            9. Τα δικαιώματά σας (GDPR)
+          </h2>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li><strong>Πρόσβαση</strong> — επιβεβαίωση και αντίγραφο των δεδομένων σας (Άρθρο 15).</li>
+            <li><strong>Διόρθωση</strong> — διόρθωση ανακριβών δεδομένων (Άρθρο 16).</li>
+            <li><strong>Διαγραφή</strong> — διαγραφή δεδομένων («δικαίωμα λήθης», Άρθρο 17).</li>
+            <li><strong>Περιορισμός</strong> επεξεργασίας (Άρθρο 18).</li>
+            <li><strong>Φορητότητα</strong> δεδομένων (Άρθρο 20).</li>
+            <li><strong>Διαφωνία</strong> σε επεξεργασία βάσει έννομου συμφέροντος (Άρθρο 21).</li>
+            <li><strong>Ανάκληση συγκατάθεσης</strong> οποτεδήποτε, χωρίς να πλήττεται η μέχρι τότε νομιμότητα (Άρθρο 7.3).</li>
+            <li><strong>Καταγγελία</strong> στην αρμόδια Αρχή. Στην Ελλάδα: Αρχή Διασφάλισης Απορρήτου Προσωπικών Δεδομένων (<a href="https://www.aadelp.gov.gr" target="_blank" rel="noopener noreferrer" class="text-primary-700 hover:underline">www.aadelp.gov.gr</a>).</li>
+          </ul>
+          <p class="mt-3">
+            Για να ασκήσετε οποιοδήποτε δικαίωμα, στείλτε αίτημα στο
+            <a href="mailto:katkritikou1968@gmail.com" class="text-primary-700 hover:underline">katkritikou1968@gmail.com</a>.
+            Απαντάμε εντός ενός (1) μηνός, όπως ορίζει ο κανονισμός.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            10. Αλλαγές πολιτικής
+          </h2>
+          <p>
+            Η παρούσα πολιτική μπορεί να ενημερώνεται. Σημαντικές αλλαγές θα
+            αναρτώνται σε αυτή τη σελίδα με νέα ημερομηνία «Τελευταία ενημέρωση».
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl md:text-2xl font-serif text-neutral-900 mb-3">
+            11. Επικοινωνία
+          </h2>
+          <p>
+            Για οποιοδήποτε ερώτημα σχετικά με τα προσωπικά σας δεδομένα:
+          </p>
+          <ul class="list-none pl-0 space-y-1 mt-3">
+            <li>Κατερίνα Κρητικού — Βύρωνος 13, Ηλιούπολη 16342, Αθήνα</li>
+            <li>Τηλέφωνο: <a href="tel:+306974210321" class="text-primary-700 hover:underline">+30 697 421 0321</a></li>
+            <li>Email: <a href="mailto:katkritikou1968@gmail.com" class="text-primary-700 hover:underline">katkritikou1968@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .prose-privacy h2 {
+    scroll-margin-top: 6rem;
+  }
+  .prose-privacy a {
+    word-break: break-word;
+  }
+</style>

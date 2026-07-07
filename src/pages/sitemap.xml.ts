@@ -9,6 +9,7 @@ const routes = [
   "/faq",
   "/booking",
   "/contact",
+  "/privacy",
 ];
 
 export const prerender = true;
