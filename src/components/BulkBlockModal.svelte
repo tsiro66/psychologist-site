@@ -12,6 +12,7 @@
   let loadSeq = 0;
 
   const weekdays = [
+    { value: -1, label: "Όλες τις ημέρες" },
     { value: 0, label: "Κυριακή" },
     { value: 1, label: "Δευτέρα" },
     { value: 2, label: "Τρίτη" },
@@ -209,7 +210,7 @@
         <p class="text-sm text-neutral-500">
           {#if mode === "weekday"}
             Κρατούνται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
-            ώρες κάθε <span class="font-semibold text-neutral-900">{previewLabel}</span>.
+            ώρες {weekday === -1 ? "κάθε μέρα" : `κάθε ${previewLabel}`}. 
           {:else}
             Κρατούνται <span class="font-semibold text-neutral-900">{selectedHours.size}</span>
             ώρες στις <span class="font-semibold text-neutral-900">{previewLabel}</span>.
@@ -218,7 +219,7 @@
       {:else}
         <p class="text-sm text-neutral-500">
           {#if mode === "weekday"}
-            Όλες οι ώρες είναι ελεύθερες κάθε <span class="font-semibold text-neutral-900">{previewLabel}</span>.
+            Όλες οι ώρες είναι ελεύθερες {weekday === -1 ? "κάθε μέρα" : `κάθε ${previewLabel}`}.
           {:else if previewLabel}
             Όλες οι ώρες είναι ελεύθερες στις <span class="font-semibold text-neutral-900">{previewLabel}</span>.
           {/if}

@@ -42,10 +42,42 @@ export const GET: APIRoute = async ({ url, cookies, request }) => {
 
   if (weekdayParam !== null) {
     const weekday = Number(weekdayParam);
-    if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6) {
+    if (!Number.isInteger(weekday) || weekday < -1 || weekday > 6) {
       return new Response(JSON.stringify({ error: "Μη έγκυρη ημέρα" }), {
         status: 400,
       });
+    }
+    if (weekday === -1) {
+      const { data, error } = await getSupabaseAdmin()
+        .from("recurring_blocks")
+        .select("weekday,hour");
+      if (error) {
+        console.error("[bulk-block GET all]", error);
+        return new Response(JSON.stringify({ error: "Αποτυχία φόρτωσης", detail: error.message }), {
+          status: 500,
+        });
+      }
+      // Hours blocked on ALL weekdays (intersection)
+      const byDay = new Map<number, Set<string>>();
+      for (const r of data ?? []) {
+        if (!byDay.has(r.weekday)) byDay.set(r.weekday, new Set());
+        byDay.get(r.weekday)!.add(r.hour);
+      }
+      let intersection: Set<string> | null = null;
+      for (let d = 0; d <= 6; d++) {
+        const set = byDay.get(d) ?? new Set<string>();
+        if (intersection === null) {
+          intersection = new Set(set);
+        } else {
+          const next = new Set<string>();
+          for (const h of intersection) if (set.has(h)) next.add(h);
+          intersection = next;
+        }
+      }
+      return new Response(
+        JSON.stringify({ hours: [...(intersection ?? new Set<string>())] }),
+        { status: 200 },
+      );
     }
     const { data, error } = await getSupabaseAdmin()
       .from("recurring_blocks")
@@ -176,10 +208,59 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   if (
     typeof body.weekday === "number" &&
     Number.isInteger(body.weekday) &&
-    body.weekday >= 0 &&
+    body.weekday >= -1 &&
     body.weekday <= 6
   ) {
     const weekday = body.weekday;
+
+    if (weekday === -1) {
+      // Apply the same desired hour set to every weekday 0..6.
+      const { data: existingAll, error: fetchAllErr } = await getSupabaseAdmin()
+        .from("recurring_blocks")
+        .select("id,weekday,hour");
+      if (fetchAllErr) {
+        return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), {
+          status: 500,
+        });
+      }
+      const rows = (existingAll ?? []).filter((r) => r.hour !== null) as { id: string; weekday: number; hour: string }[];
+      const toDelete = rows
+        .filter((r) => !desired.has(r.hour))
+        .map((r) => r.id);
+      const existingByKey = new Set(rows.map((r) => `${r.weekday}|${r.hour}`));
+      const toInsert: { weekday: number; hour: string }[] = [];
+      for (let d = 0; d <= 6; d++) {
+        for (const h of desired) {
+          if (!existingByKey.has(`${d}|${h}`)) toInsert.push({ weekday: d, hour: h });
+        }
+      }
+
+      if (toDelete.length > 0) {
+        const { error: delErr } = await getSupabaseAdmin()
+          .from("recurring_blocks")
+          .delete()
+          .in("id", toDelete);
+        if (delErr) {
+          return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), {
+            status: 500,
+          });
+        }
+      }
+      if (toInsert.length > 0) {
+        const { error: insErr } = await getSupabaseAdmin()
+          .from("recurring_blocks")
+          .insert(toInsert);
+        if (insErr) {
+          return new Response(JSON.stringify({ error: "Αποτυχία ενημέρωσης" }), {
+            status: 500,
+          });
+        }
+      }
+      return new Response(
+        JSON.stringify({ success: true, blocked: desired.size, weekday: -1 }),
+        { status: 200 },
+      );
+    }
 
     const { data: existing, error: fetchErr } = await getSupabaseAdmin()
       .from("recurring_blocks")
