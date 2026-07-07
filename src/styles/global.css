@@ -63,8 +63,8 @@
    Astro scoping doesn't add a cid to the .astro-vt-nav ancestor (which sits
    on <html> and has no cid); otherwise the selector never matches.
    astro-vt-nav is added to <html> in MainLayout's astro:before-swap. */
-.astro-vt-nav .animate-nav-drop,
-.astro-vt-nav .animate-blur-in {
+.astro-vt-nav .navbar .animate-nav-drop,
+.astro-vt-nav .navbar .animate-blur-in {
     opacity: 1 !important;
     animation: none !important;
     transform: none !important;
