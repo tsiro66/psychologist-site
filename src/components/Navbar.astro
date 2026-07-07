@@ -17,13 +17,14 @@ const navLinks = [
     <a
       href="/"
       class="relative flex flex-col hover:opacity-80 transition-opacity"
+      aria-label="Αρχική σελίδα — Κατερίνα Κρητικού"
     >
       <!-- green (original) — shown when scrolled -->
       <Image
         src="/logo.png"
         alt="Logo"
         width={150}
-        height={150}
+        height={56}
         class="logo-green opacity-0 transition-opacity duration-500 filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)]"
       />
       <!-- purple — shown when at top -->
@@ -31,7 +32,7 @@ const navLinks = [
         src="/logo.png"
         alt=""
         width={150}
-        height={150}
+        height={56}
         class="logo-purple absolute inset-0 filter-[hue-rotate(100deg)_saturate(2)_brightness(0.6)_contrast(1.2)] opacity-100 transition-opacity duration-500"
       />
     </a>

@@ -29,13 +29,13 @@ const services = [
     >
       <!-- Brand column -->
       <div class="col-span-2 lg:col-span-1">
-        <a href="/" class="inline-block mb-4">
+        <a href="/" class="inline-block mb-4" aria-label="Αρχική σελίδα — Κατερίνα Κρητικού">
           <Image
             class="nav-logo filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)] hidden sm:block"
             src="/logo.png"
             alt="Logo"
             width={150}
-            height={150}
+            height={56}
           />
         </a>
         <p class="text-sm text-primary-300 leading-relaxed max-w-xs mb-6">
@@ -100,11 +100,11 @@ const services = [
 
       <!-- Navigation column -->
       <div>
-        <h4
+        <h3
           class="text-sm font-semibold text-white uppercase tracking-wider mb-6"
         >
           Πλοήγηση
-        </h4>
+        </h3>
         <ul class="space-y-3">
           {
             navLinks.map((link) => (
@@ -123,11 +123,11 @@ const services = [
 
       <!-- Services column -->
       <div class="hidden lg:block">
-        <h4
+        <h3
           class="text-sm font-semibold text-white uppercase tracking-wider mb-6"
         >
           Υπηρεσίες
-        </h4>
+        </h3>
         <ul class="space-y-3">
           {
             services.map((service) => (
@@ -146,11 +146,11 @@ const services = [
 
       <!-- Contact column -->
       <div>
-        <h4
+        <h3
           class="text-sm font-semibold text-white uppercase tracking-wider mb-6"
         >
           Επικοινωνία
-        </h4>
+        </h3>
         <ul class="space-y-4">
           <li>
             <a
