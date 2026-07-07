@@ -9,9 +9,57 @@ interface Props {
   title: string;
   description?: string;
   navbarScrolled?: boolean;
+  /** Override the canonical URL path (defaults to current pathname). */
+  canonical?: string;
+  /** Set true on pages where indexing is unwanted (e.g. admin). */
+  noindex?: boolean;
 }
 
-const { title, description, navbarScrolled } = Astro.props;
+const {
+  title,
+  description = "Κατερίνα Κρητικού — Σύμβουλος Ψυχικής Υγείας, Mindfulness Instructor & Yoga Teacher. Ατομικές συνεδρίες, συμβουλευτική ζευγαριών, διαχείριση άγχους. Ηλιούπολη, Αθήνα.",
+  navbarScrolled,
+  canonical,
+  noindex = false,
+} = Astro.props;
+
+const SITE = "https://katerinakritikou.gr";
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, SITE).href;
+
+// LocalBusiness structured data for rich results (local SEO).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Psychologist",
+  name: "Κατερίνα Κρητικού",
+  description,
+  url: SITE,
+  image: `${SITE}/logo.png`,
+  telephone: "+306974210321",
+  email: "katkritikou1968@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Βύρωνος 13, 2ος όροφος (εντός εμπορικού κέντρου)",
+    addressLocality: "Ηλιούπολη",
+    postalCode: "16342",
+    addressCountry: "GR",
+  },
+  areaServed: "Ηλιούπολη, Αθήνα",
+  openingHours: [
+    "Mo-Th 08:30-12:30",
+    "Mo-Th 18:30-22:30",
+    "Fr 08:30-13:30",
+    "Fr 15:30-22:30",
+    "Sa 10:30-14:30",
+  ],
+  sameAs: [],
+  knowsAbout: [
+    "Συμβουλευτική Ψυχικής Υγείας",
+    "Mindfulness",
+    "Διαχείριση Κρίσεων Πανικού & Άγχους",
+    "Συμβουλευτική Ζευγαριών & Σχέσεων",
+    "Yoga",
+  ],
+};
 ---
 
 <html lang="el">
@@ -23,6 +71,29 @@ const { title, description, navbarScrolled } = Astro.props;
     <Font cssVariable="--font-google" preload />
     <Font cssVariable="--font-noto" />
     <ClientRouter />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="el_GR" />
+    <meta property="og:site_name" content="Κατερίνα Κρητικού | Ψυχολόγος" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={`${SITE}/logo.png`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE}/logo.png`} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <script>
       // Mark pages arriving via client-router so the navbar entrance animation
       // (nav-drop / blur-in) can be skipped — it should only play on first load.
@@ -30,8 +101,6 @@ const { title, description, navbarScrolled } = Astro.props;
         e.newDocument.documentElement.classList.add("astro-vt-nav");
       });
     </script>
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
   </head>
   <body class="flex flex-col min-h-screen" {...navbarScrolled && { "data-navbar-scrolled": "" }}>
     <Navbar />

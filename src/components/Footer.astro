@@ -271,7 +271,7 @@ const services = [
   // - Async callbacks are guarded so stale callbacks from a previous
   //   navigation can never touch the new map/card.
   // Everything below is idempotent: safe to call repeatedly.
-  const MAP_KEY = "AIzaSyBwzWx-pgqvVGvlXih2ShecZeJzYe23TmM";
+  const MAP_KEY = import.meta.env.PUBLIC_GOOGLE_MAPS_KEY;
   const MAP_LAT = 37.93105398341229;
   const MAP_LNG = 23.756774723212008;
   const PLACE_ID = "ChIJDwnIxgK9oRQRyByqPEptoyA";
