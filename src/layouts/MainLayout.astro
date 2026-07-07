@@ -23,6 +23,13 @@ const { title, description, navbarScrolled } = Astro.props;
     <Font cssVariable="--font-google" preload />
     <Font cssVariable="--font-noto" />
     <ClientRouter />
+    <script>
+      // Mark pages arriving via client-router so the navbar entrance animation
+      // (nav-drop / blur-in) can be skipped — it should only play on first load.
+      document.addEventListener("astro:before-swap", (e) => {
+        e.newDocument.documentElement.classList.add("astro-vt-nav");
+      });
+    </script>
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>

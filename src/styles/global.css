@@ -34,3 +34,39 @@
     --color-dark-900: var(--color-dark);
     --color-dark-950: color-mix(in oklch, var(--color-dark), black 35%);
 }
+
+/* Accordion icon layout — force centering so it survives client-router
+   navigations where per-page Tailwind utilities may not reapply. */
+.service-icon,
+.faq-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.service-icon svg,
+.faq-icon svg {
+    display: block !important;
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+/* Entrance reveal animations now run on client-router navigations too,
+   matching full-page-refresh behavior. The view-transition snapshot of the
+   incoming page captures reveal elements at their base (opacity:0) state;
+   the cross-fade therefore lands on a shell with blank content areas, which
+   the IntersectionObserver-driven reveal then blur-fades in. */
+
+/* Skip the navbar entrance animation (nav-drop / blur-in) on client-router
+   arrivals — it should only play on the first full page load, not re-run on
+   every navigation. Lives in global.css (not Navbar's scoped <style>) so
+   Astro scoping doesn't add a cid to the .astro-vt-nav ancestor (which sits
+   on <html> and has no cid); otherwise the selector never matches.
+   astro-vt-nav is added to <html> in MainLayout's astro:before-swap. */
+.astro-vt-nav .animate-nav-drop,
+.astro-vt-nav .animate-blur-in {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+}
