@@ -247,7 +247,7 @@ const services = [
   </div>
 </section>
 
-<style>
+<style is:global>
   @keyframes serviceReveal {
     from {
       filter: blur(8px);
@@ -294,10 +294,12 @@ const services = [
       { threshold: 0.1 }
     );
 
-    document.querySelectorAll(".service-reveal").forEach((el) => {
+    document.querySelectorAll(".service-reveal:not([data-svc-obs])").forEach((el) => {
+      el.setAttribute("data-svc-obs", "");
       serviceObserver.observe(el);
     });
-    document.querySelectorAll(".service-toggle").forEach((btn) => {
+    document.querySelectorAll(".service-toggle:not([data-svc-bound])").forEach((btn) => {
+      btn.setAttribute("data-svc-bound", "");
       btn.addEventListener("click", () => {
         const row = btn.closest(".service-row")!;
         const isOpen = row.classList.contains("is-open");

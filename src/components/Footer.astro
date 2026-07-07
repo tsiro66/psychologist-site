@@ -226,8 +226,9 @@ const services = [
     </div>
 
     <!-- Map -->
-    <div class="relative w-full h-[240px] sm:h-[300px] lg:h-[360px] mb-10 md:mb-20 overflow-hidden border border-dark-700">
+    <div class="relative w-full h-[300px] sm:h-[360px] lg:h-[420px] mb-10 md:mb-20 overflow-hidden border border-dark-700">
       <div id="footer-map" class="w-full h-full bg-dark-800"></div>
+      <div id="footer-map-card" class="hidden absolute left-3 bottom-3 sm:left-4 sm:bottom-4 z-10 w-[260px] max-w-[calc(100%-1.5rem)] max-h-[calc(100%-1.5rem)] overflow-y-auto bg-dark-900/95 backdrop-blur-sm border border-dark-600 shadow-2xl shadow-black/50 p-4"></div>
     </div>
 
     <!-- Divider -->
@@ -262,9 +263,19 @@ const services = [
 </footer>
 
 <script>
+  // Google Maps + Astro ClientRouter integration.
+  // - Google JS API loads exactly once (shared promise on window).
+  // - The previous map is released at the start of astro:page-load (after the
+  //   DOM swap), never on astro:before-swap — see the note at the bottom for why.
+  // - Map is (re)created on astro:page-load in the fresh #footer-map.
+  // - Async callbacks are guarded so stale callbacks from a previous
+  //   navigation can never touch the new map/card.
+  // Everything below is idempotent: safe to call repeatedly.
   const MAP_KEY = "AIzaSyBwzWx-pgqvVGvlXih2ShecZeJzYe23TmM";
   const MAP_LAT = 37.93105398341229;
   const MAP_LNG = 23.756774723212008;
+  const PLACE_ID = "ChIJDwnIxgK9oRQRyByqPEptoyA";
+  const MAPS_LINK = "https://maps.app.goo.gl/YvLzjySg75LaQXCb8";
 
   const darkBlueStyles = [
     { elementType: "geometry", stylers: [{ color: "#0b1a3a" }] },
@@ -285,53 +296,279 @@ const services = [
     { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#4a6699" }] },
   ];
 
-  let loaded = false;
-  let mapEl: HTMLElement | null = null;
+  // ---- Module-scope runtime state (single source of truth) ----
+  type GMaps = any;
+  let gmapsReady: Promise<void> | null = null;
+  let currentMap: GMaps = null;
+  let currentMarker: GMaps = null;
+  let currentIo: IntersectionObserver | null = null;
+  const trackedListeners: Array<{ obj: any; event: any; listener: any }> = [];
+  let listenersAttached = false;
+  // Resolves when the in-flight Astro view-transition cross-fade has finished
+  // animating (or immediately if there is none / fallback mode). We capture it
+  // from astro:before-swap's `e.viewTransition` so we can defer ALL map work
+  // until after the cross-fade — otherwise reinit heavy-paint (new google.maps.Map)
+  // runs during the animation and the page appears not to animate.
+  let vtFinished: Promise<void> = Promise.resolve();
 
+  function escapeHtml(str: string): string {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  const DAY_SHORT: Record<string, string> = {
+    "Δευτέρα": "Δευ", "Τρίτη": "Τρι", "Τετάρτη": "Τετ",
+    "Πέμπτη": "Πεμ", "Παρασκευή": "Παρ", "Σάββατο": "Σαβ", "Κυριακή": "Κυρ",
+    // fallbacks if Google returns latin/short variants
+    "Monday": "Δευ", "Tuesday": "Τρι", "Wednesday": "Τετ",
+    "Thursday": "Πεμ", "Friday": "Παρ", "Saturday": "Σαβ", "Sunday": "Κυρ",
+  };
+
+  function condenseHours(weekdayText: string[]): { day: string; hours: string }[] {
+    const parsed = weekdayText.map((line) => {
+      const idx = line.indexOf(":");
+      const dayFull = idx > -1 ? line.slice(0, idx).trim() : line;
+      const hours = idx > -1 ? line.slice(idx + 1).trim() : "";
+      return { day: DAY_SHORT[dayFull] ?? dayFull, hours };
+    });
+    const out: { day: string; hours: string }[] = [];
+    for (const p of parsed) {
+      const last = out[out.length - 1];
+      if (last && last.hours === p.hours) {
+        if (!last.day.includes("–")) {
+          last.day = `${last.day}–${p.day}`;
+        } else {
+          last.day = `${last.day.split("–")[0]}–${p.day}`;
+        }
+      } else {
+        out.push({ ...p });
+      }
+    }
+    return out;
+  }
+
+  function buildCardHtml(d: any): string {
+    const close = `<button type="button" id="footer-map-card-close" aria-label="Κλείσιμο" style="position:absolute;top:6px;right:8px;background:none;border:0;color:#8aa4d6;font-size:18px;line-height:1;cursor:pointer;padding:2px 4px">×</button>`;
+    const name = d.name ? `<div style="font-weight:600;font-size:15px;color:#e8eefc;line-height:1.3;padding-right:18px">${escapeHtml(d.name)}</div>` : "";
+    const rating = d.rating ? `<div style="font-size:12px;color:#fbbf24;margin-top:3px">★ ${d.rating.toFixed(1)}</div>` : "";
+    const addr = d.formatted_address ? `<div style="font-size:12px;color:#a9c0ee;margin-top:6px;line-height:1.5">${escapeHtml(d.formatted_address)}</div>` : "";
+    let photo = "";
+    if (d.photos?.[0]) {
+      try { photo = `<img class="hidden sm:block" src="${d.photos[0].getUrl({ maxWidth: 480 })}" alt="" style="width:100%;height:90px;object-fit:cover;margin-top:8px;border-radius:4px">`; } catch {}
+    }
+    let hours = "";
+    if (d.opening_hours?.weekday_text?.length) {
+      const rows = condenseHours(d.opening_hours.weekday_text)
+        .map((h) => `<div style="font-size:11px;color:#8aa4d6;line-height:1.6"><strong style="color:#a9c0ee;font-weight:600">${escapeHtml(h.day)}:</strong> ${escapeHtml(h.hours)}</div>`)
+        .join("");
+      hours = `<div class="hidden sm:block" style="margin-top:8px;padding-top:8px;border-top:1px solid #1c3470">${rows}</div>`;
+    }
+    const link = `<a href="${d.url || MAPS_LINK}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;font-weight:600;color:#bfdbfe;background:#1c3470;padding:6px 12px;border-radius:4px;text-decoration:none">Οδηγίες →</a>`;
+    return `${close}${name}${rating}${addr}${photo}${hours}${link}`;
+  }
+
+  // Load the Google Maps JS API exactly once for the whole session.
+  // Returns a promise that resolves when window.google.maps (+places) is ready.
+  // Safe to call from any navigation; the injected <script> is added only once.
+  function loadMapsApi(): Promise<void> {
+    const w = window as any;
+    if (w.google?.maps?.places) return Promise.resolve();
+    if (gmapsReady) return gmapsReady;
+    gmapsReady = new Promise<void>((resolve) => {
+      w.initFooterMap = () => resolve();
+      const s = document.createElement("script");
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${MAP_KEY}&callback=initFooterMap&language=el&region=GR&libraries=places&loading=async`;
+      s.async = true;
+      s.defer = true;
+      s.onerror = () => { gmapsReady = null; resolve(); };
+      document.head.appendChild(s);
+    });
+    return gmapsReady;
+  }
+
+  // Full teardown of the current map: clear listeners, drop marker, release
+  // the map JS object, disconnect the IntersectionObserver, and blank the card.
+  // Idempotent. Called at the top of setup() (astro:page-load), AFTER Astro has
+  // swapped in the new DOM, so we never touch the DOM during the view-transition
+  // snapshot phase. The old google.maps.Map object is released here so it can be
+  // GC'd rather than lingering bound to a now-detached subtree.
+  function disposeMap() {
+    resetMapInstance();
+    if (currentIo) { try { currentIo.disconnect(); } catch {} currentIo = null; }
+    const card = document.getElementById("footer-map-card");
+    if (card) { card.innerHTML = ""; card.classList.add("hidden"); }
+  }
+
+  function addTrackedListener(obj: any, event: string, fn: Function) {
+    const g = (window as any).google.maps;
+    const listener = g.event.addListener(obj, event, fn);
+    trackedListeners.push({ obj, event, listener });
+    return listener;
+  }
+
+  // Tear down only the live map/marker (kept the IntersectionObserver + card
+  // intact). Used at the top of renderMap so a re-render on the same container
+  // never stacks two google.maps.Map instances.
+  function resetMapInstance() {
+    const g = (window as any).google?.maps;
+    if (currentMarker) {
+      try { if (g) g.event.clearInstanceListeners(currentMarker); currentMarker.setMap(null); } catch {}
+      currentMarker = null;
+    }
+    if (currentMap) {
+      try { if (g) g.event.clearInstanceListeners(currentMap); } catch {}
+      currentMap = null;
+    }
+    for (const t of trackedListeners) {
+      try { if (g) g.event.removeListener(t.listener); } catch {}
+    }
+    trackedListeners.length = 0;
+  }
+
+  // (Re)create the map inside the current #footer-map.
+  // isConnected + same-container checks abort stale callbacks (e.g. a
+  // loadMapsApi() promise that resolved after the user already navigated
+  // away and came back to a fresh container).
   function renderMap() {
-    if (!mapEl || !(window as any).google?.maps) return;
-    const map = new (window as any).google.maps.Map(mapEl, {
+    const g = (window as any).google?.maps;
+    if (!g) return;
+    // Always query the live container (Astro swaps the DOM between navigations).
+    const el = document.getElementById("footer-map");
+    if (!el || !el.isConnected) return;
+
+    resetMapInstance(); // markers + listeners cleared before recreation
+
+    const map = new g.Map(el, {
       center: { lat: MAP_LAT, lng: MAP_LNG },
       zoom: 15,
       styles: darkBlueStyles,
       disableDefaultUI: true,
-      zoomControl: true,
+      zoomControl: false,
       gestureHandling: "cooperative",
     });
-    new (window as any).google.maps.Marker({
+    currentMap = map;
+
+    const marker = new g.Marker({
       position: { lat: MAP_LAT, lng: MAP_LNG },
       map,
       title: "Κατερίνα Κρητικού",
     });
-  }
+    currentMarker = marker;
 
-  function loadMapsApi() {
-    if (loaded) { renderMap(); return; }
-    loaded = true;
-    (window as any).initFooterMap = renderMap;
-    const s = document.createElement("script");
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${MAP_KEY}&callback=initFooterMap&language=el&region=GR`;
-    s.async = true;
-    s.defer = true;
-    document.head.appendChild(s);
-  }
+    const card = document.getElementById("footer-map-card");
+    if (card) {
+      card.innerHTML = buildCardHtml({
+        name: "Κατερίνα Κρητικού",
+        formatted_address: "Βύρωνος 13 (2ος όροφος, εντός του εμπορικού κέντρου), Ηλιούπολη 16342",
+        url: MAPS_LINK,
+      });
+      card.classList.remove("hidden");
+      const closeBtn = card.querySelector("#footer-map-card-close");
+      closeBtn?.addEventListener("click", () => card.classList.add("hidden"));
+    }
+    addTrackedListener(marker, "click", () => {
+      if (el !== document.getElementById("footer-map")) return; // stale
+      card?.classList.remove("hidden");
+    });
 
-  function setup() {
-    mapEl = document.getElementById("footer-map");
-    if (!mapEl) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            loadMapsApi();
-            io.disconnect();
+    // On mobile, lift the marker above the bottom card so it stays visible.
+    if (window.innerWidth < 640) {
+      const once = g.event.addListenerOnce(map, "idle", () => {
+        if (el === document.getElementById("footer-map")) map.panBy(0, 90);
+      });
+      trackedListeners.push({ obj: map, event: "idle", listener: once });
+    }
+
+    try {
+      const service = new g.places.PlacesService(map);
+      service.getDetails(
+        {
+          placeId: PLACE_ID,
+          fields: ["name", "formatted_address", "opening_hours", "url", "international_phone_number", "rating", "photos"],
+        },
+        (place: any, status: string) => {
+          // Stale callback (container swapped) -> bail.
+          if (!el.isConnected || el !== document.getElementById("footer-map") || !card) return;
+          if (place && status === g.places.PlacesServiceStatus.OK) {
+            card.innerHTML = buildCardHtml(place);
+            card.classList.remove("hidden");
+            const closeBtn = card.querySelector("#footer-map-card-close");
+            closeBtn?.addEventListener("click", () => card.classList.add("hidden"));
           }
-        });
+        }
+      );
+    } catch (e) {
+      console.warn("[map] Places call threw:", e);
+    }
+  }
+
+  // Setup runs on every astro:page-load (initial + each client navigation).
+  // Idempotent: disposes previous state, observes the fresh #footer-map.
+  // CRITICAL: we first await the end of the view-transition cross-fade (captured
+  // in vtFinished). astro:page-load fires after the DOM update but BEFORE the
+  // cross-fade animation finishes; running map dispose/reinit during the
+  // cross-fade disrupts the animation compositor frames → pages look static.
+  function setup() {
+    const finish = vtFinished; // snapshot; vtFinished is reassigned next nav
+    finish.then(() => {
+      // Bail if another navigation superseded us while we were waiting.
+      if (vtFinishedWasSuperseded(finish)) return;
+      // Release any map instance left over from a previous page (its DOM was
+      // already replaced by Astro's swap). Done here, after the swap, on purpose.
+      disposeMap();
+      const el = document.getElementById("footer-map");
+      if (!el) return;
+      const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            obs.disconnect();
+            loadMapsApi().then(() => {
+              // Bail if the container was swapped while the (cached) promise was pending.
+              if (!el.isConnected || el !== document.getElementById("footer-map")) return;
+              renderMap();
+            });
+            break;
+          }
+        }
       },
       { rootMargin: "200px" }
-    );
-    io.observe(mapEl);
+      );
+      currentIo = io;
+      io.observe(el);
+    });
   }
 
-  document.addEventListener("astro:page-load", setup);
+  // Matches vtFinished against the latest one; once a new before-swap fires the
+  // previous promise is no longer "current" and the waiting setup() should bail.
+  function vtFinishedWasSuperseded(p: Promise<void>) {
+    return p !== vtFinished;
+  }
+
+  // Register lifecycle listeners exactly once per module lifetime.
+  // Astro hoists/dedups this module across navigations, so we guard with a flag
+  // to be defensive against any double-evaluation.
+  //
+  // Why the ordering matters:
+  // Astro fires `astro:page-load` after the DOM update resolves (updateCallbackDone)
+  // but BEFORE the view-transition cross-fade has finished animating. If map
+  // dispose/reinit (creating a new google.maps.Map = heavy compositor/paint work)
+  // runs during the cross-fade it starves the animation frames and the page swap
+  // looks instant/static. So:
+  //  - `astro:before-swap` (read-only): grab `e.viewTransition` and record its
+  //    `finished` promise. No DOM mutation here.
+  //  - `astro:page-load` (setup): await that `finished` promise, THEN release the
+  //    old map and start observing the new #footer-map. Net effect: the cross-fade
+  //    runs uninterrupted, and the map rebuilds only after it completes.
+  if (!listenersAttached) {
+    listenersAttached = true;
+    document.addEventListener("astro:page-load", setup);
+    document.addEventListener("astro:before-swap", (e: any) => {
+      try {
+        const vt = e.viewTransition;
+        vtFinished = vt ? vt.finished.catch(() => {}) : Promise.resolve() as Promise<void>;
+      } catch {
+        vtFinished = Promise.resolve();
+      }
+    });
+  }
 </script>

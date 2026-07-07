@@ -104,7 +104,7 @@ const faqs = [
   </div>
 </section>
 
-<style>
+<style is:global>
   @keyframes faqReveal {
     from {
       filter: blur(8px);
@@ -151,11 +151,13 @@ const faqs = [
       { threshold: 0.15 }
     );
 
-    document.querySelectorAll(".faq-reveal").forEach((el) => {
+    document.querySelectorAll(".faq-reveal:not([data-faq-obs])").forEach((el) => {
+      el.setAttribute("data-faq-obs", "");
       faqObserver.observe(el);
     });
 
-    document.querySelectorAll(".faq-toggle").forEach((btn) => {
+    document.querySelectorAll(".faq-toggle:not([data-faq-bound])").forEach((btn) => {
+      btn.setAttribute("data-faq-bound", "");
       btn.addEventListener("click", () => {
         const row = btn.closest(".faq-row")!;
         const isOpen = row.classList.contains("is-open");
