@@ -8,6 +8,7 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://katerinakritikou.gr",
   vite: {
     plugins: [tailwindcss()],
   },
@@ -24,7 +25,7 @@ export default defineConfig({
     {
       provider: fontProviders.google(),
       name: "Source Serif 4",
-      cssVariable: "--font-noto",
+      cssVariable: "--font-source-serif",
       fallbacks: ["sans-serif"],
       subsets: ["greek", "latin"],
       styles: ["normal"],

@@ -3,26 +3,25 @@ import type { APIRoute } from "astro";
 const SITE = "https://katerinakritikou.gr";
 
 const routes = [
-  "/",
-  "/about",
-  "/services",
-  "/faq",
-  "/booking",
-  "/contact",
-  "/privacy",
-];
+  { path: "/", lastmod: "2025-06-01", changefreq: "weekly", priority: "1.0" },
+  { path: "/about", lastmod: "2025-06-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/services", lastmod: "2025-06-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/faq", lastmod: "2025-06-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/booking", lastmod: "2025-06-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/contact", lastmod: "2025-06-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/privacy", lastmod: "2025-07-01", changefreq: "yearly", priority: "0.3" },
+] as const;
 
 export const prerender = true;
 
 export const GET: APIRoute = async () => {
-  const lastmod = new Date().toISOString();
   const urls = routes
     .map(
       (r) => `  <url>
-    <loc>${SITE}${r === "/" ? "" : r}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${r === "/" ? "weekly" : "monthly"}</changefreq>
-    <priority>${r === "/" ? "1.0" : "0.8"}</priority>
+    <loc>${SITE}${r.path === "/" ? "" : r.path}</loc>
+    <lastmod>${r.lastmod}</lastmod>
+    <changefreq>${r.changefreq}</changefreq>
+    <priority>${r.priority}</priority>
   </url>`,
     )
     .join("\n");

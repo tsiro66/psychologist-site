@@ -55,6 +55,7 @@
         <input
           id="booking-phone"
           type="tel"
+          inputmode="tel"
           bind:value={phone}
           placeholder="π.χ. 6912345678"
           class="w-full px-4 py-3 text-sm bg-white border border-stone-200 rounded-sm text-neutral-950 placeholder:text-neutral-400 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"

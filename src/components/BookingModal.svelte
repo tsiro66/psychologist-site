@@ -57,7 +57,7 @@
       </div>
       <div>
         <label for="modal-phone" class="block text-sm text-neutral-600 mb-1.5">Τηλέφωνο</label>
-        <input id="modal-phone" type="tel" bind:value={phone} class={fieldClass('phone')} />
+        <input id="modal-phone" type="tel" inputmode="tel" bind:value={phone} class={fieldClass('phone')} />
         {#if errors.phone}<p class="text-xs text-red-500 mt-1">{errors.phone}</p>{/if}
       </div>
       <div>

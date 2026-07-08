@@ -10,7 +10,7 @@
 - Admin (`/admin/bookings`) προστατευμένο με Supabase Auth + middleware.
 - Χάρτης Google Place στο footer με καρτέλα ωραρίου.
 - View-transitions μεταξύ σελίδων.
-- SEO: `robots.txt`, `sitemap-index.xml`, meta/OG/Twitter tags, JSON-LD (`Psychologist`, `FAQPage`).
+- SEO: `robots.txt`, `sitemap.xml`, meta/OG/Twitter tags, JSON-LD (`Psychologist`, `FAQPage`).
 
 ## Stack
 

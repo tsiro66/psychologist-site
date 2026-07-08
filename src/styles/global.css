@@ -2,7 +2,7 @@
 
 @theme inline {
     --font-sans: var(--font-google), sans-serif;
-    --font-serif: var(--font-noto), serif;
+    --font-serif: var(--font-source-serif), serif;
 
     /* ── Change these 3 to retheme the entire site ── */
     --color-primary:  oklch(0.50 0.13 245);
@@ -69,4 +69,26 @@
     animation: none !important;
     transform: none !important;
     filter: none !important;
+}
+
+/* Respect prefers-reduced-motion: reveal/entrance animations are disabled and
+   their initial hidden state (opacity:0) is forced visible so content is
+   never stuck invisible for users who opt out of motion. */
+@media (prefers-reduced-motion: reduce) {
+    .home-reveal,
+    .about-reveal,
+    .service-reveal,
+    .faq-reveal,
+    .contact-reveal,
+    .animate-nav-drop,
+    .animate-blur-in,
+    .animate-fade-in-up,
+    .animate-slow-zoom,
+    .animate-step {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
 }
