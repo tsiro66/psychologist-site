@@ -8,7 +8,7 @@ const words = title.split(" ");
 ---
 
 <section
-  class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 md:px-6 overflow-hidden bg-neutral-50 pb-24"
+  class="relative flex flex-col items-center justify-center min-h-screen md:text-center px-6 overflow-hidden bg-neutral-50 pt-12 md:pt-0 pb-24"
 >
   <Image
     src={bgImage}
@@ -46,14 +46,14 @@ const words = title.split(" ");
   </h1>
 
   <p
-    class="relative z-10 mt-3 text-sm text-white/70 italic animate-fade-in-up opacity-0 font-medium"
+    class="relative z-10 mt-4 text-sm text-white/70 italic animate-fade-in-up opacity-0 font-medium"
     style="animation-delay: 1.15s; animation-fill-mode: forwards;"
   >
     — Carl Jung
   </p>
 
   <p
-    class="relative z-10 mt-6 text-sm md:text-base text-white/90 leading-relaxed animate-fade-in-up opacity-0 font-medium max-w-4xl"
+    class="relative z-10 mt-8 text-sm md:text-base text-white/90 leading-relaxed animate-fade-in-up opacity-0 font-medium max-w-4xl"
     style="animation-delay: 1.2s; animation-fill-mode: forwards;"
   >
     Είτε αντιμετωπίζεις καθημερινό άγχος, κρίσεις πανικού και κατάθλιψη, είτε
@@ -64,11 +64,11 @@ const words = title.split(" ");
   </p>
 
   <div
-    class="relative z-10 mt-5 flex flex-row flex-wrap items-center justify-center gap-4 animate-fade-in-up opacity-0"
+    class="relative z-10 mt-5 flex flex-nowrap items-center justify-center gap-3 sm:gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
-    <Button href="/about" variant="nav" className="text-center justify-center">Μάθε περισσότερα</Button>
-    <Button href="/booking" variant="primary" className="text-center justify-center">Κλείσε ραντεβού</Button>
+    <Button href="/about" variant="nav" className="px-4 sm:px-7 text-center justify-center whitespace-nowrap">Μάθε περισσότερα</Button>
+    <Button href="/booking" variant="primary" className="px-4 sm:px-7 text-center justify-center whitespace-nowrap">Κλείσε ραντεβού</Button>
   </div>
 
   <div
