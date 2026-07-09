@@ -1,6 +1,6 @@
 ---
-import Image from "astro/components/Image.astro";
 import Button from "./Button.astro";
+import { navLogoPath } from "../data/logo-path";
 const navLinks = [
   { label: "Σχετικά", href: "/about" },
   { label: "Υπηρεσίες", href: "/services" },
@@ -16,25 +16,19 @@ const navLinks = [
   <nav class="flex items-center justify-between">
     <a
       href="/"
-      class="relative flex flex-col hover:opacity-80 transition-opacity"
+      class="logo flex items-center gap-2.5 hover:opacity-90 transition-opacity"
       aria-label="Αρχική σελίδα — Κατερίνα Κρητικού"
     >
-      <!-- green (original) — shown when scrolled -->
-      <Image
-        src="/logo.png"
-        alt="Logo"
-        width={150}
-        height={56}
-        class="logo-green opacity-0 transition-opacity duration-500 filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)]"
-      />
-      <!-- purple — shown when at top -->
-      <Image
-        src="/logo.png"
-        alt=""
-        width={150}
-        height={56}
-        class="logo-purple absolute inset-0 filter-[hue-rotate(100deg)_saturate(2)_brightness(0.6)_contrast(1.2)] opacity-100 transition-opacity duration-500"
-      />
+      <svg
+        viewBox="0 0 348 340"
+        class="h-12 md:h-14 w-auto shrink-0 transition-colors duration-500"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path fill-rule="evenodd" transform="translate(0,340) scale(0.1,-0.1)" d={navLogoPath} />
+      </svg>
+      <span class="font-serif text-xl md:text-2xl leading-none tracking-tight whitespace-nowrap transition-colors duration-500">Κατερίνα Κρητικού</span>
     </a>
 
     <ul class="hidden lg:flex items-center self-stretch gap-8 lg:pl-8">
@@ -70,10 +64,10 @@ const navLinks = [
         aria-expanded="false"
       >
         <span
-          class="hamburger-line w-8 h-0.5 bg-dark-950 transition-all duration-300 origin-center"
+          class="hamburger-line w-8 h-0.5 bg-current transition-all duration-300 origin-center"
         ></span>
         <span
-          class="hamburger-line w-8 h-0.5 bg-dark-950 transition-all duration-300 origin-center"
+          class="hamburger-line w-8 h-0.5 bg-current transition-all duration-300 origin-center"
         ></span>
       </button>
     </div>
@@ -161,16 +155,15 @@ const navLinks = [
     color: var(--color-accent-300);
   }
 
-  .navbar.is-scrolled .logo-green {
-    opacity: 1;
+  /* Wordmark mirrors the nav-link colors: dark-900 at top of page,
+     primary-300 when scrolled / menu open. */
+  .navbar .logo {
+    color: var(--color-dark-900);
   }
 
-  .navbar.is-scrolled .logo-purple {
-    opacity: 0;
-  }
-
-  .navbar.is-scrolled .nav-logo {
-    color: white;
+  .navbar.is-scrolled .logo,
+  .navbar.menu-open .logo {
+    color: var(--color-primary-300);
   }
 
   .navbar.is-scrolled :global(.nav-btn) {
@@ -182,8 +175,12 @@ const navLinks = [
     background-color: var(--color-primary-800);
   }
 
-  .navbar.is-scrolled .hamburger-line {
-    background-color: white;
+  .navbar .mobile-menu-toggle {
+    color: var(--color-dark-900);
+  }
+
+  .navbar.is-scrolled .mobile-menu-toggle {
+    color: var(--color-primary-300);
   }
 
   .navbar.is-scrolled .mobile-nav-link {
@@ -207,8 +204,8 @@ const navLinks = [
     @apply bg-dark-900;
   }
 
-  .navbar.menu-open .hamburger-line {
-    background-color: white;
+  .navbar.menu-open .mobile-menu-toggle {
+    color: var(--color-primary-300);
   }
 
   /* Mobile menu transitions */

@@ -1,5 +1,5 @@
 ---
-import Image from "astro/components/Image.astro";
+import { navLogoPath } from "../data/logo-path";
 
 const navLinks = [
   { label: "Αρχική", href: "/" },
@@ -29,14 +29,9 @@ const services = [
     >
       <!-- Brand column -->
       <div class="col-span-2 lg:col-span-1">
-        <a href="/" class="inline-block mb-4" aria-label="Αρχική σελίδα — Κατερίνα Κρητικού">
-          <Image
-            class="nav-logo filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)] hidden sm:block"
-            src="/logo.png"
-            alt="Logo"
-            width={150}
-            height={56}
-          />
+        <a href="/" class="logo inline-flex items-center gap-2.5 mb-4 text-primary-300 hidden sm:inline-flex" aria-label="Αρχική σελίδα — Κατερίνα Κρητικού">
+          <svg viewBox="0 0 348 340" class="h-10 w-auto shrink-0" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" transform="translate(0,340) scale(0.1,-0.1)" d={navLogoPath} /></svg>
+          <span class="font-serif text-xl leading-none tracking-tight whitespace-nowrap">Κατερίνα Κρητικού</span>
         </a>
         <p class="text-sm text-primary-300 leading-relaxed max-w-xs mb-6">
           Ένας ασφαλής χώρος για να εξερευνήσεις τον εαυτό σου, να

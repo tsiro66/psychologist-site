@@ -1,5 +1,4 @@
 ---
-import Image from "astro/components/Image.astro";
 import "../styles/global.css";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
@@ -25,14 +24,9 @@ const { title } = Astro.props;
   </head>
   <body class="bg-stone-50 min-h-screen flex flex-col">
     <header class="flex items-center justify-between px-4 md:px-6 pt-4 shrink-0">
-      <a href="/admin/bookings">
-        <Image
-          src="/logo.png"
-          alt="Logo"
-          width={150}
-          height={56}
-          class="logo-green filter-[hue-rotate(90deg)_saturate(1)_brightness(1)_contrast(0.6)]"
-        />
+      <a href="/admin/bookings" aria-label="Διαχείριση κρατήσεων" class="logo inline-flex items-center gap-2.5 text-primary-700">
+        <img src="/favicon.svg" alt="" class="h-9 w-auto shrink-0" width="87" height="85" />
+        <span class="font-serif text-xl leading-none tracking-tight whitespace-nowrap">Κατερίνα Κρητικού</span>
       </a>
       <button
         id="logout-btn"
