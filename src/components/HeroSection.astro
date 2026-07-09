@@ -8,7 +8,7 @@ const words = title.split(" ");
 ---
 
 <section
-  class="relative flex flex-col items-center justify-center min-h-screen md:text-center px-6 overflow-hidden bg-neutral-50 pt-12 md:pt-0 pb-24"
+  class="relative flex flex-col items-center justify-center min-h-screen md:text-center px-6 overflow-hidden bg-neutral-50 pt-20 md:pt-0 pb-26"
 >
   <Image
     src={bgImage}
@@ -67,12 +67,12 @@ const words = title.split(" ");
     class="relative z-10 mt-5 flex flex-nowrap items-center justify-center gap-3 sm:gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
-    <Button href="/about" variant="nav" className="px-4 sm:px-7 text-center justify-center whitespace-nowrap">Μάθε περισσότερα</Button>
-    <Button href="/booking" variant="primary" className="px-4 sm:px-7 text-center justify-center whitespace-nowrap">Κλείσε ραντεβού</Button>
+    <Button href="/about" variant="nav" className="px-3 sm:px-7 py-2 sm:py-3 text-xs sm:text-sm text-center justify-center whitespace-nowrap">Μάθε περισσότερα</Button>
+    <Button href="/booking" variant="primary" className="px-3 sm:px-7 py-2 sm:py-3 text-xs sm:text-sm text-center justify-center whitespace-nowrap">Κλείσε ραντεβού</Button>
   </div>
 
   <div
-    class="absolute bottom-10 left-1/2 right-1/2 flex flex-col items-center gap-4 animate-fade-in-up opacity-0"
+    class="absolute bottom-0 left-1/2 right-1/2 flex flex-col items-center gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 2s; animation-fill-mode: forwards;"
   >
     <span
@@ -81,7 +81,7 @@ const words = title.split(" ");
       Δες περισσότερα
     </span>
 
-    <div class="w-[2px] h-8 bg-white/40 relative overflow-hidden rounded-full">
+    <div class="w-[2px] h-12 bg-white/40 relative overflow-hidden rounded-full">
       <div class="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line"></div>
     </div>
   </div>
