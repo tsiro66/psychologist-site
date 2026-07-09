@@ -64,7 +64,7 @@ const words = title.split(" ");
   </p>
 
   <div
-    class="relative z-10 mt-5 flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up opacity-0"
+    class="relative z-10 mt-5 flex flex-row flex-wrap items-center justify-center gap-4 animate-fade-in-up opacity-0"
     style="animation-delay: 1.5s; animation-fill-mode: forwards;"
   >
     <Button href="/about" variant="nav" className="text-center justify-center">Μάθε περισσότερα</Button>
@@ -76,12 +76,12 @@ const words = title.split(" ");
     style="animation-delay: 2s; animation-fill-mode: forwards;"
   >
     <span
-      class="text-sm uppercase tracking-[0.5em] text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
+      class="text-xs uppercase tracking-[0.5em] text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.8)]"
     >
       Δες περισσότερα
     </span>
 
-    <div class="w-[2px] h-14 bg-white/40 relative overflow-hidden rounded-full">
+    <div class="w-[2px] h-8 bg-white/40 relative overflow-hidden rounded-full">
       <div class="absolute top-0 left-0 w-full h-full bg-white animate-scroll-line"></div>
     </div>
   </div>
