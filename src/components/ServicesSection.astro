@@ -304,12 +304,10 @@ const services = [
         const row = btn.closest(".service-row")!;
         const isOpen = row.classList.contains("is-open");
 
-        document.querySelectorAll(".service-row.is-open").forEach((openRow) => {
-          openRow.classList.remove("is-open");
-          openRow.querySelector(".service-toggle")?.setAttribute("aria-expanded", "false");
-        });
-
-        if (!isOpen) {
+        if (isOpen) {
+          row.classList.remove("is-open");
+          btn.setAttribute("aria-expanded", "false");
+        } else {
           row.classList.add("is-open");
           btn.setAttribute("aria-expanded", "true");
         }
