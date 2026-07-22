@@ -27,6 +27,23 @@
     return d;
   });
 
+  // Current wall-clock time in Athens, as "HH:MM" — matches backend
+  // isPastAthens() so client/server agree on what's past.
+  let nowAthens = $derived(
+    new Date(_now).toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Europe/Athens",
+    }),
+  );
+  let selectedIsToday = $derived(
+    selectedDate &&
+      selectedDate.getFullYear() === today.getFullYear() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getDate() === today.getDate(),
+  );
+
   onMount(() => {
     const refresh = () => {
       _now = Date.now();
@@ -225,6 +242,7 @@
         {loadingHours}
         {hoursError}
         {formattedDate}
+        nowAthens={selectedIsToday ? nowAthens : null}
         onSelectHour={selectHour}
         onGoBack={goBack}
       />

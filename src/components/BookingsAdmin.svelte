@@ -200,12 +200,20 @@
   {:else if counts.all === 0}
     <div class="text-center py-16">
       <p class="text-neutral-400 text-lg mb-6">Δεν υπάρχουν κρατήσεις.</p>
-      <button
-        onclick={startCreate}
-        class="px-5 py-2.5 text-sm font-semibold border border-primary-600 text-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:text-white rounded-sm transition-colors cursor-pointer"
-      >
-        + Νέα κράτηση
-      </button>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button
+          onclick={openBulkBlock}
+          class="px-5 py-2.5 text-sm font-semibold border border-primary-600 text-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:text-white rounded-sm transition-colors cursor-pointer"
+        >
+          Μαζικές κρατήσεις
+        </button>
+        <button
+          onclick={startCreate}
+          class="px-5 py-2.5 text-sm font-semibold border border-primary-600 text-primary-600 hover:bg-primary-700 hover:border-primary-700 hover:text-white rounded-sm transition-colors cursor-pointer"
+        >
+          + Νέα κράτηση
+        </button>
+      </div>
     </div>
   {:else}
     <FilterStats {counts} {filter} onFilterChange={setFilter} />

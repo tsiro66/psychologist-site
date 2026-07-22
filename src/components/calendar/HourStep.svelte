@@ -8,6 +8,7 @@
     loadingHours,
     hoursError = false,
     formattedDate,
+    nowAthens = null,
     onSelectHour,
     onGoBack,
   } = $props();
@@ -50,12 +51,14 @@
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {#each hours as hour}
             {@const booked = bookedHours.includes(hour)}
+            {@const past = nowAthens != null && hour <= nowAthens}
+            {@const disabled = booked || past}
             <button
               onclick={() => onSelectHour(hour)}
-              disabled={booked}
+              disabled={disabled}
               aria-pressed={selectedHour === hour}
               class="py-2.5 px-3 text-sm font-medium rounded-sm border transition-all duration-200
-                {booked
+                {disabled
                 ? 'border-stone-100 bg-stone-50 text-neutral-300 line-through cursor-not-allowed'
                 : selectedHour === hour
                   ? 'bg-dark-900 border-dark-900 text-white shadow-md cursor-pointer'
@@ -65,7 +68,7 @@
             </button>
           {/each}
         </div>
-        {#if bookedHours.length === hours.length}
+        {#if bookedHours.length === hours.length || (nowAthens != null && hours.every((h) => bookedHours.includes(h) || h <= nowAthens))}
           <p class="text-sm text-neutral-400 text-center mt-4">
             Δεν υπάρχουν διαθέσιμες ώρες. Επίλεξε άλλη ημέρα.
           </p>
