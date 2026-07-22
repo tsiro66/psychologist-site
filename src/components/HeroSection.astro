@@ -105,12 +105,14 @@ const words = title.split(" ");
     animation: slowZoom 20s ease-out forwards;
   }
 
-  @keyframes blurIn {
+  @keyframes heroBlurIn {
     from {
+      opacity: 0;
       filter: blur(12px);
       transform: translateY(10px);
     }
     to {
+      opacity: 1;
       filter: blur(0);
       transform: translateY(0);
     }
@@ -133,7 +135,7 @@ const words = title.split(" ");
   }
 
   .animate-blur-in {
-    animation: blurIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heroBlurIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .animate-fade-in-up {
