@@ -272,6 +272,7 @@
 </div>
 
 {#if modalMode}
+  {#key modalMode === 'edit' ? (modalBooking?.id ?? 'new') : 'new'}
   <BookingModal
     title={modalMode === 'edit' ? 'Επεξεργασία κράτησης' : 'Νέα κράτηση'}
     initialValues={modalBooking ? { name: modalBooking.name, phone: modalBooking.phone, date: modalBooking.date, hour: modalBooking.hour } : {}}
@@ -281,6 +282,7 @@
     onSave={handleSave}
     onCancel={closeModal}
   />
+  {/key}
 {/if}
 
 {#if confirmDeleteId}
