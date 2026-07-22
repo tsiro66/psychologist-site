@@ -40,9 +40,9 @@ function isPastAthens(dateStr: string, hourStr: string): boolean {
   return hourStr <= nowTimeInAthens();
 }
 
-function isWeekend(dateStr: string): boolean {
+function isSunday(dateStr: string): boolean {
   const dow = new Date(dateStr + "T00:00:00").getDay();
-  return dow === 0 || dow === 6;
+  return dow === 0;
 }
 
 async function requireAdmin(cookies: AstroCookies, request: Request): Promise<Response | null> {
@@ -220,9 +220,9 @@ export const PATCH: APIRoute = async ({ request, cookies }) => {
         { status: 400 },
       );
     }
-    if (date !== undefined && isWeekend(checkDate)) {
+    if (date !== undefined && isSunday(checkDate)) {
       return new Response(
-        JSON.stringify({ error: "Δεν γίνεται κράτηση Σαββατοκύριακο." }),
+        JSON.stringify({ error: "Δεν γίνεται κράτηση Κυριακή." }),
         { status: 400 },
       );
     }
@@ -289,9 +289,9 @@ export const POST: APIRoute = async ({ request }) => {
       { status: 400 },
     );
   }
-  if (isWeekend(dateStr)) {
+  if (isSunday(dateStr)) {
     return new Response(
-      JSON.stringify({ error: "Δεν γίνεται κράτηση Σαββατοκύριακο." }),
+      JSON.stringify({ error: "Δεν γίνεται κράτηση Κυριακή." }),
       { status: 400 },
     );
   }

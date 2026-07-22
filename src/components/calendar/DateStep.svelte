@@ -34,13 +34,13 @@
     return d.getTime() === today.getTime();
   }
 
-  function isWeekend(day) {
+  function isSunday(day) {
     const d = new Date(
       viewDate.getFullYear(),
       viewDate.getMonth(),
       day,
     ).getDay();
-    return d === 0 || d === 6;
+    return d === 0;
   }
 
   function isSelected(day) {
@@ -104,7 +104,7 @@
         {#each Array.from({ length: daysInMonth }, (_, i) => i + 1) as day}
           <button
             onclick={() => onSelectDate(day)}
-            disabled={isPast(day) || isWeekend(day)}
+            disabled={isPast(day) || isSunday(day)}
             aria-label={new Date(
               viewDate.getFullYear(),
               viewDate.getMonth(),
@@ -117,7 +117,7 @@
             class="relative p-2 text-sm rounded-sm transition-all duration-200 cursor-pointer
               {isSelected(day)
               ? 'bg-dark-900 text-white font-semibold shadow-md'
-              : isPast(day) || isWeekend(day)
+              : isPast(day) || isSunday(day)
                 ? 'text-neutral-300 cursor-not-allowed'
                 : isToday(day)
                   ? 'bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100'

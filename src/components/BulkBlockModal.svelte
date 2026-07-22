@@ -13,7 +13,6 @@
 
   const weekdays = [
     { value: -1, label: "Όλες τις ημέρες" },
-    { value: 0, label: "Κυριακή" },
     { value: 1, label: "Δευτέρα" },
     { value: 2, label: "Τρίτη" },
     { value: 3, label: "Τετάρτη" },
