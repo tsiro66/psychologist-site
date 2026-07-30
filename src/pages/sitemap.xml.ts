@@ -7,13 +7,15 @@ const SITE = "https://katerinakritikou.gr";
 const today = new Date().toISOString().slice(0, 10);
 
 const routes = [
+  // Trailing slashes match the canonical URLs the site actually serves
+  // (non-slash URLs 307-redirect to the slash version).
   { path: "/", changefreq: "weekly", priority: "1.0" },
-  { path: "/about", changefreq: "monthly", priority: "0.8" },
-  { path: "/services", changefreq: "monthly", priority: "0.8" },
-  { path: "/faq", changefreq: "monthly", priority: "0.8" },
-  { path: "/booking", changefreq: "monthly", priority: "0.8" },
-  { path: "/contact", changefreq: "monthly", priority: "0.8" },
-  { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+  { path: "/about/", changefreq: "monthly", priority: "0.8" },
+  { path: "/services/", changefreq: "monthly", priority: "0.8" },
+  { path: "/faq/", changefreq: "monthly", priority: "0.8" },
+  { path: "/booking/", changefreq: "monthly", priority: "0.8" },
+  { path: "/contact/", changefreq: "monthly", priority: "0.8" },
+  { path: "/privacy/", changefreq: "yearly", priority: "0.3" },
 ] as const;
 
 export const prerender = true;
@@ -22,7 +24,7 @@ export const GET: APIRoute = async () => {
   const urls = routes
     .map(
       (r) => `  <url>
-    <loc>${SITE}${r.path === "/" ? "" : r.path}</loc>
+    <loc>${SITE}${r.path}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
