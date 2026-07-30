@@ -23,6 +23,16 @@ export default defineConfig({
       styles: ["normal"],
     },
     {
+      // Used only for the "FLUX" credit in the footer — single weight, latin.
+      provider: fontProviders.google(),
+      name: "Syne",
+      cssVariable: "--font-syne",
+      fallbacks: ["sans-serif"],
+      subsets: ["latin"],
+      weights: [800],
+      styles: ["normal"],
+    },
+    {
       provider: fontProviders.google(),
       name: "Source Serif 4",
       cssVariable: "--font-source-serif",

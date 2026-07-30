@@ -29,9 +29,26 @@ const services = [
     >
       <!-- Brand column -->
       <div class="col-span-2 lg:col-span-1">
-        <a href="/" class="logo inline-flex items-center gap-2.5 mb-4 text-primary-300 hidden sm:inline-flex" aria-label="Αρχική σελίδα — Κατερίνα Κρητικού">
-          <svg viewBox="0 0 348 340" class="h-10 w-auto shrink-0" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" transform="translate(0,340) scale(0.1,-0.1)" d={navLogoPath} /></svg>
-          <span class="font-serif text-xl leading-none tracking-tight whitespace-nowrap">Κατερίνα Κρητικού</span>
+        <a
+          href="/"
+          class="logo inline-flex items-center gap-2.5 mb-4 text-primary-300 hidden sm:inline-flex"
+          aria-label="Αρχική σελίδα — Κατερίνα Κρητικού"
+        >
+          <svg
+            viewBox="0 0 348 340"
+            class="h-10 w-auto shrink-0"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            ><path
+              fill-rule="evenodd"
+              transform="translate(0,340) scale(0.1,-0.1)"
+              d={navLogoPath}></path></svg
+          >
+          <span
+            class="font-serif text-xl leading-none tracking-tight whitespace-nowrap"
+            >Κατερίνα Κρητικού</span
+          >
         </a>
         <p class="text-sm text-primary-300 leading-relaxed max-w-xs mb-6">
           Ένας ασφαλής χώρος για να εξερευνήσεις τον εαυτό σου, να
@@ -87,7 +104,9 @@ const services = [
               fill="currentColor"
               viewBox="0 0 24 24"
             >
-              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.86-.8 3.63-2.03 4.94-1.99 2.12-5.22 2.78-7.93 1.71-2.38-.94-4.11-3.18-4.36-5.74-.03-.46-.04-.92-.02-1.37.22-2.31 1.59-4.46 3.62-5.55 1.99-1.08 4.46-1.05 6.43.07.02-1.57.01-3.14.02-4.71-.02-.05.05-.06.09-.03z" />
+              <path
+                d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.86-.8 3.63-2.03 4.94-1.99 2.12-5.22 2.78-7.93 1.71-2.38-.94-4.11-3.18-4.36-5.74-.03-.46-.04-.92-.02-1.37.22-2.31 1.59-4.46 3.62-5.55 1.99-1.08 4.46-1.05 6.43.07.02-1.57.01-3.14.02-4.71-.02-.05.05-.06.09-.03z"
+              ></path>
             </svg>
           </a>
         </div>
@@ -221,9 +240,15 @@ const services = [
     </div>
 
     <!-- Map -->
-    <div class="relative w-full h-[300px] sm:h-[360px] lg:h-[420px] mb-10 md:mb-20 overflow-hidden border border-dark-700">
+    <div
+      class="relative w-full h-[300px] sm:h-[360px] lg:h-[420px] mb-10 md:mb-20 overflow-hidden border border-dark-700"
+    >
       <div id="footer-map" class="w-full h-full bg-dark-800"></div>
-      <div id="footer-map-card" class="hidden absolute left-3 bottom-3 sm:left-4 sm:bottom-4 z-10 w-[260px] max-w-[calc(100%-1.5rem)] max-h-[calc(100%-1.5rem)] overflow-y-auto bg-dark-900/95 backdrop-blur-sm border border-dark-600 shadow-2xl shadow-black/50 p-4"></div>
+      <div
+        id="footer-map-card"
+        class="hidden absolute left-3 bottom-3 sm:left-4 sm:bottom-4 z-10 w-[260px] max-w-[calc(100%-1.5rem)] max-h-[calc(100%-1.5rem)] overflow-y-auto bg-dark-900/95 backdrop-blur-sm border border-dark-600 shadow-2xl shadow-black/50 p-4"
+      >
+      </div>
     </div>
 
     <!-- Divider -->
@@ -231,22 +256,26 @@ const services = [
 
     <!-- Bottom bar -->
     <div
-      class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
+      class="relative flex flex-col md:flex-row items-center justify-between gap-4 pt-8"
     >
       <p class="text-xs text-dark-500">
-        &copy; 2026 Κατερίνα Κρητικού Ψυχολόγος Ηλιούπολη. Με επιφύλαξη παντός δικαιώματος.
+        &copy; 2026 Κατερίνα Κρητικού Ψυχολόγος Ηλιούπολη. Με επιφύλαξη παντός
+        δικαιώματος.
       </p>
-      <div class="flex items-center gap-6">
-        <a
-          href="/privacy"
-          class="text-xs text-dark-500 hover:text-primary-300 transition-colors duration-300"
-        >
-          Πολιτική απορρήτου
-        </a>
-        <p class="text-xs text-dark-500">
-          Made by <a href="https://flux-web.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Syne', sans-serif; font-weight: 800;" class="text-zinc-100">FLUX</a>
-        </p>
-      </div>
+      <a
+        href="https://flux-web.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="font-family: var(--font-syne); font-weight: 800;"
+        class="text-2xl text-dark-500 hover:text-white transition-colors duration-300 md:absolute md:left-1/2 md:-translate-x-1/2"
+        >FLUX</a
+      >
+      <a
+        href="/privacy"
+        class="text-xs text-dark-500 hover:text-primary-300 transition-colors duration-300"
+      >
+        Πολιτική απορρήτου
+      </a>
     </div>
   </div>
 </footer>
@@ -270,19 +299,71 @@ const services = [
     { elementType: "geometry", stylers: [{ color: "#0b1a3a" }] },
     { elementType: "labels.text.stroke", stylers: [{ color: "#0b1a3a" }] },
     { elementType: "labels.text.fill", stylers: [{ color: "#8aa4d6" }] },
-    { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#9fb6e6" }] },
-    { featureType: "administrative.neighborhood", elementType: "labels.text.fill", stylers: [{ color: "#7f9bd4" }] },
-    { featureType: "poi", elementType: "labels.text.fill", stylers: [{ color: "#7f9bd4" }] },
-    { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#102a52" }] },
-    { featureType: "road", elementType: "geometry", stylers: [{ color: "#15264f" }] },
-    { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#1c3470" }] },
-    { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#a9c0ee" }] },
-    { featureType: "road.arterial", elementType: "labels.text.fill", stylers: [{ color: "#8aa4d6" }] },
-    { featureType: "road.local", elementType: "labels.text.fill", stylers: [{ color: "#6f88bf" }] },
-    { featureType: "transit", elementType: "geometry", stylers: [{ color: "#15264f" }] },
-    { featureType: "transit.station", elementType: "labels.text.fill", stylers: [{ color: "#8aa4d6" }] },
-    { featureType: "water", elementType: "geometry", stylers: [{ color: "#0a152e" }] },
-    { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#4a6699" }] },
+    {
+      featureType: "administrative.locality",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#9fb6e6" }],
+    },
+    {
+      featureType: "administrative.neighborhood",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#7f9bd4" }],
+    },
+    {
+      featureType: "poi",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#7f9bd4" }],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "geometry",
+      stylers: [{ color: "#102a52" }],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [{ color: "#15264f" }],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry",
+      stylers: [{ color: "#1c3470" }],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#a9c0ee" }],
+    },
+    {
+      featureType: "road.arterial",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#8aa4d6" }],
+    },
+    {
+      featureType: "road.local",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#6f88bf" }],
+    },
+    {
+      featureType: "transit",
+      elementType: "geometry",
+      stylers: [{ color: "#15264f" }],
+    },
+    {
+      featureType: "transit.station",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#8aa4d6" }],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [{ color: "#0a152e" }],
+    },
+    {
+      featureType: "water",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#4a6699" }],
+    },
   ];
 
   // ---- Module-scope runtime state (single source of truth) ----
@@ -301,18 +382,34 @@ const services = [
   let vtFinished: Promise<void> = Promise.resolve();
 
   function escapeHtml(str: string): string {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
   const DAY_SHORT: Record<string, string> = {
-    "Δευτέρα": "Δευ", "Τρίτη": "Τρι", "Τετάρτη": "Τετ",
-    "Πέμπτη": "Πεμ", "Παρασκευή": "Παρ", "Σάββατο": "Σαβ", "Κυριακή": "Κυρ",
+    Δευτέρα: "Δευ",
+    Τρίτη: "Τρι",
+    Τετάρτη: "Τετ",
+    Πέμπτη: "Πεμ",
+    Παρασκευή: "Παρ",
+    Σάββατο: "Σαβ",
+    Κυριακή: "Κυρ",
     // fallbacks if Google returns latin/short variants
-    "Monday": "Δευ", "Tuesday": "Τρι", "Wednesday": "Τετ",
-    "Thursday": "Πεμ", "Friday": "Παρ", "Saturday": "Σαβ", "Sunday": "Κυρ",
+    Monday: "Δευ",
+    Tuesday: "Τρι",
+    Wednesday: "Τετ",
+    Thursday: "Πεμ",
+    Friday: "Παρ",
+    Saturday: "Σαβ",
+    Sunday: "Κυρ",
   };
 
-  function condenseHours(weekdayText: string[]): { day: string; hours: string }[] {
+  function condenseHours(
+    weekdayText: string[],
+  ): { day: string; hours: string }[] {
     const parsed = weekdayText.map((line) => {
       const idx = line.indexOf(":");
       const dayFull = idx > -1 ? line.slice(0, idx).trim() : line;
@@ -337,17 +434,28 @@ const services = [
 
   function buildCardHtml(d: any): string {
     const close = `<button type="button" id="footer-map-card-close" aria-label="Κλείσιμο" style="position:absolute;top:6px;right:8px;background:none;border:0;color:#8aa4d6;font-size:18px;line-height:1;cursor:pointer;padding:2px 4px">×</button>`;
-    const name = d.name ? `<div style="font-weight:600;font-size:15px;color:#e8eefc;line-height:1.3;padding-right:18px">${escapeHtml(d.name)}</div>` : "";
-    const rating = d.rating ? `<div style="font-size:12px;color:#fbbf24;margin-top:3px">★ ${d.rating.toFixed(1)}</div>` : "";
-    const addr = d.formatted_address ? `<div style="font-size:12px;color:#a9c0ee;margin-top:6px;line-height:1.5">${escapeHtml(d.formatted_address)}</div>` : "";
+    const name = d.name
+      ? `<div style="font-weight:600;font-size:15px;color:#e8eefc;line-height:1.3;padding-right:18px">${escapeHtml(d.name)}</div>`
+      : "";
+    const rating = d.rating
+      ? `<div style="font-size:12px;color:#fbbf24;margin-top:3px">★ ${d.rating.toFixed(1)}</div>`
+      : "";
+    const addr = d.formatted_address
+      ? `<div style="font-size:12px;color:#a9c0ee;margin-top:6px;line-height:1.5">${escapeHtml(d.formatted_address)}</div>`
+      : "";
     let photo = "";
     if (d.photos?.[0]) {
-      try { photo = `<img class="hidden sm:block" src="${d.photos[0].getUrl({ maxWidth: 480 })}" alt="" style="width:100%;height:90px;object-fit:cover;margin-top:8px;border-radius:4px">`; } catch {}
+      try {
+        photo = `<img class="hidden sm:block" src="${d.photos[0].getUrl({ maxWidth: 480 })}" alt="" style="width:100%;height:90px;object-fit:cover;margin-top:8px;border-radius:4px">`;
+      } catch {}
     }
     let hours = "";
     if (d.opening_hours?.weekday_text?.length) {
       const rows = condenseHours(d.opening_hours.weekday_text)
-        .map((h) => `<div style="font-size:11px;color:#8aa4d6;line-height:1.6"><strong style="color:#a9c0ee;font-weight:600">${escapeHtml(h.day)}:</strong> ${escapeHtml(h.hours)}</div>`)
+        .map(
+          (h) =>
+            `<div style="font-size:11px;color:#8aa4d6;line-height:1.6"><strong style="color:#a9c0ee;font-weight:600">${escapeHtml(h.day)}:</strong> ${escapeHtml(h.hours)}</div>`,
+        )
         .join("");
       hours = `<div class="hidden sm:block" style="margin-top:8px;padding-top:8px;border-top:1px solid #1c3470">${rows}</div>`;
     }
@@ -368,7 +476,10 @@ const services = [
       s.src = `https://maps.googleapis.com/maps/api/js?key=${MAP_KEY}&callback=initFooterMap&language=el&region=GR&libraries=places&loading=async`;
       s.async = true;
       s.defer = true;
-      s.onerror = () => { gmapsReady = null; resolve(); };
+      s.onerror = () => {
+        gmapsReady = null;
+        resolve();
+      };
       document.head.appendChild(s);
     });
     return gmapsReady;
@@ -382,9 +493,17 @@ const services = [
   // GC'd rather than lingering bound to a now-detached subtree.
   function disposeMap() {
     resetMapInstance();
-    if (currentIo) { try { currentIo.disconnect(); } catch {} currentIo = null; }
+    if (currentIo) {
+      try {
+        currentIo.disconnect();
+      } catch {}
+      currentIo = null;
+    }
     const card = document.getElementById("footer-map-card");
-    if (card) { card.innerHTML = ""; card.classList.add("hidden"); }
+    if (card) {
+      card.innerHTML = "";
+      card.classList.add("hidden");
+    }
   }
 
   function addTrackedListener(obj: any, event: string, fn: Function) {
@@ -400,15 +519,22 @@ const services = [
   function resetMapInstance() {
     const g = (window as any).google?.maps;
     if (currentMarker) {
-      try { if (g) g.event.clearInstanceListeners(currentMarker); currentMarker.setMap(null); } catch {}
+      try {
+        if (g) g.event.clearInstanceListeners(currentMarker);
+        currentMarker.setMap(null);
+      } catch {}
       currentMarker = null;
     }
     if (currentMap) {
-      try { if (g) g.event.clearInstanceListeners(currentMap); } catch {}
+      try {
+        if (g) g.event.clearInstanceListeners(currentMap);
+      } catch {}
       currentMap = null;
     }
     for (const t of trackedListeners) {
-      try { if (g) g.event.removeListener(t.listener); } catch {}
+      try {
+        if (g) g.event.removeListener(t.listener);
+      } catch {}
     }
     trackedListeners.length = 0;
   }
@@ -447,7 +573,8 @@ const services = [
     if (card) {
       card.innerHTML = buildCardHtml({
         name: "Κατερίνα Κρητικού",
-        formatted_address: "Βύρωνος 13 (2ος όροφος, εντός του εμπορικού κέντρου), Ηλιούπολη 16342",
+        formatted_address:
+          "Βύρωνος 13 (2ος όροφος, εντός του εμπορικού κέντρου), Ηλιούπολη 16342",
         url: MAPS_LINK,
       });
       card.classList.remove("hidden");
@@ -472,18 +599,33 @@ const services = [
       service.getDetails(
         {
           placeId: PLACE_ID,
-          fields: ["name", "formatted_address", "opening_hours", "url", "international_phone_number", "rating", "photos"],
+          fields: [
+            "name",
+            "formatted_address",
+            "opening_hours",
+            "url",
+            "international_phone_number",
+            "rating",
+            "photos",
+          ],
         },
         (place: any, status: string) => {
           // Stale callback (container swapped) -> bail.
-          if (!el.isConnected || el !== document.getElementById("footer-map") || !card) return;
+          if (
+            !el.isConnected ||
+            el !== document.getElementById("footer-map") ||
+            !card
+          )
+            return;
           if (place && status === g.places.PlacesServiceStatus.OK) {
             card.innerHTML = buildCardHtml(place);
             card.classList.remove("hidden");
             const closeBtn = card.querySelector("#footer-map-card-close");
-            closeBtn?.addEventListener("click", () => card.classList.add("hidden"));
+            closeBtn?.addEventListener("click", () =>
+              card.classList.add("hidden"),
+            );
           }
-        }
+        },
       );
     } catch (e) {
       console.warn("[map] Places call threw:", e);
@@ -507,20 +649,24 @@ const services = [
       const el = document.getElementById("footer-map");
       if (!el) return;
       const io = new IntersectionObserver(
-      (entries, obs) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            obs.disconnect();
-            loadMapsApi().then(() => {
-              // Bail if the container was swapped while the (cached) promise was pending.
-              if (!el.isConnected || el !== document.getElementById("footer-map")) return;
-              renderMap();
-            });
-            break;
+        (entries, obs) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              obs.disconnect();
+              loadMapsApi().then(() => {
+                // Bail if the container was swapped while the (cached) promise was pending.
+                if (
+                  !el.isConnected ||
+                  el !== document.getElementById("footer-map")
+                )
+                  return;
+                renderMap();
+              });
+              break;
+            }
           }
-        }
-      },
-      { rootMargin: "200px" }
+        },
+        { rootMargin: "200px" },
       );
       currentIo = io;
       io.observe(el);
@@ -554,7 +700,9 @@ const services = [
     document.addEventListener("astro:before-swap", (e: any) => {
       try {
         const vt = e.viewTransition;
-        vtFinished = vt ? vt.finished.catch(() => {}) : Promise.resolve() as Promise<void>;
+        vtFinished = vt
+          ? vt.finished.catch(() => {})
+          : (Promise.resolve() as Promise<void>);
       } catch {
         vtFinished = Promise.resolve();
       }
