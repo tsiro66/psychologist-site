@@ -74,6 +74,16 @@ wrangler secret put RESEND_API_KEY
 
 Η `PUBLIC_GOOGLE_MAPS_KEY` μπαίνει στα Pages/Workers env vars (δίνει στο client build).
 
+### Keep-alive του Supabase (free plan)
+
+Στο free plan το Supabase παύει (pause) τα projects μετά από 7 ημέρες χωρίς δραστηριότητα στη βάση. Ο ξεχωριστός worker στο `workers/keep-supabase-alive/` καλεί καθημερινά (cron trigger, 06:00 UTC) το public endpoint `GET /api/booking?date=...` — το οποίο εκτελεί real queries στη βάση μέσα από το main worker (που ήδη έχει τα Supabase secrets) — ώστε το project να παραμένει ενεργό. Χωρίς επιπλέον secrets.
+
+```sh
+pnpm deploy:keepalive
+```
+
+Χειροκίνητο test: `curl https://psychologist-site-keepalive.<account-subdomain>.workers.dev`
+
 ## Δομή
 
 ```text
@@ -86,4 +96,5 @@ src/
 └── styles/global.css
 public/               # favicon, logo, font, robots.txt
 supabase/migrations/  # SQL migrations
+workers/keep-supabase-alive/  # cron worker: καθημερινό ping στο Supabase (free-tier keep-alive)
 ```

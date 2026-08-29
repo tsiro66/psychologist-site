@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy:keepalive": "wrangler deploy -c workers/keep-supabase-alive/wrangler.toml"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.1.4",

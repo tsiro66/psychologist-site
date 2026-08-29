@@ -1,0 +1,15 @@
+# Dedicated keep-alive worker: pings the Supabase REST API daily so the
+# free-tier project is not auto-paused for inactivity (pause kicks in
+# after 7 days without database activity).
+name = "psychologist-site-keepalive"
+main = "index.ts"
+compatibility_date = "2025-04-15"
+
+[triggers]
+crons = ["0 6 * * *"] # daily at 06:00 UTC
+
+[vars]
+SITE_URL = "https://katerinakritikou.gr"
+
+[observability]
+enabled = true
